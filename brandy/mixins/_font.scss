@@ -1,0 +1,39 @@
+// google-font() - Load a font from the Google Fonts library (fonts.google.com).
+@mixin google-font( $fonts ){
+    
+    $cdn: 'https://fonts.googleapis.com/css?family=';
+    
+    // Loop through fonts.
+    @each $font in $fonts {
+        
+        $name: quote( str-replace($font, ' ', '+') );
+        
+        @import url( #{ $cdn + $name } );
+        
+    }
+    
+}
+
+// brick-font() - Load a font from the Brick Fonts library (brick.im/fonts).
+@mixin brick-font( $fonts, $weights: 400 ){
+    
+    $cdn: 'http://brick.a.ssl.fastly.net/css?family=';
+    $ext: '';
+    
+    // Loop through fonts.
+    @each $font in $fonts {
+        
+        $index: index( $font, $fonts );
+        $name: quote( str-replace($font, ' ', '+') );
+        $weight: to-string( $weights, ',' );
+        $ext: $ext + $name + ':' + $weight;
+        
+        @if ( $index != length($fonts) - 1 ){
+            $ext: $ext + '/';
+        }
+        
+    }
+    
+    @import url( $cdn + $ext );
+    
+}
