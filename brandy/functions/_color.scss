@@ -98,6 +98,16 @@
     }
     
   }
+    
+  // Try lumanince next.
+  $luma: luma($color);
+  
+  @if( $luma >= 0.175 ){ 
+    @return $dark;
+  }
+  @else if( $luma <= 0.1833 ){
+    @return $light;
+  }
   
   // Resort to brightness.
   
