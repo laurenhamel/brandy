@@ -15,24 +15,102 @@
     
 }
 
-// Adapted from Brendan Saunders' color-contrast()
+// Adapted from https://gist.github.com/voxpelli/6304812 luma()
+@function luma($color){
+  
+  $RGB: (red($color) / 255), (green($color)/ 255), (blue($color) / 255);
+  
+  @each $X in $RGB {
+    $X: if($X <= .03928, $X / 12.92, pow((($X + .055) / 1.055), 2.4));
+  }
+  
+  $R: nth($RGB, 1);
+  $G: nth($RGB, 2);
+  $B: nth($RGB, 3);
+  
+  @return .2126 * $R + .7152 * $G + .0722 * $B;
+  
+}
+
+// Adapted from Mike Reithmuller contrast_ratio()
+@function contrast-ratio( $color1, $color2 ){
+  
+  $luma1: luma($color1) + 0.05;
+  $luma2: luma($color2) + 0.05;
+  
+  @return max($luma1, $luma2) / min($luma1, $luma2);
+  
+}
+
+// Adapted from Mike Reithmuller text-contrast() 
+// and Brendan Saunders' color-contrast()
 @function color-contrast( $color, $dark: $brandy-dark-text, $light: $brandy-light-text ){
-    
-    @if( $color == null or $color == transparent ){ @return null; }
-    @else {
-        
-        // Brightness
-        $brightness-color: brightness( $color );
-        $brightness-dark: brightness( $dark );
-        $brightness-light: brightness( $light );
-        
-        // Difference
-        $difference-dark: abs( $brightness-color - $brightness-dark );
-        $difference-light: abs( $brightness-color - $brightness-light );
-        
-        @return if( $difference-light > $difference-dark, $light, $dark );
-        
+  
+  // Use lumanice first.
+  $WCAG: 7, 4.5;
+
+  // Start with the highest threshold.
+  @for $index from 1 through length($WCAG) {
+
+    $threshold: nth($WCAG, $index);
+    $max: 100%;
+    $min: 0%;
+    $increment: 5%;
+    $range: $max - $min;
+    $steps: $range / $increment;
+
+    // Uncomment to contrast against the background color.
+    /*@for $step from 0 through $steps {
+
+      $percent: $increment * $step + $min;
+
+      $lighter: lighten($color, $percent);
+      $lighter-ratio: contrast-ratio($color, $lighter);
+
+      $darker: darken($color, $percent);
+      $darker-ratio: contrast-ratio($color, $darker);
+
+      @if($lighter-ratio > $darker-ratio){
+        @if($lighter-ratio > $threshold){
+          @return $lighter;
+        }
+      }
+      @else if($darker-ratio > $lighter-ratio){
+        @if($darker-ratio > $threshold){
+          @return $darker;
+        }
+      }
+
+    }*/
+
+    $light-ratio: contrast-ratio($color, $light);
+    $dark-ratio: contrast-ratio($color, $dark);
+
+    @if($light-ratio > $dark-ratio){
+      @if($light-ratio > $threshold){
+        @return $light;
+      }
     }
+    @else if($dark-ratio > $light-ratio){
+      @if($dark-ratio > $threshold){
+        @return $dark;
+      }
+    }
+    
+  }
+  
+  // Resort to brightness.
+  
+  // Brightness
+  $brightness-color: brightness( $color );
+  $brightness-dark: brightness( $dark );
+  $brightness-light: brightness( $light );
+
+  // Difference
+  $difference-dark: abs( $brightness-color - $brightness-dark );
+  $difference-light: abs( $brightness-color - $brightness-light );
+
+  @return if( $difference-light > $difference-dark, $light, $dark );
         
 }
 
