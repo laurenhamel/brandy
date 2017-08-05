@@ -42,21 +42,21 @@
   
 }
 
+// Set to FALSE to contrast text using LIGHT and DARL colors only.
+$brandy-contrast-bgcolor: false;
+
 // Adapted from Mike Reithmuller text-contrast() 
 @function color-contrast( $color, $dark: $brandy-dark-text, $light: $brandy-light-text ){
   
   // Use lumanice first.
   $WCAG: 7, 4.5;
-  
-  // Set to FALSE to contrast text relative to the background color.
-  $use-dark-light: true;
 
   // Start with the highest threshold.
   @for $index from 1 through length($WCAG) {
     
     $threshold: nth($WCAG, $index);
     
-    @if( $use-dark-light == false ){
+    @if( $brandy-contrast-bgcolor == true ){
 
       $max: 100%;
       $min: 0%;
