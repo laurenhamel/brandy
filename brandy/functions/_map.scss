@@ -123,3 +123,30 @@
 @function map-set( $map, $key, $value ){
     @return map-merge( $map, ($key: $value) );
 }
+
+// Create by Lauren Hamel
+@function map-flatten( $map, $delimiter: '-', $prefix: '' ){
+  
+  $result: ();
+  
+  @each $key, $value in $map {
+    
+    $key: if($prefix != '', $prefix + $delimiter + $key, $key);
+    
+    @if(type-of($value) == 'map'){
+      
+      $result: map-merge($result, map-flatten($value, $delimiter, $key));
+      
+    }
+    
+    @else {
+      
+      $result: map-set($result, $key, $value);
+      
+    }
+    
+  }
+  
+  @return $result;
+  
+}
