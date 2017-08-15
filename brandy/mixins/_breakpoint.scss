@@ -1,0 +1,14 @@
+// Conditional @mixin(s) only available if [breakpoint-sass](breakpoint-sass.com) is present.
+@if( mixin-exists(breakpoint) ) {
+  
+  // multi-breakpoint() - To enable multiple breakpoints.
+  @mixin multi-breakpoint($breakpoints...){
+    @each $breakpoint in $breakpoints {
+      @include breakpoint($breakpoint){
+        @content;
+      }
+    }
+  }
+  
+  
+}

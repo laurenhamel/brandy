@@ -42,9 +42,6 @@
   
 }
 
-// Set to FALSE to contrast text using LIGHT and DARL colors only.
-$brandy-contrast-bgcolor: false;
-
 // Adapted from Mike Reithmuller text-contrast() 
 @function color-contrast( $color, $dark: $brandy-dark-text, $light: $brandy-light-text ){
   
@@ -56,7 +53,7 @@ $brandy-contrast-bgcolor: false;
     
     $threshold: nth($WCAG, $index);
     
-    @if( $brandy-contrast-bgcolor == true ){
+    @if( $brandy-bg-contrast == true ){
 
       $max: 100%;
       $min: 0%;
@@ -164,12 +161,24 @@ $brandy-contrast-bgcolor: false;
     @return unquote( 'rgb(' + $RGB + ')' );
 }
 
-// Adapted from Hugo Giraudel's tint()
+// Adapted from Hugo Giraudel's tint() and [Bourbon](bourbon.io) tint()
 @function tint( $color, $percent ){
     @return mix(white, $color, $percent);
 }
 
-// Adapted from Hugo Giraudel's shade()
+// Adapted from Hugo Giraudel's shade() and [Bourbon](bourbon.io) shade()
 @function shade( $color, $percent ){
     @return mix(black, $color, $percent);
+}
+
+// color() - Retrieves a color by name, tone, and/or value from a color map.
+@function color($name, $tone: base, $amount: null, $map: $brandy-colors-map) {
+
+  @if($tone == base or $amount == null){
+    @return map-deep-get($map, $name $tone)
+  }
+  @else {
+    @return map-deep-get($map, $name $tone ''+$amount);
+  }
+
 }

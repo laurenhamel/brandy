@@ -14,26 +14,106 @@
     
 }
 
-// brick-font() - Load a font from the Brick Fonts library (brick.im/fonts).
-@mixin brick-font( $fonts, $weights: 400 ){
+// scale-font() - Proportionately scale font size across the given elements.
+@mixin scale-font($elements, 
+                  $min: $brandy-scale-min, 
+                  $max: $brandy-scale-max, 
+                  $save: null, 
+                  $increasing: $brandy-scale-increasing,
+                  $responsive: $brandy-scale-responsive,
+                  $scale: $brandy-scale-map,
+                  $breaks: $brandy-screens-map
+){
+  
+  $max: if(type-of($max) != 'number', $max, $min);
+  $length: length($elements);
+  $steps: $length - 2;
+  $map: ();
+  
+  // Scale elements.
+  @each $element in $elements {
+
+    $index: index($elements, $element);
+    $factor: ($min / $max) / $steps * $index;
+    $size: null;
+
+    @if( $increasing == true ) {
+      
+      @if( $index == $length ){ $size: $max; }
+      @else if( $index == 1 ){ $size: $min }
+      @else { 
+        $ratio: ($min + $factor) / $min;
+        $size: $min * $ratio; 
+      }
+      
+    } // end @if $increasing == false
+    @else {
+      
+      @if( $index == $length ) { $size: $min; }
+      @else if( $index == 1 ) { $size: $max; }
+      @else {
+        $ratio: ($max - $factor) / $max;
+        $size: $max * $ratio;
+      }
+      
+    } // end @else $increasing == true
+
+    #{$element} { font-size: $size; }
     
-    $cdn: 'http://brick.a.ssl.fastly.net/css?family=';
-    $ext: '';
+    $map: map-set($map, $element, $ratio);
     
-    // Loop through fonts.
-    @each $font in $fonts {
-        
-        $index: index( $font, $fonts );
-        $name: quote( str-replace($font, ' ', '+') );
-        $weight: to-string( $weights, ',' );
-        $ext: $ext + $name + ':' + $weight;
-        
-        @if ( $index != length($fonts) - 1 ){
-            $ext: $ext + '/';
-        }
-        
-    }
+    @if( type-of($save) == 'map') { $save: map-set($save, $element, $ratio); } // end @if type-of($save) == 'map'
+
+  } // end @each $element in $elements
+  
+  // Make responsive.
+  @if( $responsive == true ) {
     
-    @import url( $cdn + $ext );
+    @each $element, $ratio in $map {
+      @each $screen, $setting in $breaks {
+        @if( map-has-key($scale, $screen) ) {
+          
+          $scale: map-get($scale, $screen);
+          
+          // Use breakpoint in available.
+          @if( mixin-exists(breakpoint) ) {
+            
+            #{$element} { @include breakpoint($setting){ font-size: $max * $ratio * $scale; } }
+            
+          } // end @if mixin-exists($breakpoint)
+          
+          // Default to media queries.
+          @else {
+
+            // Interpret the screen breakpoint.
+            $setting: interpret-screen($setting);
+
+            // Breakout into separate variables.
+            $max-width: nth($setting, 1);
+            $min-width: nth($setting, 2);
+            
+            @if( $max-width != false and $min-width != false ) {
+              @media (max-width: $max-width) and (min-width: $min-width) {
+                #{$element} { font-size: $max * $ratio * $scale; }
+              }
+            } // end @if $max-width and $min-width
+            @else if( $max-width != false ) {
+              @media (max-width: $max-width) {
+                #{$element} { font-size: $max * $ratio * $scale; }
+              }
+            } // end @if $max-width
+            @else if( $min-width != false ) {
+              @media (min-width: $min-width) {
+                #{$element} { font-size: $max * $ratio * $scale; }
+              }
+            } // end @if $min-width
+
+          } // end @else not mixin-exists($breakpoint)
+          
+        } // end @if map-has-key($cale, $screen)
+      } // end @each $screen, $setting in $breaks
+    } // end @each $element, $ratio in $map
     
+  } // end @if responsive == true
+  
 }

@@ -1,0 +1,4 @@
+// font() - Retrieves a font by name from the font map.
+@function font($name, $map: $brandy-fonts-map) {
+  @return map-deep-get($map, $name);
+}
