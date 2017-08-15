@@ -1,3 +1,5 @@
 /* A compiled library of extensible SASS mixins. */
 
+@import 'mixins/breakpoint';
 @import 'mixins/font';
+@import 'mixins/layout';
