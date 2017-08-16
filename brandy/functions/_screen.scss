@@ -16,7 +16,7 @@
 
       @if( $value == max-width or $value == min-width ) {
         
-        $next nth($setting, $n + 1);
+        $next: nth($setting, $n + 1);
         
         // Interprets max-width or min-width followed by a number.
         @if( type-of($next) == 'number' ) { 
