@@ -1,0 +1,15 @@
+// linear-gradient()
+@mixin linear-gradient( $args... ){
+  background: -webkit-linear-gradient($args);
+  background: -moz-linear-gradient($args);
+  background: -o-linear-gradient($args);
+  background: linear-gradient($args);
+}
+
+// radial-gradient()
+@mixin radial-gradient( $args... ){
+  background: -webkit-radial-gradient($args);
+  background: -moz-radial-gradient($args);
+  background: -o-radial-gradient($args);
+  background: radial-gradient($args);
+}

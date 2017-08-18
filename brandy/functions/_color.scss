@@ -21,7 +21,11 @@
   $RGB: (red($color) / 255), (green($color)/ 255), (blue($color) / 255);
   
   @each $X in $RGB {
-    $X: if($X <= .03928, $X / 12.92, pow((($X + .055) / 1.055), 2.4));
+    
+    $Y: if($X <= .03928, $X / 12.92, pow((($X + .055) / 1.055), 2.4));
+
+    $RGB: replace($RGB, $X, $Y);
+    
   }
   
   $R: nth($RGB, 1);
@@ -33,11 +37,11 @@
 }
 
 // Adapted from Mike Reithmuller contrast_ratio()
-@function contrast-ratio( $color1, $color2 ){
+@function contrast-ratio( $color1, $color2 ){ 
   
   $luma1: luma($color1) + 0.05;
   $luma2: luma($color2) + 0.05;
-  
+
   @return max($luma1, $luma2) / min($luma1, $luma2);
   
 }

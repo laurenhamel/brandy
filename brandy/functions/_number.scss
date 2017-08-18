@@ -1,14 +1,3 @@
-// Adapted from Hugo Giraudel's strip-unit()
-@function strip-unit( $number ){
-    
-    @if( type-of($number) == 'number' and not unitless($number) ){
-        @return $number / ($number * 0 + 1);
-    }
-    
-    @return $number;
-    
-}
-
 // unit-to-digit() - To parse a unit from a given string representation of a unit.
 @function unit-to-digit( $unit ){
   @if( $unit == 'px' ){ @return 1px; }
@@ -27,3 +16,6 @@
   @if( $unit == 'vmax' ){ @return 1vmax; }
   @return 1;
 }
+
+// Import Takeru Suzuki's npm mathsass 
+@import '../vendors/mathsass';
