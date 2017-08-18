@@ -51,6 +51,10 @@
   
   // Use lumanice first.
   $WCAG: 7, 4.5;
+  
+  // Capture any non-ideal but better color choice.
+  $better-ratio: 0;
+  $better-color: null;
 
   // Start with the highest threshold.
   @for $index from 1 through length($WCAG) {
@@ -64,9 +68,6 @@
       $increment: 5%;
       $range: $max - $min;
       $steps: $range / $increment;
-      
-      $better-ratio: 0;
-      $better-color: null;
 
       @for $step from 0 through $steps {
 
@@ -83,21 +84,14 @@
             $better-ratio: $lighter-ratio;
             $better-color: $lighter;
           }
-          @if($lighter-ratio > $threshold){
-            @return $lighter;
-          }
+          @if($lighter-ratio > $threshold){ @return $lighter; }
         }
         @else if($darker-ratio > $lighter-ratio){
           @if( max($better-ratio, $darker-ratio) == $darker-ratio ){
             $better-ratio: $darker-ratio;
             $better-color: $darker;
           }
-          @if($darker-ratio > $threshold){
-            @return $darker;
-          }
-        }
-        @else {
-          @return $better-color;
+          @if($darker-ratio > $threshold){ @return $darker; }
         }
 
       }
@@ -105,32 +99,35 @@
     }
     
     @else {
-
+      
       $light-ratio: contrast-ratio($color, $light);
       $dark-ratio: contrast-ratio($color, $dark);
-      $better-ratio: null;
-      $better-color: null;
 
       @if($light-ratio > $dark-ratio){
-        $better-ratio: $light-ratio;
-        $better-color: $light;
-        @if($light-ratio > $threshold){
-          @return $light;
+        @if( max($better-ratio, $light-ratio) == $light-ratio ){
+          $better-ratio: $light-ratio;
+          $better-color: $light;
         }
+        @if($light-ratio > $threshold){ @return $light; }
       }
       @else if($dark-ratio > $light-ratio){
-        $better-ratio: $dark-ratio;
-        $better-color: $dark;
-        @if($dark-ratio > $threshold){
-          @return $dark;
+        @if( max($better-ratio, $dark-ratio) == $dark-ratio ){
+          $better-ratio: $dark-ratio;
+          $better-color: $dark;
         }
+        @if($dark-ratio > $threshold){ @return $dark; }
       }
-      
-      @return $better-color;
 
     }
     
   }
+  
+  @warn $color + ', ' + $dark + ', and ' + $light + ' do not meet the WebAIM WCAG color contrast standards.';
+  @warn 'WebAIM WCAG AAA expects a threshold of >= 7, and AA expects a threshold >= 4.';
+  @warn 'Please reconsider your color choice(s).';
+  @warn 'For more information, visit http://webaim.org/resources/contrastchecker.';
+  
+  @return $better-color;
         
 }
 
