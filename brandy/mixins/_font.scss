@@ -24,8 +24,8 @@
                   $scale: $brandy-scale-map,
                   $breaks: $brandy-screens-map
 ){
-  
-  $max: if(type-of($max) != 'number', $max, $min);
+
+  $max: if(type-of($max) != 'number', $min, $max);
   $length: length($elements);
   $steps: $length - 2;
   $map: ();
@@ -36,27 +36,40 @@
     $index: index($elements, $element);
     $factor: ($min / $max) / $steps * $index;
     $size: null;
+    $ratio: null;
 
     @if( $increasing == true ) {
       
-      @if( $index == $length ){ $size: $max; }
-      @else if( $index == 1 ){ $size: $min }
+      @if( $index == $length ){ 
+        $ratio: $max / $min;
+        $size: $max; 
+      }
+      @else if( $index == 1 ){ 
+        $ratio: 1;
+        $size: $min 
+      }
       @else { 
         $ratio: ($min + $factor) / $min;
         $size: $min * $ratio; 
       }
       
-    } // end @if $increasing == false
-    @else {
+    } // end @if $increasing == true
+    @else {  
       
-      @if( $index == $length ) { $size: $min; }
-      @else if( $index == 1 ) { $size: $max; }
-      @else {
+      @if( $index == $length ) { 
+        $ratio: $min / $max;
+        $size: $min; 
+      }
+      @else if( $index == 1 ) { 
+        $ratio: 1;
+        $size: $max; 
+      }
+      @else { 
         $ratio: ($max - $factor) / $max;
         $size: $max * $ratio;
       }
-      
-    } // end @else $increasing == true
+
+    } // end @else $increasing == false
 
     #{$element} { font-size: $size; }
     
@@ -68,17 +81,17 @@
   
   // Make responsive.
   @if( $responsive == true ) {
-    
+   
     @each $element, $ratio in $map {
       @each $screen, $setting in $breaks {
         @if( map-has-key($scale, $screen) ) {
           
-          $scale: map-get($scale, $screen);
+          $resizer: map-get($scale, $screen);
           
           // Use breakpoint in available.
           @if( mixin-exists(breakpoint) ) {
-            
-            #{$element} { @include breakpoint($setting){ font-size: $max * $ratio * $scale; } }
+     
+            #{$element} { @include breakpoint($setting){ font-size: $max * $ratio * $resizer; } }
             
           } // end @if mixin-exists($breakpoint)
           
@@ -94,17 +107,17 @@
             
             @if( $max-width != false and $min-width != false ) {
               @media (max-width: $max-width) and (min-width: $min-width) {
-                #{$element} { font-size: $max * $ratio * $scale; }
+                #{$element} { font-size: $max * $ratio * $resizer; }
               }
             } // end @if $max-width and $min-width
             @else if( $max-width != false ) {
               @media (max-width: $max-width) {
-                #{$element} { font-size: $max * $ratio * $scale; }
+                #{$element} { font-size: $max * $ratio * $resizer; }
               }
             } // end @if $max-width
             @else if( $min-width != false ) {
               @media (min-width: $min-width) {
-                #{$element} { font-size: $max * $ratio * $scale; }
+                #{$element} { font-size: $max * $ratio * $resizer; }
               }
             } // end @if $min-width
 
