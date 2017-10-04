@@ -130,3 +130,12 @@
   } // end @if responsive == true
   
 }
+
+// font-face() - Adapted from Bourbon's font-face() @mixin
+@mixin font-face($family, $path, $formats: "ttf" "woff2" "woff" "eot" "svg") {
+  @font-face {
+    font-family: $family;
+    src: font-source($family, $path, $formats);
+  }
+  @content;
+}
