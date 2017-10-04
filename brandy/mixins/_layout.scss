@@ -46,3 +46,6 @@
   top: 50%;
   transform: translatey(-50%);
 }
+
+// Import John Albin's [normalize-scss](https://github.com/JohnAlbin/normalize-scss)
+@import '../vendors/normalize';
