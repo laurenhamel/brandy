@@ -23,7 +23,7 @@
   );
   
   @each $key, $source in $formats-map {
-    @if( map-has-key($formats, $key) ) {
+    @if( contains($formats, $key) ) {
       $src: append($src, $source, comma);
     }
   }

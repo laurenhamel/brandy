@@ -207,3 +207,18 @@
     @return $result;
     
 }
+
+// contains() - Looks for a value in a list
+@function contains( $list, $search ) {
+  
+  $result: false;
+  
+  @each $item in $list {
+    @if( $item == $search ) {
+      $result: true;
+    }
+  }
+  
+  @return $result;
+  
+}
