@@ -122,10 +122,7 @@
     
   }
   
-  @warn $color + ', ' + $dark + ', and ' + $light + ' do not meet the WebAIM WCAG color contrast standards.';
-  @warn 'WebAIM WCAG AAA expects a threshold of >= 7, and AA expects a threshold >= 4.';
-  @warn 'Please reconsider your color choice(s).';
-  @warn 'For more information, visit http://webaim.org/resources/contrastchecker.';
+  @warn $color + ', ' + $dark + ' (dark), and ' + $light + ' (light) do not meet the WebAIM WCAG color contrast standards. WebAIM WCAG AAA expects a threshold of >= 7, and AA expects a threshold >= 4.5. A maximum threshold of ' + $better-ratio + ' was calculated. Please reconsider your color choice(s). For more information, visit http://webaim.org/resources/contrastchecker.';
   
   @return $better-color;
         
