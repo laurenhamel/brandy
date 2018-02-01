@@ -1,3 +1,11 @@
+// border-radius() - For adding a border radius to all sides of a box
+@mixin border-radius( $radius ) {
+  border-top-right-radius: $radius;
+  border-top-left-radius: $radius;
+  border-bottom-right-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+
 // border-right-radius() - For adding a border radius to the right side of a box
 @mixin border-right-radius( $radius ){
   border-top-right-radius: $radius;
