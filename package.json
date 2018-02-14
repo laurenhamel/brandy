@@ -1,0 +1,32 @@
+{
+  "name": "brandy",
+  "version": "1.0.0",
+  "description": "A compiled Sass library of helper mixins, functions, and variables",
+  "main": "",
+  "scripts": {
+    "sassdoc": "sassdoc scss/ -d doc/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laurenhamel/brandy.git"
+  },
+  "keywords": [
+    "sass",
+    "sass-mixins",
+    "sass-functions",
+    "sass-library",
+    "mixins",
+    "functions",
+    "scss",
+    "css"
+  ],
+  "author": "Lauren Hamel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/laurenhamel/brandy/issues"
+  },
+  "homepage": "https://github.com/laurenhamel/brandy#readme",
+  "devDependencies": {
+    "sassdoc": "^2.5.0"
+  }
+}
