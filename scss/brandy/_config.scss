@@ -74,120 +74,81 @@ $brandy-fonts-map: (
   'cursive': cursive
 ) !default;
 
-/**
- * $brandy-screens-map
- *
- * Sets the default map to be used for the screen() @function. This value
- * can be set equal to a map or a variable which references a map. The sample
- * syntax for an appropriate screen map is given below:
- *
- * $screens: (
- *  '<screen-name>': <screen-setting>,
- *  ...
- *);
- *
- * In the example above, <screen-name> and <screen-setting> are **required**.
- * If using [Breakpoint](breakpoint-sass.com), <screen-setting> should be
- * used for the Breakpoint configuration, and <screen-name> should be a memorable
- * name that can be used with the screen() @function. Usage would then look like:
- *
- * @include breakpoint( screen(<screen-name>) ){ ... }
- */
+/// Sets the default map to be used for the `screen()` function. This value
+/// can be set equal to a map or a variable which references a map. The sample
+/// syntax for an appropriate screen map is given below:
+/// 
+/// @example scss - Sample `$brandy-screens-map`
+///   $screens: (
+///     'mobile': max-width 400px,
+///     'tablet': 401px 800px,
+///     'desktop':  min-width 801px
+///   );
 $brandy-screens-map: (
-  'mobile': max-width 400,
-  'tablet': max-width 800,
-  'desktop': min-width 801
+  'mobile': max-width 400px,
+  'tablet': 400px 800px,
+  'desktop': min-width 801px
 ) !default;
 
-/**
- * $brandy-scale-map
- *
- * Sets the default map to be used for the scale-font() @function. This value
- * can be set equal to a map or a variable which references a map. The sample
- * syntax for an appropriate scale map is given below:
- *
- * $scale: (
- *  '<screen-name>': <screen-scale>,
- *  ...
- *);
- *
- * In the example above, <screen-name> and <screen-setting> are **required**.
- * There should be one <screen-name> key with its corresponding <screen-scale>
- * value to represent each key-value pair in the $brandy-screens-map above.
- */
+/// Sets the default map to be used for the `scale-font()` function. This value
+/// can be set equal to a map or a variable which references a map. Each key
+/// in the map should also correspond to a key in the `$brandy-screens-map`.
+/// The sample syntax for an appropriate scale map is given below:
+///
+/// @example scss - Sample `$brandy-scale-map`
+///   $scale: (
+///     'mobile': 1,
+///     'table': 1,
+///     'desktop': 1
+///   );
 $brandy-scale-map: (
   'mobile': 1,
   'tablet': 1,
   'desktop': 1
 ) !default;
 
-/**
- * $brandy-scale-responsive
- *
- * Signals to the scale-font() @function whether or not font scaling should also
- * be responsive. If set to TRUE, fonts will be scaled according to the values in
- * the $font-scale-map variable above for each screen breakpoint in the
- * $brandy-screens-map. If set to FALSE, no scaling will occur.
- */
+/// Signals to the `scale-font()` function whether or not font scaling should also
+/// be responsive. If set to *true*, fonts will be scaled according to the values in
+/// the `$font-scale-map` variable above for each screen breakpoint in the
+/// $brandy-screens-map. If set to *false*, no scaling will occur.
+///
 $brandy-scale-responsive: true !default;
 
-/**
- * $brandy-scale-increasing
- *
- * Signals to the scale-font() @function to proportionately increase or
- * decrease the font size for the given elements. If set to TRUE, font size
- * will increase from the first element in the list through the last 
- * element. If set to FALSE, the reverse effect will occur.
- */
+/// Signals to the `scale-font()` function to proportionately increase or
+/// decrease the font size for the given elements. If set to *true*, font size
+/// will increase from the first element in the list through the last 
+/// element. If set to *false*, the reverse effect will occur.
+///
 $brandy-scale-increasing: false !default;
 
-/** 
- * $brandy-scale-max
- * $brandy-scale-min
- *
- * Sets the maximum and minimum font size for the scale-font() @function.
- * The maximum font size is applied to the first element in the element list
- * and the minimum font size is applied to the last element if 
- * $brandy-scale-increasing above is set to TRUE. If the above variable is
- * set to FALSE, the reverse effect will occur. If no maximum value is given,
- * then the minimum value will also be used as the maximum. The minimum value
- * is always **required**.
- */
+/// Sets the maximum and minimum font size for the `scale-font()` function.
+/// The maximum font size is applied to the first element in the element list
+/// and the minimum font size is applied to the last element if 
+/// `$brandy-scale-increasing` above is set to *true*. If the above variable is
+/// set to *false*, the reverse effect will occur. If no maximum value is given,
+/// then the minimum value will also be used as the maximum. The minimum value
+/// is always **required**.
+/// 
 $brandy-scale-max: 1em !default;
 $brandy-scale-min: 1em !default;
 
-/**
- * $brandy-config-map
- *
- * Sets the default map to be used for the config() @function. This value
- * can be set equal to a map or a variable which references a map. The sample
- * syntax for an appropriate config map is given below:
- *
- * $config: (
- *  '<config-name>': <config-setting>,
- *  ...
- *);
- *
- * In the example above, <config-name> and <config-settings> are **required**.
- * This config map can be nested as deep as desired. When using deeply nested
- * config maps, the <config-name> should be followed by any subsequent map key
- * names until the desired depth is reached, where the <config-name> and all map
- * keys are their own strings separated by spaces.
- */
+/// Sets the default map to be used for the `config()` function. This value
+/// can be set equal to a map or a variable which references a map and can
+/// be nested as deep as desired. The sample
+/// syntax for an appropriate config map is given below:
+/// 
+/// @example scss - Sample `$brandy-config-map`
+///   $config: (
+///     '<config-name>': <config-setting>,
+///   );
+/// 
+/// When using deeply nested configuration set, pass the full list of keys
+/// to the `config()` function as space-separated strings.
 $brandy-config-map: () !default;
 
-/**
- * $brandy-grid-columns
- * $brandy-grid-rows
- * $brandy-grid-gutter
- * $brandy-grid-name
- * $brandy-grid-items
- * $brandy-grid-units
- *
- * Defines the default grid layout used by Brandy for the grid() @mixin. This 
- * grid layout can be overridden at the global level by resetting these 
- * variables, or instance-specific variables can be fed into the grid() @function.
- */
+/// Defines the default grid layout used by Brandy for the `grid()`. This 
+/// grid layout can be overridden at the global level by resetting these 
+/// variables, or instance-specific variables can be fed into the `grid()` function.
 $brandy-grid-columns: 12 !default;
 $brandy-grid-rows: 100 !default;
 $brandy-grid-gutter: 25 !default;
