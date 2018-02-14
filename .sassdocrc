@@ -11,10 +11,10 @@
       },
       "groups": {
         "brandy": "Brandy",
-        "brandy-config": "configurations",
-        "brandy-vars": "variables",
-        "brandy-mixins": "mixins",
-        "brandy-funcs": "functions"
+        "brandy-config": "Configurations",
+        "brandy-vars": "Variables",
+        "brandy-mixins": "Mixins",
+        "brandy-funcs": "Functions"
       }
     }
   }

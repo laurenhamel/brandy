@@ -2,56 +2,43 @@
 /// @group brandy-config
 ////
 
-/**
- * $brandy-dark-text
- * $brandy-light-text
- *
- * Sets the dark and light color values for the color-contrast() @function.
- * The dark color will be returned when contrasting against light backgrounds,
- * and the light color will be returned when contrasting against dark
- * backgrounds. Note, the color() @function will attempt to contrast
- * foreground and background colors according to WebAIM accessibility standards.
- */
+/// Sets the dark and light color values for the `color-contrast()` function.
+/// The dark color will be returned when contrasting against light backgrounds,
+/// and the light color will be returned when contrasting against dark
+/// backgrounds. Note, the `color-contrast()` function will attempt to contrast
+/// foreground and background colors according to WebAIM accessibility standards.
 $brandy-dark-text:      rgb(51, 51, 51) !default;
 $brandy-light-text:     rgb(255, 255, 255) !default;
 
-/**
- * $brandy-bg-contrast
- *
- * Set the color-contrast() @function to use the given background color
- * to generate dark and light color values. Setting this to TRUE tells
- * the color-contrast() @function to ignore the above values. Setting
- * this to FALSE will tell the color-contrast() @function to use the above
- * variables instead. Note, the light and dark colors generated will be a
- * shade and tint of the input background color, respectively.
- */
+
+/// Set the `color-contrast()` function to use the given background color
+/// to generate dark and light color values. Setting this to TRUE tells
+/// the `color-contrast()` function to ignore the above values. Setting
+/// this to *false* will tell the `color-contrast()` function to use the above
+/// variables instead. Note, the light and dark colors generated will be a
+/// shade and tint of the input background color, respectively.
 $brandy-bg-contrast: false !default;
 
-/**
- * $brandy-colors-map
- *
- * Sets the default map to be used for the color() @function. This value
- * can be set equal to a map or a variable which references a map. The sample
- * syntax for an appropriate color map is given below:
- *
- * $colors: (
- *  '<color-name>': (
- *    base: <color-value>,
- *    <tone>: <color-variant>,
- *    <tone-map>: (
- *      '<tone-amont>': <tone-variant>,
- *      ...
- *    ),
- *    ...
- *  ),
- *  ...
- *);
- *
- * In the example above, <color-name> and base: <color-value> are
- * **required**. Additional tones can be added using the <tone>:
- * <color-variant> format, or a tone map can be added using the
- * <tone-map> syntax.
- */
+
+/// Sets the default map to be used for the `color()` function. This value
+/// can be set equal to a map or a variable which references a map. This
+/// map can have up to three levels of depth, where first-level keys represent
+/// color names, second-level keys represent color tones, and optionally, 
+/// third-level keys identify tonal amounts. The sample syntax for an 
+/// appropriate color map is given below:
+///
+/// @example scss - Sample `$brandy-colors-map`
+///   $colors: (
+///     'white': (
+///       'base': white,
+///       'off': whitesmoke
+///       'opaque': ( 
+///         25: rgba(white, .25),
+///         50: rgba(white, .50),
+///         75: rgba(white, .75)
+///       )
+///     )
+///   );
 $brandy-colors-map: (
   'black': (
     base: rgb(0, 0, 0)
@@ -67,30 +54,19 @@ $brandy-colors-map: (
   )
 ) !default;
 
-/**
- * $brandy-fonts-map
- *
- * Sets the default map to be used for the font() @function. This value
- * can be set equal to a map or a variable which references a map. The sample
- * syntax for an appropriate font map is given below:
- *
- * $fonts: (
- *  '<font-name-major>': <font-family>,
- *  '<font-name-major>': (
- *    '<font-name-minor>': <font-family>,
- *    ...
- *  ),
- *  ...
- *);
- *
- * In the example above, <font-name-major> is the base font name.
- * Both <font-name-major> and <font-family> are **required**. Additionally,
- * <font-name-minor> gives an example of how nested maps are handled
- * within the font map. The font map can be nested as deep as desired.
- * Deeply nested font maps are referenced by <font-name-major> followed by
- * all subsequent <font-name-minor> values, where each major and minor value
- * should be its own string separated by a space.
- */
+/// Sets the default map to be used for the `font()` function. This value
+/// can be set equal to a map or a variable which references a map and 
+/// may contain up to two levels of depth. The sample
+/// syntax for an appropriate font map is given below:
+/// 
+/// @example scss - Sample `$brandy-fonts-map`
+///   $fonts: (
+///     'heading': (Impact, sans-serif),
+///     'body': (
+///       'text': (Arial, sans-serif),
+///       'lead': (Georgia, serif)
+///     )
+///   );
 $brandy-fonts-map: (
   'sans-serif': sans-serif,
   'serif': serif,
