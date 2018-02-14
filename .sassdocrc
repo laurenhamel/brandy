@@ -1,5 +1,21 @@
 {
-  "groups": {
-    "brandy": "Brandy"
+  "default": {
+    "src": [ 
+      "scss/"
+    ],
+    "options": {
+      "dest": "docs/",
+      "display": {
+        "access": ["public"],
+        "watermark": false
+      },
+      "groups": {
+        "brandy": "Brandy",
+        "brandy-config": "configurations",
+        "brandy-vars": "variables",
+        "brandy-mixins": "mixins",
+        "brandy-funcs": "functions"
+      }
+    }
   }
 }
