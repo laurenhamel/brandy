@@ -45,8 +45,3 @@
   @return $max-width, $min-width;
   
 }
-
-// screen() - Retrieves a screen breakpoint from a screen map.
-@function screen( $screen, $map: $brandy-screens-map ){
-  @return map-deep-get($map, $screen);
-}

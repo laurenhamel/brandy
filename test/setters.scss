@@ -1,0 +1,9 @@
+@import '../scss/brandy';
+
+@include font('test', (Arial, sans-serif));
+@include color('test', ('base': blue));
+
+body {
+  font-family: font('test');
+  color: color('test');
+}

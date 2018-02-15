@@ -2,33 +2,43 @@
 /// @group brandy-config
 ////
 
-/// Sets the dark and light color values for the `color-contrast()` function.
-/// The dark color will be returned when contrasting against light backgrounds,
-/// and the light color will be returned when contrasting against dark
+/// Sets the dark color value for the `color-contrast()` function.
+/// The dark color will be returned when contrasting against light backgrounds.
+/// Note, the `color-contrast()` function will attempt to contrast foreground 
+/// and background colors according to WebAIM accessibility standards.
+///
+/// @type Color
+$brandy-dark-text: rgb(51, 51, 51) !default;
+
+/// Sets the light color value for the `color-contrast()` function.
+/// The light color will be returned when contrasting against dark
 /// backgrounds. Note, the `color-contrast()` function will attempt to contrast
 /// foreground and background colors according to WebAIM accessibility standards.
-$brandy-dark-text:      rgb(51, 51, 51) !default;
-$brandy-light-text:     rgb(255, 255, 255) !default;
+///
+/// @type Color
+$brandy-light-text: rgb(255, 255, 255) !default;
 
 
 /// Set the `color-contrast()` function to use the given background color
-/// to generate dark and light color values. Setting this to TRUE tells
-/// the `color-contrast()` function to ignore the above values. Setting
-/// this to *false* will tell the `color-contrast()` function to use the above
-/// variables instead. Note, the light and dark colors generated will be a
-/// shade and tint of the input background color, respectively.
+/// to generate dark and light color values. Setting this to *true* tells
+/// the `color-contrast()` function to ignore the values set for
+/// `$brandy-dark-text` and `$brandy-light-text`. Setting  this to *false* 
+/// will tell the `color-contrast()` function to use those values instead.
+/// Note, the light and dark colors generated will be a shade or tint of the 
+/// input background color, respectively.
+///
+/// @type Boolean
 $brandy-bg-contrast: false !default;
 
 
 /// Sets the default map to be used for the `color()` function. This value
 /// can be set equal to a map or a variable which references a map. This
-/// map can have up to three levels of depth, where first-level keys represent
-/// color names, second-level keys represent color tones, and optionally, 
-/// third-level keys identify tonal amounts. The sample syntax for an 
-/// appropriate color map is given below:
+/// map can have up to three levels of depth, where first-level properties 
+/// should be color names, second-level properties should be color tones, 
+/// and optionally, third-level keys should be tonal amounts.
 ///
-/// @example scss - Sample `$brandy-colors-map`
-///   $colors: (
+/// @example scss - Sample definition
+///   $brandy-colors-map (
 ///     'white': (
 ///       'base': white,
 ///       'off': whitesmoke
@@ -39,34 +49,47 @@ $brandy-bg-contrast: false !default;
 ///       )
 ///     )
 ///   );
+///
+/// @type Map
+/// @prop {String} <colorId> - A preferred identifier for the given color
+/// @prop {Color} <colorId>.base - The default color tone
+/// @prop {Color | Map} <colorId>.<toneId> - Additional color tones
+/// @prop {Color} <colorId>.<toneId>.<toneAmount> - A tonal amount, usually representative of a percentage
 $brandy-colors-map: (
   'black': (
-    base: rgb(0, 0, 0)
+    'base': #000000
   ),
   'white': (
-    base: rgb(255, 255, 255)
+    'base': #FFFFFF
   ),
   'grey': (
-    dark: rgb(51, 51, 51)
+    'base': #CCCCCC,
+    'dark': #333333,
+    'light': #EFEFEF
   ),
   'gray': (
-    dark: rgb(51, 51, 51)
+    'base': #CCCCCC,
+    'dark': #333333,
+    'light': #EFEFEF
   )
 ) !default;
 
 /// Sets the default map to be used for the `font()` function. This value
 /// can be set equal to a map or a variable which references a map and 
-/// may contain up to two levels of depth. The sample
-/// syntax for an appropriate font map is given below:
+/// may contain up to two levels of depth.
 /// 
-/// @example scss - Sample `$brandy-fonts-map`
-///   $fonts: (
+/// @example scss - Sample definition
+///   $brandy-fonts-map: (
 ///     'heading': (Impact, sans-serif),
 ///     'body': (
 ///       'text': (Arial, sans-serif),
 ///       'lead': (Georgia, serif)
 ///     )
 ///   );
+///
+/// @type Map
+/// @prop {Font | List | Map} <fontId> - A preferred identifier for the given font or font family
+/// @prop {Font | List} <fontId>.<fontClass> - A sub-class of a given font or font family
 $brandy-fonts-map: (
   'sans-serif': sans-serif,
   'serif': serif,
@@ -75,15 +98,17 @@ $brandy-fonts-map: (
 ) !default;
 
 /// Sets the default map to be used for the `screen()` function. This value
-/// can be set equal to a map or a variable which references a map. The sample
-/// syntax for an appropriate screen map is given below:
+/// can be set equal to a map or a variable which references a map.
 /// 
-/// @example scss - Sample `$brandy-screens-map`
-///   $screens: (
+/// @example scss - Sample definition
+///   $brandy-screens-map: (
 ///     'mobile': max-width 400px,
 ///     'tablet': 401px 800px,
 ///     'desktop':  min-width 801px
 ///   );
+///
+/// @type Map
+/// @prop {Number} <screenId> - A breakpoint associated with the corresponding screen identifier
 $brandy-screens-map: (
   'mobile': max-width 400px,
   'tablet': 400px 800px,
@@ -91,16 +116,18 @@ $brandy-screens-map: (
 ) !default;
 
 /// Sets the default map to be used for the `scale-font()` function. This value
-/// can be set equal to a map or a variable which references a map. Each key
-/// in the map should also correspond to a key in the `$brandy-screens-map`.
-/// The sample syntax for an appropriate scale map is given below:
+/// can be set equal to a map or a variable which references a map. Each property
+/// name in the map should also correspond to a key in the `$brandy-screens-map`.
 ///
-/// @example scss - Sample `$brandy-scale-map`
-///   $scale: (
+/// @example scss - Sample definition
+///   $brandy-scale-map: (
 ///     'mobile': 1,
 ///     'table': 1,
 ///     'desktop': 1
 ///   );
+///
+/// @type Map
+/// @prop {Number} <screenId> - A font scale associated with the corresponding screen identifier
 $brandy-scale-map: (
   'mobile': 1,
   'tablet': 1,
@@ -112,6 +139,7 @@ $brandy-scale-map: (
 /// the `$font-scale-map` variable above for each screen breakpoint in the
 /// $brandy-screens-map. If set to *false*, no scaling will occur.
 ///
+/// @type Boolean
 $brandy-scale-responsive: true !default;
 
 /// Signals to the `scale-font()` function to proportionately increase or
@@ -119,39 +147,106 @@ $brandy-scale-responsive: true !default;
 /// will increase from the first element in the list through the last 
 /// element. If set to *false*, the reverse effect will occur.
 ///
+/// @type Boolean
 $brandy-scale-increasing: false !default;
 
-/// Sets the maximum and minimum font size for the `scale-font()` function.
-/// The maximum font size is applied to the first element in the element list
-/// and the minimum font size is applied to the last element if 
+/// Sets the maximum font size for the `scale-font()` function. The maximum font 
+/// size is applied to the first element in the element list if 
 /// `$brandy-scale-increasing` above is set to *true*. If the above variable is
-/// set to *false*, the reverse effect will occur. If no maximum value is given,
-/// then the minimum value will also be used as the maximum. The minimum value
-/// is always **required**.
+/// set to *false*, the reverse effect will occur. If no maximum value is given
+/// for `$brandy-scale-min`, then the minimum value will also be used as the maximum. 
+/// This maximum value is optional.
 /// 
+/// @type Number
 $brandy-scale-max: 1em !default;
+
+/// Sets the minimum font size for the `scale-font()` function. The minimum font 
+/// size is applied to the last element if `$brandy-scale-increasing` is set to
+/// *true*. If the it's set to *false*, the reverse effect will occur. If no maximum 
+/// value is given for `$brandy-scale-max`, then the minimum value will also be used 
+/// as the maximum. This minimum value is always **required**.
+/// 
+/// @type Number
 $brandy-scale-min: 1em !default;
 
 /// Sets the default map to be used for the `config()` function. This value
 /// can be set equal to a map or a variable which references a map and can
-/// be nested as deep as desired. The sample
-/// syntax for an appropriate config map is given below:
+/// be nested as deep as desired.
 /// 
-/// @example scss - Sample `$brandy-config-map`
-///   $config: (
-///     '<config-name>': <config-setting>,
+/// @example scss - Sample definition
+///   $brandy-config-map: (
+///     'page-width': 900px,
 ///   );
-/// 
-/// When using deeply nested configuration set, pass the full list of keys
-/// to the `config()` function as space-separated strings.
+///
+/// @type Map
+/// @prop {Mixed} <configId> - Some global configuration
 $brandy-config-map: () !default;
 
-/// Defines the default grid layout used by Brandy for the `grid()`. This 
-/// grid layout can be overridden at the global level by resetting these 
-/// variables, or instance-specific variables can be fed into the `grid()` function.
+/// Sets the default map to be used for the `const()` function. This value
+/// can be set equal to a map or a variable which references a map and can
+/// be nested as deep as desired.
+/// 
+/// @example scss - Sample definition
+///   $brandy-const-map: (
+///     'PI': 3.14159265358979323846264338327950288,
+///   );
+///
+/// @type Map
+/// @prop {Mixed} <constId> - Some global constant or set of constants
+$brandy-const-map: (
+  'PI': 3.1415926535897932384626433832795028841971693993751,
+  'E': 2.71828182845904523536028747135266249775724709369995,
+  'Z-INDEX': (
+    'MIN': −2147483648,
+    'MAX': 2147483648
+  )
+) !default;
+
+/// Defines the number of columns to be used by default for the grid layout 
+/// generated using the `grid()` function. This configuration will override 
+/// the `grid()` function at a global level. For instance-specific overrides, 
+/// consider feeding a column option into the `grid()` function during use instead.
+/// 
+/// @type Number
 $brandy-grid-columns: 12 !default;
+
+/// Defines the number of rows to be used by default for the grid layout 
+/// generated using the `grid()` function. This configuration will override 
+/// the `grid()` function at a global level. For instance-specific overrides, 
+/// consider feeding a row option into the `grid()` function during use instead.
+/// 
+/// @type Number
 $brandy-grid-rows: 100 !default;
+
+/// Defines the size of gutters to be used by default for the grid layout 
+/// generated using the `grid()` function. This configuration will override 
+/// the `grid()` function at a global level. For instance-specific overrides, 
+/// consider feeding a gutter option into the `grid()` function during use instead.
+/// 
+/// @type Number
 $brandy-grid-gutter: 25 !default;
+
+/// Defines the grid class name to be used by default for the grid layout 
+/// generated using the `grid()` function. This configuration will override 
+/// the `grid()` function at a global level. For instance-specific overrides, 
+/// consider feeding a class name into the `grid()` function during use instead.
+/// 
+/// @type String
 $brandy-grid-name: 'grid' !default;
+
+/// Defines the grid item class name to be used by default for the grid layout 
+/// generated using the `grid()` function. This configuration will override 
+/// the `grid()` function at a global level. For instance-specific overrides, 
+/// consider feeding a class name into the `grid()` function during use instead.
+/// 
+/// @type String
 $brandy-grid-items: 'griditem' !default;
+
+/// Defines the unit expressions supported by default for the grid layout 
+/// generated using the `grid()` function. This should be a list of strings
+/// representing numerical units. This configuration will override 
+/// the `grid()` function at a global level. For instance-specific overrides, 
+/// consider feeding a list of units into the `grid()` function during use instead.
+/// 
+/// @type List
 $brandy-grid-units: 'px' 'em' 'pct' !default;

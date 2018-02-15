@@ -1,0 +1,82 @@
+////
+/// @group brandy-utils
+////
+
+/// Gets a value from the `$brandy-config-map`
+///
+/// @type Function
+/// @requires {Function} str-split()
+/// @requires {Function} map-deep-get()
+/// @requires {Variable} $brandy-config-map
+/// @param {String} $property - A property from the configuration set given in dot notation
+/// @return {Mixed}
+@function config( $property ) {
+  
+  @return map-deep-get($brandy-config-map, str-split($property, '.'));
+  
+}
+
+/// Gets a value from the `$brandy-const-map`
+///
+/// @type Function
+/// @requires {Function} str-split()
+/// @requires {Function} map-deep-get()
+/// @requires {Variable} $brandy-const-map
+/// @param {String} $property - A property from the constants map given in dot notation
+/// @return {Mixed}
+@function const( $property ) {
+  
+  @return map-deep-get($brandy-const-map, str-split($property, '.'));
+  
+}
+
+/// Gets a value from the `$brandy-colors-map`
+///
+/// @type Function
+/// @requires {Function} str-split()
+/// @requires {Function} map-deep-get()
+/// @requires {Function} cast-string()
+/// @requires {Variable} $brandy-colors-map
+/// @param {String} $property - A property from the colors map given in dot notation
+/// @param {String} $tone ['base'] - A preferred color tone
+/// @param {String} $amount [null] - A tonal amount, usually representing a percent
+/// @return {Mixed}
+@function color( $property, $tone: 'base', $amount: null ) {
+  
+  @if( $amount == null ) {
+    
+    @return map-deep-get($brandy-colors-map, $property $tone);
+    
+  }
+  
+  @return map-deep-get($brandy-colors-map, $property $tone cast-string($amount));
+  
+}
+
+/// Gets a value from the `$brandy-fonts-map`
+///
+/// @type Function
+/// @requires {Function} str-split()
+/// @requires {Function} map-deep-get()
+/// @requires {Variable} $brandy-fonts-map
+/// @param {String} $property - A property from the fonts map given in dot notation
+/// @return {Mixed}
+@function font( $property ) {
+  
+  @return map-deep-get($brandy-fonts-map, str-split($property, '.'));
+  
+}
+
+/// Gets a value from the `$brandy-screens-map`
+///
+/// @type Function
+/// @requires {Function} str-split()
+/// @requires {Function} map-deep-get()
+/// @requires {Variable} $brandy-screens-map
+/// @param {String} $property - A property from the screens map given in dot notation
+/// @return {Mixed}
+@function screen( $property ) {
+  
+  @return map-deep-get($brandy-screens-map, str-split($property, '.'));
+  
+}

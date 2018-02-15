@@ -1,0 +1,29 @@
+@function cast-string( $value ) { @return unquote(str-trim(inspect($value), '"' "'" ' ')); }
+@function cast-bool( $value ) { @return not ($value or $value == "" or $value == 0 or $value == ()); }
+@function cast-list( $values... ) { @return append((), $values); }
+@function cast-map( $pairs... ) { 
+  
+  $map: ();
+  
+  @each $pair in $pairs {
+    
+    @if( type-of($pair) == 'map' ) {
+      
+      $map: map-merge($map, $pair);
+      
+    }
+    
+    @else {
+      
+      $key: nth(str-split($pair, '='), 1);
+      $value: nth(str-split($pair, '='), 2);
+      
+      $map: map-set($key, $value);
+      
+    }
+    
+  }
+  
+  @return $map;
+
+}

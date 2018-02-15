@@ -1,28 +1,34 @@
 // Adapted from Hugo Giraudel's map-deep-get() 
 @function map-deep-get( $map, $keys ){
+
+  @each $key in $keys {
+        
+    $map: map-get( $map, $key );
     
-    @each $key in $keys {
-        $map: map-get( $map, $key );
-    }
+  }
     
-    @return $map;
+  @return $map;
+  
 }
 
 // Adapted from Hugo Giraudel's map-deep-set()
 @function map-deep-set( $map, $keys, $value ){
+  
+  @if( length($keys) == 1) {
+      
+    @return map-merge($map, (cast-string($keys): $value));
+    
+  }
+  
+  $map-list: ($map, );
+    
+  @for $i from 1 through length($keys){ 
+      
+    $map-list: append($map-list, map-get(nth($map-list,-1), nth($keys,$i)));
+    
+  }
 
-    
-    @if( length($keys) == 1) {
-        @return map-merge($map, ($keys: $value));
-    }
-    
-    $map-list: ($map, );
-    
-    @for $i from 1 through length($keys){
-        $map-list: append($map-list, map-get(nth($map-list,-1), nth($keys,$i)));
-    }
-
-    @return map-merge(nth($map-list, length($map-list) - 1), (last($keys): $value));
+  @return map-merge(nth($map-list, length($map-list) - 1), (cast-string(last($keys)): $value));
     
 }
 
@@ -44,27 +50,36 @@
 // Adapted from Hugo Giraudel's map-has-keys()
 @function map-has-keys( $map, $keys... ){
     
-    @each $key in $keys {
-        @if( not map-has-key($map, $key) ){
-            @return false;
-        }
+  @each $key in $keys {
+      
+    @if( not map-has-key($map, $key) ){
+            
+      @return false;
+        
     }
     
-    @return true;
+  }
+    
+  @return true;
     
 }
 
 // Adapted from Hugo Giraudel's map-has-nested-keys()
 @function map-has-nested-keys( $map, $keys... ){
     
-    @each $key in $keys {
-        @if( not map-has-key($map, $key) ){
-            @return false;
-        }
-        $map: map-get($map, $key);
+  @each $key in $keys {
+        
+    @if( not map-has-key($map, $key) ){
+            
+      @return false;
+       
     }
+       
+    $map: map-get($map, $key);
     
-    @return true;
+  }
+    
+  @return true;
     
 }
 

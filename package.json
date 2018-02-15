@@ -4,7 +4,9 @@
   "description": "A compiled Sass library of helper mixins, functions, and variables",
   "main": "",
   "scripts": {
-    "sassdoc": "sassdoc scss/ -d docs/"
+    "docs": "sassdoc scss/",
+    "test:reset": "rm -rf test/*.css; rm -rf test/*.css.map",
+    "test": "sass -w test/"
   },
   "repository": {
     "type": "git",

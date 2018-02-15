@@ -150,7 +150,7 @@
 }
 
 // Adapted from Hugo Giraudel's to-string()
-@function to-string( $list, $glue: '', $is-nested: false ){
+@function list-join( $list, $glue: '', $is-nested: false ){
     
     $result: null;
     
@@ -172,27 +172,6 @@
     
     @return $result;
     
-}
-
-// Adapted from Justin Navarro's explode()
-@function to-list( $string, $delimiter: ',' ){
-    
-    $list: ();
-    $sum: str-length( $string );
-    
-    @for $i from 1 through $sum {
-        
-        $str: str-index( $string, $delimiter );
-        
-        @if type-of($str) == number {
-            $each: str-slice( $string, 0, ($str - 1) );
-            $list: append( $list, $each );
-            $string: str-slice( $string, ($str + 1), $sum);
-        }
-        
-    }
-    
-    @return $list;
 }
 
 // Adapted from Ana Tudor's loop()

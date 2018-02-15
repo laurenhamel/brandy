@@ -168,15 +168,3 @@
 @function shade( $color, $percent ){
     @return mix(black, $color, $percent);
 }
-
-// color() - Retrieves a color by name, tone, and/or value from a color map.
-@function color($name, $tone: base, $amount: null, $map: $brandy-colors-map) {
-
-  @if($tone == base or $amount == null){
-    @return map-deep-get($map, $name $tone)
-  }
-  @else {
-    @return map-deep-get($map, $name $tone ''+$amount);
-  }
-
-}

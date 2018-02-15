@@ -1,21 +1,16 @@
 {
-  "default": {
-    "src": [ 
-      "scss/"
-    ],
-    "options": {
-      "dest": "docs/",
-      "display": {
-        "access": ["public"],
-        "watermark": false
-      },
-      "groups": {
-        "brandy": "Brandy",
-        "brandy-config": "Configurations",
-        "brandy-vars": "Variables",
-        "brandy-mixins": "Mixins",
-        "brandy-funcs": "Functions"
-      }
-    }
+  "dest": "docs/",
+  "display": {
+    "access": ["public"],
+    "watermark": false
+  },
+  "groups": {
+    "brandy": "Brandy",
+    "brandy-config": "Configurations",
+    "brandy-vars": "Variables",
+    "brandy-mixins": "Mixins",
+    "brandy-funcs": "Functions",
+    "brandy-utils": "Utilities",
+    "brandy-help": "Helpers"
   }
 }

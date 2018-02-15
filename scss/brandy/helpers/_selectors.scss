@@ -1,0 +1,14 @@
+// selector() - To expand a list of selectors with an optional modifier added.
+@function selector($selectors, $modifier: ''){
+
+  $result: ();
+
+  @if(type-of($modifier) != 'string'){ $modifier: ''; };
+
+  @each $selector in $selectors {
+    $result: append($result, unquote($selector + $modifier), 'comma');
+  }
+
+  @return $result;
+
+}
