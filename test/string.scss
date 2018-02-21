@@ -47,3 +47,59 @@
   ('you are looking', 'this'): false,
   ('for in this', 'this'): true
 ));
+
+@include test('str-reverse', (
+  'testing': 'gnitset',
+  'racecar': 'racecar'
+));
+
+@include test('str-is-palindrome', (
+  'testing': false,
+  'racecar': true
+));
+
+@include test('str-is-letter', (
+  'testing': true,
+  'a': true,
+  '2px': false,
+  '2': false
+));
+
+@include test('str-is-unit', (
+  '1px': false,
+  'px': true,
+  'pixel': false
+));
+
+@include test('char-at', (
+  ('lymph node', 2): 'y',
+  ('doppleganger', 7): 'g',
+));
+
+@include test('char-first', (
+  'lymph node': 'l',
+  'doppleganger': 'd',
+));
+
+@include test('char-last', (
+  'lymph node': 'e',
+  'doppleganger': 'r',
+));
+
+@include test('chars-between', (
+  ('lymph node', 'y', 'e'): 8,
+  ('doppleganger', 'p', 'p'): 1,
+  ('testing', 'i', 'z'): 0,
+  ('dagger', 'g' 2, 'r'): 2,
+  ('litter', 'l', 't' 2): 3,
+  ('foo', 'f', 'o' 2, false): 1
+));
+
+@include test('str-between', (
+  ('lymph node', 'y', 'e'): 'ymph node',
+  ('doppleganger', 'p', 'p'): 'pp',
+  ('testing', 'i', 'z'): '',
+  ('dagger', 'g' 2, 'r'): 'ger',
+  ('litter', 'l', 't' 2): 'litt',
+  ('foo', 'f', 'o' 2, false): 'o'
+));

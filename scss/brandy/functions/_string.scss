@@ -169,15 +169,18 @@
 
 /// Reverses a string
 ///
+/// @requires {function} char-at
 /// @param {string} $string - Some string
 /// @returns {string}
 @function str-reverse( $string ) {
   
   $result: '';
   
-  @for $i from str-length($string) * -1 through -1 {
+  @for $i from (str-length($string) * -1) through -1 {
     
-    $result: $result + str-slice($string, abs($i), 1);
+    $character: char-at($string, abs($i));
+    
+    $result: $result + $character;
     
   }
   
@@ -198,19 +201,19 @@
 /// Determines if a string is a letter
 ///
 /// @requires {function} contains
+/// @requires {function} char-at
+/// @requires {variable} $brandy-letters
 /// @param {string} $string - Some string
 /// @returns {boolean}
 @function str-is-letter( $string ) {
   
-  $letters: 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z';
+  $insensitive: to-lower-case($string);
   
-  $lower: to-lower-case($string);
-  
-  @for $i from 1 through str-length($lower) {
+  @for $i from 1 through str-length($insensitive) {
     
-    $letter: str-slice($lower, $i, 1);
+    $letter: char-at($insensitive, $i);
     
-    @if( not contains($letters, $letter) ) { @return false; }
+    @if( not contains(map-keys($brandy-letters), $letter) ) { @return false; }
     
   }
   
@@ -220,14 +223,13 @@
 
 /// Determines if a string is representative of some units
 ///
-/// @require {function} contains
+/// @requires {function} contains
+/// @requires {variable} $brandy-units
 /// @param {string} $unit - Some string representation of a unit
 /// @returns {boolean}
 @function str-is-unit( $unit ) {
   
-  $units: 'px' 'em' 'pct' '%' 'rem' 'cm' 'in' 'mm' 'ex' 'vh' 'vw' 'pc' 'pt' 'pica' 'vmin' 'vmax';
-  
-  @return contains($units, $unit);
+  @return contains(map-keys($brandy-units), $unit);
   
 }
 
@@ -271,3 +273,283 @@
   @return true;
   
 }
+
+/// Retrieves the substring between two characters
+///
+/// @requires {function} is-list
+/// @requires {function} is-null
+/// @requires {function} char-at
+/// @requires {function} first
+/// @requires {function} last
+/// @param {string} $string - Some string to be indexed
+/// @param {string | list} $first - The first character to look for, optionally passed as a list where second item indicates occurrence index
+/// @param {string | list} $last - The last character to look for, optionally passed as a list where second item indicates occurrence index
+/// @param {boolean} $inclusive [true] - Whether or not the `$first` and `$last` characters should be included
+/// @returns {string} - The string between `$first` and `$last` or `''` if no occurrence of `$last` follows `$first`
+@function str-between( $string, $first, $last, $inclusive: true ) {
+  
+  // Both are lists.
+  @if( is-list($first) and is-list($last) ) {
+    
+    $first-index: last($first);
+    $last-index: last($last);
+    $first: first($first);
+    $last: first($last);
+    $first-occurs: 0;
+    $first-occurrence: null;
+    $last-occurs: 0;
+    $last-occurrence: null;
+    $found-first: false;
+    $found-last: false;
+    $result: '';
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( $character == $first ) { $first-occurs: $first-occurs + 1; }
+      @if( not $was-first and $character == $last ) { $last-occurs: $last-occurs + 1; }
+      @if( $first-occurs == $first-index ) { $first-occurrence: $i; $found-first: true; $was-first: true; }
+      @if( $last-occurs == $last-index ) { $last-occurrence: $i; $found-last: true; }
+      @if( $found-first and not $found-last ) { $result: $result + $character; }
+      
+    }
+    
+    @return if( not $found-last, '', if($inclusive, $result + $last, str-slice($result, 2)) );
+    
+  }
+  
+  // Only first is list.
+  @else if( is-list($first) ) {
+    
+    $index: last($first);
+    $first: first($first);
+    $occurs: 0;
+    $occurrence: null;
+    $result: '';
+    $found-first: false;
+    $found-last: false;
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( $character == $first ) { $occurs: $occurs + 1; }
+      @if( not $was-first and $character == $last ) { $found-last: true; }
+      @if( $occurs == $index ) { $occurrence: $i; $found-first: true; $was-first: true; }
+      @if( $found-first and not $found-last ) { $result: $result + $character; }
+      
+    }
+    
+    @return if( not $found-last, '', if($inclusive, $result + $last, str-slice($result, 2)) );
+    
+  }
+  
+  // Only last is list.
+  @else if( is-list($last) ) {
+
+    $index: last($last);
+    $last: first($last);
+    $occurs: 0;
+    $occurrence: null;
+    $result: '';
+    $found-first: false;
+    $found-last: false;
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( not $found-first and $character == $first ) { $found-first: true; $was-first: true; }
+      @if( not $was-first and $character == $last ) { $occurs: $occurs + 1; }
+      @if( $occurs == $index ) { $occurrence: $i; $found-last: true; }
+      @if( $found-first and not $found-last ) { $result: $result + $character; }
+      
+    }
+    
+    @return if( not $found-last, '', if($inclusive, $result + $last, str-slice($result, 2)) );
+    
+  }
+  
+  // Neither are lists.
+  @else {
+    
+    $found-first: false;
+    $found-last: false;
+    $result: '';
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( not $found-first and $character == $first ) { $found-first: true; $was-first: true; }
+      @if( not $found-last and not $was-first and $character == $last ) { $found-last: true; }
+      @if( $found-first and not $found-last ) { $result: $result + $character; }
+      
+    }
+    
+    @return if( not $found-last, '', if($inclusive, $result + $last, str-slice($result, 2)) );
+    
+  }
+  
+}
+
+/// Extracts a character at the given index within a string
+///
+/// @param {string} $string - Some string
+/// @param {number} $index - The index at which the character should be extracted
+/// @returns {string}
+@function char-at( $string, $index ) {
+  
+  @return str-slice($string, $index, $index);
+  
+}
+
+/// Extracts the first character from a string
+///
+/// @param {string} $string - Some string
+/// @returns {string}
+@function char-first( $string ) {
+  
+  @return str-slice($string, 1, 1);
+  
+}
+
+/// Extracts the last character from a string
+///
+/// @param {string} $string - Some string
+/// @returns {string}
+@function char-last( $string ) {
+  
+  @return str-slice($string, -1, -1);
+  
+}
+
+/// Counts the number of characters between two characters within a string, optionally passing occurrence index
+///
+/// @requires {function} is-list
+/// @requires {function} is-null
+/// @requires {function} char-at
+/// @requires {function} first
+/// @requires {function} last
+/// @param {string} $string - Some string to be indexed
+/// @param {string | list} $first - The first character to look for, optionally passed as a list where second item indicates occurrence index
+/// @param {string | list} $last - The last character to look for, optionally passed as a list where second item indicates occurrence index
+/// @param {boolean} $inclusive [true] - Whether or not the `$last` character should be counted
+/// @returns {number} - The number of characters between `$first` and `$last` or `0` if no occurrence of `$last` follows `$first`
+@function chars-between( $string, $first, $last, $inclusive: true ) {
+  
+  // Both are lists.
+  @if( is-list($first) and is-list($last) ) {
+    
+    $first-index: last($first);
+    $last-index: last($last);
+    $first: first($first);
+    $last: first($last);
+    $first-occurs: 0;
+    $first-occurrence: null;
+    $last-occurs: 0;
+    $last-occurrence: null;
+    $between: 0;
+    $found-first: false;
+    $found-last: false;
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( $character == $first ) { $first-occurs: $first-occurs + 1; }
+      @if( not $was-first and $character == $last ) { $last-occurs: $last-occurs + 1; }
+      @if( $first-occurs == $first-index ) { $first-occurrence: $i; $found-first: true; $was-first: true; }
+      @if( $last-occurs == $last-index ) { $last-occurrence: $i; $found-last: true; }
+      @if( $found-first and not $found-last ) { $between: $between + 1; }
+      
+    }
+    
+    @return if( not $found-last, 0, if($inclusive, $between, $between - 1) );
+    
+  }
+  
+  // Only first is list.
+  @else if( is-list($first) ) {
+    
+    $index: last($first);
+    $first: first($first);
+    $occurs: 0;
+    $occurrence: null;
+    $between: 0;
+    $found-first: false;
+    $found-last: false;
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( $character == $first ) { $occurs: $occurs + 1; }
+      @if( not $was-first and $character == $last ) { $found-last: true; }
+      @if( $occurs == $index ) { $occurrence: $i; $found-first: true; $was-first: true; }
+      @if( $found-first and not $found-last ) { $between: $between + 1; }
+      
+    }
+    
+    @return if( not $found-last, 0, if($inclusive, $between, $between - 1) );
+    
+  }
+  
+  // Only last is list.
+  @else if( is-list($last) ) {
+
+    $index: last($last);
+    $last: first($last);
+    $occurs: 0;
+    $occurrence: null;
+    $between: 0;
+    $found-first: false;
+    $found-last: false;
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( not $found-first and $character == $first ) { $found-first: true; $was-first: true; }
+      @if( not $was-first and $character == $last ) { $occurs: $occurs + 1; }
+      @if( $occurs == $index ) { $occurrence: $i; $found-last: true; }
+      @if( $found-first and not $found-last ) { $between: $between + 1; }
+      
+    }
+    
+    @return if( not $found-last, 0, if($inclusive, $between, $between - 1) );
+    
+  }
+  
+  // Neither are lists.
+  @else {
+    
+    $found-first: false;
+    $found-last: false;
+    $between: 0;
+    
+    @for $i from 1 through str-length($string) {
+      
+      $character: char-at($string, $i);
+      $was-first: false;
+      
+      @if( not $found-first and $character == $first ) { $found-first: true; $was-first: true; }
+      @if( not $found-last and not $was-first and $character == $last ) { $found-last: true; }
+      @if( $found-first and not $found-last ) { $between: $between + 1; }
+      
+    }
+    
+    @return if( not $found-last, 0, if($inclusive, $between, $between - 1) );
+    
+  }
+  
+}
+
