@@ -3,7 +3,10 @@
 @include font('test', (Arial, sans-serif));
 @include color('test', ('base': blue));
 
-body {
-  font-family: font('test');
-  color: color('test');
-}
+@include test('font', (
+  'test': (Arial, sans-serif)
+));
+
+@include test('color', (
+  'test': blue
+));

@@ -1,0 +1,39 @@
+/// Determines whether some value is of type `null`
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-null( $value ) { @return $value == null; }
+
+/// Determines whether some value is of type `map`
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-map( $value ) { @return type-of($value) == 'map'; }
+
+/// Determines whether some value is of type `number`
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-number( $value ) { @return type-of($value) == 'number'; }
+
+/// Determines whether some value is of type `color`
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-color( $value ) { @return type-of($value) == 'color'; }
+
+/// Determines whether some value is of type `list`
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-list( $value ) {
+  
+  @return type-of($value) == 'list';
+  
+}
+
+/// Determines whether some value is of type `string`
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-string( $value ) { @return type-of($value) == 'string'; }

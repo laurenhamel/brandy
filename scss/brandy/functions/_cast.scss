@@ -1,0 +1,194 @@
+////
+/// @group brandy-casts
+////
+
+/// Casts a value to a *string*
+///
+/// @requires {function} is-string
+/// @requires {function} str-trim
+/// @param {mixed} $value - Some value
+/// @returns {string}
+@function cast-string( $value ) { 
+  
+  @if( not is-string($value) ) {
+  
+    @return unquote(str-trim(inspect($value), '"' "'" ' ')); 
+    
+  }
+  
+  @return $value;
+  
+}
+
+/// Casts a value to a *boolean*
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function cast-boolean( $value ) { 
+  
+  @if( type-of($value) != 'bool' ) {
+  
+    @return not ($value or $value == "" or $value == 0 or $value == ()); 
+    
+  }
+  
+  @return $value;
+
+}
+
+/// Casts a value to a *boolean*
+///
+/// @alias cast-boolean
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function cast-bool( $value ) {
+  
+  @return cast-boolean($value);
+  
+}
+
+/// Casts values to a *list*
+///
+/// @param {mixed} $values - Some values
+/// @returns {list}
+@function cast-list( $values... ) { 
+  
+  @return append((), $values); 
+
+}
+
+/// Casts values to a *map*
+///
+/// @requires {function} is-map
+/// @requires {function} is-list
+/// @requires {function} first
+/// @requires {function} tail
+/// @requires {function} map-set
+/// @param {mixed} $pairs - Some key-value pairs, expected as either a `map`, `list`, or `string`
+/// @returns {map}
+@function cast-map( $pairs... ) { 
+  
+  $map: ();
+  
+  @each $pair in $pairs {
+    
+    @if( is-map($pair) ) {
+      
+      $map: map-merge($map, $pair);
+      
+    }
+    
+    @else if( is-list($pair) ) {
+      
+      $key: first($pair);
+      $value: tail($pair);
+      
+      $map: map-merge($map, ($key, $value));
+      
+    }
+    
+    @else {
+      
+      $key: nth(str-split($pair, '='), 1);
+      $value: nth(str-split($pair, '='), 2);
+      
+      $map: map-set($key, $value);
+      
+    }
+    
+  }
+  
+  @return $map;
+
+}
+
+/// Casts values to a *number*
+///
+/// @author Hugo Giraudel
+/// @requires {function} str-is-unit
+/// @requires {function} str-is-letter
+/// @requires {function} unit-to-digit
+/// @requires {function} is-negative
+/// @requires {variable} $brandy-numbers
+/// @returns {number | null}
+/// @throws 'Unknown character `#{$characters}`.'
+/// @throws 'Unknown unit `#{$unit}`.'
+@function cast-number( $string ) {
+  
+  $result: 0;
+  
+  $decimal: 1;
+  
+  $negative: is-negative($string);
+  
+  @if ( $negative ) { $string: str-slice($string, 2); }
+  
+  $break: false;
+  
+  $index: 1;
+  
+  @while ( not $break ) {
+    
+    $character: str-slice($string, $index, 1);
+    
+    @if( $character == '.' ) { $decimal: 1; }
+    
+    @else if( not str-is-letter($character) ) {
+    
+      @if( not map-has-key($brandy-numbers, $character) ) {
+
+        @warn 'Unknown character `#{$character}`.';
+
+        @return false;
+
+      }
+
+      $number: map-get($brandy-numbers, $character);
+      
+      @if( $decimal > 0 ) {
+        
+        $decimal: $decimal * 10;
+        
+        $number: $number / $decimal;
+        
+      }
+      
+      @else {
+
+        $result: $result * 10;
+        
+      }
+      
+      $result: $result + $number;
+      
+      $index: $index + 1;
+      
+    }
+    
+    @else {
+      
+      $break: true;
+      
+    }
+    
+  }
+  
+  @if( $break ) {
+    
+    $unit: str-slice($string, $index);
+    
+    @if( not str-is-unit($unit) ) {
+      
+      @warn 'Unknown unit `#{$unit}`.';
+      
+      @return false;
+      
+    }
+    
+    $result: $result + unit-to-digit($unit);
+    
+  }
+  
+  @return if($negative, $result * -1, $result);
+  
+}

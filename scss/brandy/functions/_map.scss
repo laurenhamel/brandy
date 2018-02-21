@@ -1,5 +1,17 @@
-// Adapted from Hugo Giraudel's map-deep-get() 
-@function map-deep-get( $map, $keys ){
+////
+/// @group brandy-maps
+////
+
+/// Retrieves a property value from a nested map
+/// 
+/// @author Hugo Giraudel
+/// @param {map} $map - Some nested map
+/// @param {string} $key - A dot-delimited map property
+/// @returns {mixed}
+@function map-deep-get( $map, $key ){
+  
+  // Split keys.
+  $keys: str-split($key, '.');
 
   @each $key in $keys {
         
@@ -11,51 +23,127 @@
   
 }
 
-// Adapted from Hugo Giraudel's map-deep-set()
-@function map-deep-set( $map, $keys, $value ){
+/// Sets a property value in a nested map
+/// 
+/// @author Hugo Giraudel
+/// @requires {function} str-split
+/// @requires {function} first
+/// @requires {function} last
+/// @param {map} $map - Some nested map
+/// @param {string} $key - A dot-delimited map property
+/// @param {mixed} $value - Some value
+/// @returns {map}
+/// @throws 'Cannot execute `map-deep-set` since key `#{$key}` does not exist at current level in map.'
+@function map-deep-set( $map, $key, $value ){
   
+  // Split keys.
+  $keys: str-split($key, '.');
+  
+  // Handle non-nested keys.
   @if( length($keys) == 1) {
       
-    @return map-merge($map, (cast-string($keys): $value));
+    @return map-merge($map, (first($keys): $value));
     
   }
   
-  $map-list: ($map, );
+  // Otherwise, handle nested keys.
+  $maps: ($map, );
     
-  @for $i from 1 through length($keys){ 
+  @for $i from 1 through length($keys) - 1 { 
+    
+    $key: nth($keys, $i);
+    $nested: map-get(last($maps), $key);
+    
+    @if( is-null($nested) ) {
       
-    $map-list: append($map-list, map-get(nth($map-list,-1), nth($keys,$i)));
+      @error 'Cannot execute `map-deep-set` since key `#{$key}` does not exist at current level in map.';
+      
+    }
+      
+    $maps: append( $maps, $nested );
+    
+  }
+  
+  $result: ();
+  
+  @for $i from length($maps) through 1 {
+    
+    $map: nth($maps, $i);
+    $key: nth($keys, $i);
+    $value: if( $i == length($maps), $value, $result );
+    
+    $result: map-merge($map, ($key: $value));
     
   }
 
-  @return map-merge(nth($map-list, length($map-list) - 1), (cast-string(last($keys)): $value));
+  @return $result;
     
 }
 
-// Adapted from Hugo Giraudel's map-depth()
+/// Determines the depth of a map
+/// 
+/// @author Hugo Giraudel
+/// @param {map} $map - Some map
+/// @returns {number}
 @function map-depth( $map ){
     
-    $levels: 1;
+  $levels: 1;
     
-    @each $key, $value in $map {
-        @if( type-of($value) == 'map') {
-            $levela: max(map-depth($value) + 1, $levels);
-        }
+  @each $key, $value in $map {
+        
+    @if( type-of($value) == 'map') {
+           
+      $levela: max(map-depth($value) + 1, $levels);
+        
     }
     
-    @return $levels;
+  }
+    
+  @return $levels;
     
 }
 
-// Adapted from Hugo Giraudel's map-has-keys()
+/// Determines whether or not a map contains the one or more keys using dot-delimited syntax for keys
+/// 
+/// @requires {function} first
+/// @requires {function} last
+/// @requires {function} is-map
+/// @author Hugo Giraudel
+/// @param {map} $map - Some nested map
+/// @param {string} $keys - A list of dot-delimited map properties to be searched for
+/// @returns {boolean}
 @function map-has-keys( $map, $keys... ){
     
   @each $key in $keys {
+    
+    // Split keys.
+    $key: str-split($key, '.');
+    
+    // Get first and last.
+    $first: first($key);
+    $last: last($key);
+
+    // Handle non-nested keys.
+    @if( length($key) == 1 ) {
       
-    @if( not map-has-key($map, $key) ){
-            
-      @return false;
+      @if( not map-has-key($map, $first) ) { @return false; }
+      
+    }
+    
+    // Handle nested keys.
+    @else {
+      
+      $m: $map;
+    
+      // Look for keys.
+      @each $k in $key {
+
+        @if( not map-has-key($m, $k) ){ @return false; }
         
+        $m: map-get($m, $k);
+
+      }
+      
     }
     
   }
@@ -64,91 +152,97 @@
     
 }
 
-// Adapted from Hugo Giraudel's map-has-nested-keys()
-@function map-has-nested-keys( $map, $keys... ){
+/// Combines a list of keys and a list of values as a map
+/// 
+/// @author Hugo Giraudel
+/// @param {list} $keys - A list of keys
+/// @param {list} $values - A list of values
+/// @returns {map}
+@function map-combine( $keys, $values ){
     
-  @each $key in $keys {
-        
-    @if( not map-has-key($map, $key) ){
-            
-      @return false;
-       
-    }
-       
-    $map: map-get($map, $key);
+  $length-keys: length( $keys );
+  $length-values: length( $values );
+  $min: min( $length-keys, $length-values );
+  $map: ();
     
+  @if( $min == 0 ){ @return $map; }
+    
+  @for $i from 1 through $min {
+    
+    $map: map-merge( $map, (nth($keys, $i): nth($values, $i)) );
   }
     
-  @return true;
+  @return $map;
     
 }
 
-// Adapted from Hugo Giraudel's map-zip()
-@function map-zip( $keys, $values ){
+/// Inspired by jQuery, enables a map to be extended with one or more maps with optional recursion
+/// 
+/// @author Hugo Giraudel
+/// @param {map} $map - Some map to be extended
+/// @param {arglist} $maps - Additional maps to be used to extend the first map
+/// @param {boolean} $deep [false] - Passed in as the last argument, enables recursive mode
+/// @returns {map}
+@function map-extend( $map, $maps... /*, $deep */ ){
     
-    $length-keys: length( $keys );
-    $length-values: length( $values );
-    $min: min( $length-keys, $length-values );
-    $map: ();
+  $last: nth($maps, -1);
+  $deep: $last == true;
+  $max: if( $deep, length($maps) - 1, length($maps) );
     
-    @if( $min == 0 ){ @return $map; }
-    
-    @for $i from 1 through $min {
-        $map: map-merge( $map, (nth($keys, $i): nth($values, $i)) );
-    }
-    
-    @return $map;
-    
-}
-
-// Adapted from Hugo Giraudel's map-extend()
-@function map-extend( $map, $maps.../*, $deep */ ){
-    
-    $last: nth($maps, -1);
-    $deep: $last == true;
-    $max: if( $deep, length($maps) - 1, length($maps) );
-    
-    @for $i from 1 through $max {
+  @for $i from 1 through $max {
         
-        $current: nth($maps, $i);
+    $current: nth($maps, $i);
         
-        @if( not $deep ){
-            $map: map-merge( $map, $current );
+    @if( not $deep ){ $map: map-merge( $map, $current ); }
+        
+    @else {
+          
+      @each $key, $value in $current {
+                
+        @if( type-of($value) == 'map' and type-of(map-get($map,$key)) == 'map' ){
+                    
+          $value: map-extend(map-get($map, $key), $value, true);
+                
         }
-        
-        @else {
-            @each $key, $value in $current {
                 
-                @if( type-of($value) == 'map' and type-of(map-get($map,$key)) == 'map' ){
-                    $value: map-extend(map-get($map, $key), $value, true);
-                }
+        $map: map-merge( $map, ($key: $value) );
                 
-                $map: map-merge( $map, ($key: $value) );
-                
-            }
-        }
+      }
         
     }
+        
+  }
     
-    @return $map;
+  @return $map;
     
 }
 
-// Adapted from Miriam Suzanne's map-set()
+/// A simplified version of `map-merge()`, directly sets a map value
+/// 
+/// @author Miriam Suzanne
+/// @param {map} $map - Some map
+/// @param {mixed} $key - Some map property
+/// @param {mixed} $value - Some map value
+/// @returns {map}
 @function map-set( $map, $key, $value ){
     @return map-merge( $map, ($key: $value) );
 }
 
-// Create by Lauren Hamel
-@function map-flatten( $map, $delimiter: '-', $prefix: '' ){
+/// Flattens a nested map to a single level of depth
+///
+/// @requires {function} map-set
+/// @param {map} $map - Some map
+/// @param {string} $delimiter ['.'] - Delimits previously nested map levels
+/// @param {string} $prefix [''] - A prefix to be added to keys at the first map level, used for recursion
+@function map-flatten( $map, $delimiter: '.', $prefix: '' ){
   
   $result: ();
   
   @each $key, $value in $map {
     
-    $key: if($prefix != '', $prefix + $delimiter + $key, $key);
+    $key: if( $prefix != '', $prefix + $delimiter + $key, $key );
     
-    @if(type-of($value) == 'map'){
+    @if( type-of($value) == 'map' ) {
       
       $result: map-merge($result, map-flatten($value, $delimiter, $key));
       

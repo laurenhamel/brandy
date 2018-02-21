@@ -11,6 +11,20 @@
     "brandy-mixins": "Mixins",
     "brandy-funcs": "Functions",
     "brandy-utils": "Utilities",
-    "brandy-help": "Helpers"
+    "brandy-help": "Helpers",
+    
+    "brandy-setters": "Setters",
+    "brandy-getters": "Getters",
+    
+    "brandy-casts": "Casts",
+    "brandy-strings": "Strings",
+    "brandy-numbers": "Numbers",
+    "brandy-colors": "Colors",
+    "brandy-fonts": "Fonts",
+    "brandy-screens": "Screens",
+    "brandy-lists": "Lists",
+    "brandy-maps": "Maps",
+    
+    "brandy-math": "Math"
   }
 }

@@ -7,7 +7,7 @@
 /// Note, the `color-contrast()` function will attempt to contrast foreground 
 /// and background colors according to WebAIM accessibility standards.
 ///
-/// @type Color
+/// @type color
 $brandy-dark-text: rgb(51, 51, 51) !default;
 
 /// Sets the light color value for the `color-contrast()` function.
@@ -15,7 +15,7 @@ $brandy-dark-text: rgb(51, 51, 51) !default;
 /// backgrounds. Note, the `color-contrast()` function will attempt to contrast
 /// foreground and background colors according to WebAIM accessibility standards.
 ///
-/// @type Color
+/// @type color
 $brandy-light-text: rgb(255, 255, 255) !default;
 
 
@@ -27,7 +27,7 @@ $brandy-light-text: rgb(255, 255, 255) !default;
 /// Note, the light and dark colors generated will be a shade or tint of the 
 /// input background color, respectively.
 ///
-/// @type Boolean
+/// @type boolean
 $brandy-bg-contrast: false !default;
 
 
@@ -50,11 +50,11 @@ $brandy-bg-contrast: false !default;
 ///     )
 ///   );
 ///
-/// @type Map
-/// @prop {String} <colorId> - A preferred identifier for the given color
-/// @prop {Color} <colorId>.base - The default color tone
-/// @prop {Color | Map} <colorId>.<toneId> - Additional color tones
-/// @prop {Color} <colorId>.<toneId>.<toneAmount> - A tonal amount, usually representative of a percentage
+/// @type map
+/// @prop {string} <colorId> - A preferred identifier for the given color
+/// @prop {color} <colorId>.base - The default color tone
+/// @prop {color | map} <colorId>.<toneId> - Additional color tones
+/// @prop {color} <colorId>.<toneId>.<toneAmount> - A tonal amount, usually representative of a percentage
 $brandy-colors-map: (
   'black': (
     'base': #000000
@@ -87,9 +87,9 @@ $brandy-colors-map: (
 ///     )
 ///   );
 ///
-/// @type Map
-/// @prop {Font | List | Map} <fontId> - A preferred identifier for the given font or font family
-/// @prop {Font | List} <fontId>.<fontClass> - A sub-class of a given font or font family
+/// @type map
+/// @prop {font | list | map} <fontId> - A preferred identifier for the given font or font family
+/// @prop {font | list} <fontId>.<fontClass> - A sub-class of a given font or font family
 $brandy-fonts-map: (
   'sans-serif': sans-serif,
   'serif': serif,
@@ -107,8 +107,8 @@ $brandy-fonts-map: (
 ///     'desktop':  min-width 801px
 ///   );
 ///
-/// @type Map
-/// @prop {Number} <screenId> - A breakpoint associated with the corresponding screen identifier
+/// @type map
+/// @prop {number} <screenId> - A breakpoint associated with the corresponding screen identifier
 $brandy-screens-map: (
   'mobile': max-width 400px,
   'tablet': 400px 800px,
@@ -126,8 +126,8 @@ $brandy-screens-map: (
 ///     'desktop': 1
 ///   );
 ///
-/// @type Map
-/// @prop {Number} <screenId> - A font scale associated with the corresponding screen identifier
+/// @type map
+/// @prop {number} <screenId> - A font scale associated with the corresponding screen identifier
 $brandy-scale-map: (
   'mobile': 1,
   'tablet': 1,
@@ -139,7 +139,7 @@ $brandy-scale-map: (
 /// the `$font-scale-map` variable above for each screen breakpoint in the
 /// $brandy-screens-map. If set to *false*, no scaling will occur.
 ///
-/// @type Boolean
+/// @type boolean
 $brandy-scale-responsive: true !default;
 
 /// Signals to the `scale-font()` function to proportionately increase or
@@ -147,7 +147,7 @@ $brandy-scale-responsive: true !default;
 /// will increase from the first element in the list through the last 
 /// element. If set to *false*, the reverse effect will occur.
 ///
-/// @type Boolean
+/// @type boolean
 $brandy-scale-increasing: false !default;
 
 /// Sets the maximum font size for the `scale-font()` function. The maximum font 
@@ -157,7 +157,7 @@ $brandy-scale-increasing: false !default;
 /// for `$brandy-scale-min`, then the minimum value will also be used as the maximum. 
 /// This maximum value is optional.
 /// 
-/// @type Number
+/// @type number
 $brandy-scale-max: 1em !default;
 
 /// Sets the minimum font size for the `scale-font()` function. The minimum font 
@@ -166,7 +166,7 @@ $brandy-scale-max: 1em !default;
 /// value is given for `$brandy-scale-max`, then the minimum value will also be used 
 /// as the maximum. This minimum value is always **required**.
 /// 
-/// @type Number
+/// @type number
 $brandy-scale-min: 1em !default;
 
 /// Sets the default map to be used for the `config()` function. This value
@@ -178,8 +178,8 @@ $brandy-scale-min: 1em !default;
 ///     'page-width': 900px,
 ///   );
 ///
-/// @type Map
-/// @prop {Mixed} <configId> - Some global configuration
+/// @type map
+/// @prop {mixed} <configId> - Some global configuration
 $brandy-config-map: () !default;
 
 /// Sets the default map to be used for the `const()` function. This value
@@ -191,11 +191,12 @@ $brandy-config-map: () !default;
 ///     'PI': 3.14159265358979323846264338327950288,
 ///   );
 ///
-/// @type Map
-/// @prop {Mixed} <constId> - Some global constant or set of constants
+/// @type map
+/// @prop {mixed} <constId> - Some global constant or set of constants
 $brandy-const-map: (
   'PI': 3.1415926535897932384626433832795028841971693993751,
   'E': 2.71828182845904523536028747135266249775724709369995,
+  'LN(2)': 0.6931471805599453,
   'Z-INDEX': (
     'MIN': −2147483648,
     'MAX': 2147483648
@@ -207,7 +208,7 @@ $brandy-const-map: (
 /// the `grid()` function at a global level. For instance-specific overrides, 
 /// consider feeding a column option into the `grid()` function during use instead.
 /// 
-/// @type Number
+/// @type number
 $brandy-grid-columns: 12 !default;
 
 /// Defines the number of rows to be used by default for the grid layout 
@@ -215,7 +216,7 @@ $brandy-grid-columns: 12 !default;
 /// the `grid()` function at a global level. For instance-specific overrides, 
 /// consider feeding a row option into the `grid()` function during use instead.
 /// 
-/// @type Number
+/// @type number
 $brandy-grid-rows: 100 !default;
 
 /// Defines the size of gutters to be used by default for the grid layout 
@@ -223,7 +224,7 @@ $brandy-grid-rows: 100 !default;
 /// the `grid()` function at a global level. For instance-specific overrides, 
 /// consider feeding a gutter option into the `grid()` function during use instead.
 /// 
-/// @type Number
+/// @type number
 $brandy-grid-gutter: 25 !default;
 
 /// Defines the grid class name to be used by default for the grid layout 
@@ -231,7 +232,7 @@ $brandy-grid-gutter: 25 !default;
 /// the `grid()` function at a global level. For instance-specific overrides, 
 /// consider feeding a class name into the `grid()` function during use instead.
 /// 
-/// @type String
+/// @type string
 $brandy-grid-name: 'grid' !default;
 
 /// Defines the grid item class name to be used by default for the grid layout 
@@ -239,7 +240,7 @@ $brandy-grid-name: 'grid' !default;
 /// the `grid()` function at a global level. For instance-specific overrides, 
 /// consider feeding a class name into the `grid()` function during use instead.
 /// 
-/// @type String
+/// @type string
 $brandy-grid-items: 'griditem' !default;
 
 /// Defines the unit expressions supported by default for the grid layout 
@@ -248,5 +249,90 @@ $brandy-grid-items: 'griditem' !default;
 /// the `grid()` function at a global level. For instance-specific overrides, 
 /// consider feeding a list of units into the `grid()` function during use instead.
 /// 
-/// @type List
+/// @type list
 $brandy-grid-units: 'px' 'em' 'pct' !default;
+
+/// Defines the recognized units that Brandy uses for some functions and mixins.
+///
+/// @type map
+$brandy-units: (
+  'px': 0px,
+  'pt': 0pt,
+  'pc': 0pc,
+  'pica': 0pica,
+  'em': 0em,
+  'rem': 0rem,
+  'mm': 0mm,
+  'cm': 0cm,
+  'in': 0in,
+  'ex': 0ex,
+  'ch': 0ch,
+  'vw': 0vw,
+  'vh': 0vh,
+  'vmax': 0vmax,
+  'vmin': 0vmin,
+  'deg': 0deg,
+  'rad': 0rad,
+  'grad': 0grad,
+  'turn': 0turn,
+  'pct': 0%,
+  '%': 0%,
+  's': 0s,
+  'ms': 0ms,
+  'dpcm': 0dpcm,
+  'dppx': 0dppx,
+  'Hz': 0Hz,
+  'kHz': 0kHz,
+  'dpi': 0dpi
+);
+
+/// Defines the recognized alphabet characters that Brandy uses for some function and mixins.
+/// Use the map keys to represent *lowercase* letters and map values to represent *uppercase* letters. 
+///
+/// @type map
+$brandy-letters: (
+  'a': 'A',
+  'b': 'B',
+  'c': 'C',
+  'd': 'D',
+  'e': 'E',
+  'f': 'F',
+  'g': 'G',
+  'h': 'H',
+  'i': 'I',
+  'j': 'J',
+  'k': 'K',
+  'l': 'L',
+  'm': 'M',
+  'n': 'N',
+  'o': 'O',
+  'p': 'P',
+  'q': 'Q',
+  'r': 'R',
+  's': 'S',
+  't': 'T',
+  'u': 'U',
+  'v': 'V',
+  'w': 'W',
+  'x': 'X',
+  'y': 'Y',
+  'z': 'Z',
+);
+
+/// Defines the recognized numeric characters that Brandy uses for some function and mixins.
+/// Use the map keys to represent numbers in *string* form and the map values to represent
+/// numbers in their *numeric* form.
+///
+/// @type map
+$brandy-numbers: (
+  '0': 0,
+  '1': 1,
+  '2': 2,
+  '3': 3,
+  '4': 4,
+  '5': 5,
+  '6': 6,
+  '7': 7,
+  '8': 8,
+  '9': 9
+);

@@ -1,0 +1,44 @@
+/// Enables unit testing of Sass functions
+///
+/// @param {string} $function - The name of some function to be tested 
+/// @param {map} $tests - One or more tests to be run
+@mixin test( $function, $tests ) {
+  
+  $length: length($tests);
+  $failed: 0;
+  $passed: 0;
+  $index: 1;
+  $break: '\a ';
+  
+  $results: '#{$break}#{$break}Testing function `#{$function}`#{$break}----------------------------------#{$break}';
+  
+  @each $test, $expected in $tests {
+    
+    $result: call(get-function($function), $test...);
+      
+    @if ( $result == $expected ) { 
+        
+      $results: $results + 'Test #{$index} of #{$length} passed.#{$break}';
+      $passed: $passed + 1;
+      
+    }
+    @else {
+  
+      $results: $results + 'Test #{$index} of #{$length} failed.#{$break}' + 
+                           '  Expected: `#{$expected}`#{$break}' +
+                           '  Result: `#{$result}`#{$break}'; 
+      $failed: $failed + 1;
+      
+    }
+    
+    $index: $index + 1;
+    
+  }
+    
+  $results: $results + '----------------------------------#{$break}' +
+            '#{$passed} out of #{$length} tests passing.#{$break}' +
+            '#{$failed} out of #{$length} tests failing.#{$break}';
+  
+  @debug quote($results);
+  
+}

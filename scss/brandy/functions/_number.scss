@@ -1,21 +1,194 @@
-// unit-to-digit() - To parse a unit from a given string representation of a unit.
+/// Converts some string representation of a unit to its numeric digit
+///
+/// @param {string} $unit - Some string representation of a unit
+/// @returns {number}
 @function unit-to-digit( $unit ){
-  @if( $unit == 'px' ){ @return 1px; }
-  @if( $unit == 'em' ){ @return 1em; }
-  @if( $unit == 'pct' ){ @return 1%; }
-  @if( $unit == 'rem' ){ @return 1rem; }
-  @if( $unit == 'cm' ){ @return 1cm; }
-  @if( $unit == 'in' ){ @return 1in; }
-  @if( $unit == 'mm' ){ @return 1mm; }
-  @if( $unit == 'ex' ){ @return 1ex; }
-  @if( $unit == 'vh' ){ @return 1vh; }
-  @if( $unit == 'vw' ){ @return 1vw; }
-  @if( $unit == 'pc' ){ @return 1pc; }
-  @if( $unit == 'pt' ){ @return 1pt; }
-  @if( $unit == 'vmin' ){ @return 1vmin; }
-  @if( $unit == 'vmax' ){ @return 1vmax; }
-  @return 1;
+  
+  @if( map-has-key($brandy-units, $unit) ) {
+    
+    @return map-get($brandy-units, $unit);
+    
+  }
+  
+  @return 0;
+  
 }
 
-// Import Takeru Suzuki's [mathsass](https://github.com/terkel/mathsass)
-@import '../vendors/mathsass';
+/// Converts one numerical unit to another
+///
+/// @author Hugoe Giraudel
+/// @requires {function} is-string
+/// @requires {function} str-is-number
+/// @requires {function} cast-number
+/// @requires {function} is-number
+/// @requires {variable} $brandy-units
+/// @param {string | number} $value - Some numeric value
+/// @returns {number | null}
+/// @throws 'Unknown unit `#{$unit}`.'
+/// @throws 'Cannot execute `strip-unit` when value `#{$value}` is non-numeric.'
+@function convert-unit( $value, $unit ) {
+  
+  @if( is-string($value) and str-is-number($value) ) { $value: cast-number($value); }
+  
+  @if( is-number($value) ) {
+    
+    @if( map-has-key($brandy-units, $unit) ) {
+      
+      @return map-get($brandy-units, $unit) + $value;
+      
+    }
+    
+    @error 'Unknown unit `#{$unit}`.';
+    
+  }
+  
+  @warn 'Cannot execute `convert-unit` when value `#{$value}` is non-numeric.';
+  
+  @return null;
+  
+}
+
+/// Strips a unit from a numeric value
+/// 
+/// @requires {function} is-string
+/// @requires {function} str-is-number
+/// @requires {function} cast-number
+/// @requires {function} is-number
+/// @param {string | number} $value - Some numeric value
+/// @returns {number | null}
+/// @throws 'Cannot execute `strip-unit` when value `#{$value}` is non-numeric.'
+@function strip-unit( $value ) {
+  
+  @if( is-string($value) and str-is-number($value) ) { $value: cast-number($value); }
+  
+  @if( is-number($value) ) {
+    
+    @if( unitless($value) ) { @return $value; }
+    
+    @return $value / ($value * 0 + 1);
+    
+  }
+  
+  @warn 'Cannot execute `strip-unit` when value `#{$value}` is non-numeric.';
+  
+  @return null;
+  
+}
+
+/// Determines if a value is equivalent to a negative number
+///
+/// @requires {function} is-number
+/// @requires {function} is-string
+/// @requires {function} unit-to-digit
+/// @requires {function} str-is-number
+/// @param {mixed} $value - Some numeric value
+/// @returns {boolean}
+@function is-negative( $value ) {
+  
+  @if( is-number($value) ) {
+    
+    $unit: extract-unit($value);
+    
+    @return $value < (0 + unit-to-digit($unit));
+    
+  }
+  
+  @else if( is-string( $value ) ) {
+    
+    @if( str-is-number($value) ) {
+      
+      @return if( str-slice($value, 1, 1) == '-', true, false );
+      
+    }
+      
+    @return false;
+    
+  }
+  
+  @return false;
+  
+}
+
+/// Determines if a value is equivalent to a positive number
+///
+/// @requires {function} is-number
+/// @requires {function} is-string
+/// @requires {function} unit-to-digit
+/// @requires {function} str-is-number
+/// @param {mixed} $value - Some numeric value
+/// @returns {boolean}
+@function is-positive( $value ) {
+  
+  @if( is-number($value) ) {
+    
+    $unit: extract-unit($value);
+    
+    @return $value >= (0 + unit-to-digit($unit));
+    
+  }
+  
+  @else if( is-string( $value ) ) {
+    
+    @if( str-is-number($value) ) {
+      
+      @return if( str-slice($value, 1, 1) == '-', false, true );
+      
+    }
+      
+    @return false;
+    
+  }
+  
+  @return false;
+  
+}
+
+/// Determines if a value is equal to zero
+///
+/// @requires {function} is-number
+/// @requires {function} is-string
+/// @requires {function} str-is-number
+/// @requires {function} strip-unit
+/// @requires {function} cast-number
+/// @param {mixed} $value - Some numeric value
+/// @returns {boolean}
+@function is-zero( $value ) {
+  
+  @if( is-string($value) and str-is-number($value) ) { $value: cast-number($value); }
+  
+  @if( is-number($value) ) {
+    
+    $unit: extract-unit($value);
+    
+    @return strip-unit($value) == 0;
+    
+  }
+  
+  @return false;
+  
+}
+
+/// Extracts the units from a numeric value
+///
+/// @requires {function} is-string
+/// @requires {function} is-number
+/// @requires {function} str-is-number
+/// @requires {function} cast-number
+/// @param {mixed} $value - Some numeric value
+/// @returns {string | null}
+/// @throws 'Value `#{$value}` is non-numeric for `extract-unit`.'
+@function extract-unit( $value ) {
+  
+  @if( is-string($value) and str-is-number($value) ) { $value: cast-number($value); }
+  
+  @if( is-number($value) ) { @return unit($value); }
+  
+  @else {
+  
+    @warn 'Cannot execute `extract-unit` on non-numeric value `#{$value}`';
+  
+    @return null;
+    
+  }
+  
+}

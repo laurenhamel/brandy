@@ -1,6 +1,11 @@
 @import '../scss/brandy';
 
-body {
-  font-family: font('sans-serif');
-  color: color('black');
-}
+@include test('font', (
+  'sans-serif': sans-serif,
+  'serif': serif
+));
+
+@include test('color', (
+  'black': #000000,
+  'white': #FFFFFF
+));

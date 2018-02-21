@@ -1,0 +1,49 @@
+@import '../scss/brandy';
+
+@include test('str-replace', (
+  ('unique selector', ' ', '-'): 'unique-selector',
+  ('dummy test', '-'): 'dummy test'
+));
+
+@include test('str-split', (
+  ('nested.map.key', '.'): ('nested' 'map' 'key'),
+  ('nested.map.key'): append((), 'nested.map.key')
+));
+
+@include test('str-trim', (
+  (' "extra characters" ', ' ' '"'): 'extra characters',
+  ('extra right" ', ' ' '"'): 'extra right',
+  (' "extra left', ' ' '"'): 'extra left',
+  ('non-fix'): 'non-fix'
+));
+
+@include test('str-trim-right', (
+  ('prefix-fix- ', ' ' '-'): 'prefix-fix',
+  ('extra right" ', ' ' '"'): 'extra right',
+  (' "extra left', ' ' '"'): ' "extra left',
+  ('non-fix'): 'non-fix'
+));
+
+@include test('str-trim-left', (
+  (' -suffix-fix', ' ' '-'): 'suffix-fix',
+  ('extra right" ', ' ' '"'): 'extra right" ',
+  (' "extra left', ' ' '"'): 'extra left',
+  ('non-fix'): 'non-fix'
+));
+
+@include test('str-contains', (
+  ('find the needle', 'needle'): true,
+  ('in the haystack', 'needle'): false
+));
+
+@include test('str-starts-with', (
+  ('this is what', 'this'): true,
+  ('you are looking', 'this'): false,
+  ('for in this', 'this'): false
+));
+
+@include test('str-ends-with', (
+  ('this is what', 'this'): false,
+  ('you are looking', 'this'): false,
+  ('for in this', 'this'): true
+));

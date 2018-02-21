@@ -6,7 +6,7 @@
   "scripts": {
     "docs": "sassdoc scss/",
     "test:reset": "rm -rf test/*.css; rm -rf test/*.css.map",
-    "test": "sass -w test/"
+    "test": "sass -w test/$TEST.scss --sourcemap=none"
   },
   "repository": {
     "type": "git",

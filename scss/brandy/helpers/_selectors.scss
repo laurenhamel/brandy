@@ -1,12 +1,21 @@
-// selector() - To expand a list of selectors with an optional modifier added.
-@function selector($selectors, $modifier: ''){
+////
+/// @group brandy-utils
+////
+
+/// To build a list of selectors with optional modifier(s)
+///
+/// @param {String | List} $selectors - One or more selectors
+/// @param {String | List} $modifiers - One or more modifiers to add to selector(s)
+@function selector($selectors, $modifiers: ()){
 
   $result: ();
 
-  @if(type-of($modifier) != 'string'){ $modifier: ''; };
-
   @each $selector in $selectors {
-    $result: append($result, unquote($selector + $modifier), 'comma');
+    @each $modifier in $modifiers {
+    
+      $result: append($result, unquote('#{$selector}:#{$modifier}'), 'comma');
+    
+    }
   }
 
   @return $result;
