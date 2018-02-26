@@ -22,11 +22,12 @@
 
 /// Casts a value to a *boolean*
 ///
+/// @requires {function} is-boolean
 /// @param {mixed} $value - Some value
 /// @returns {boolean}
 @function cast-boolean( $value ) { 
   
-  @if( type-of($value) != 'bool' ) {
+  @if( not is-boolean($value) ) {
   
     @return not ($value or $value == "" or $value == 0 or $value == ()); 
     
@@ -49,11 +50,21 @@
 
 /// Casts values to a *list*
 ///
+/// @requires {function} is-list
 /// @param {mixed} $values - Some values
 /// @returns {list}
 @function cast-list( $values... ) { 
   
-  @return append((), $values); 
+  $result: ();
+  
+  @each $value in $values {
+    
+    @if( is-list($value) ) { $result: join($result, $value, list-separator($result)); }
+    @else { $result: append($result, $value); }
+    
+  }
+  
+  @return $result;
 
 }
 

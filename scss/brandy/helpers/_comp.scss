@@ -1,0 +1,81 @@
+////
+/// @group brandy-comp
+////
+
+/// Compares whether two values are equal
+///
+/// @param {mixed} $a - First value to compare
+/// @param {arglist} $b - Second value to compare
+/// @returns {boolean}
+@function eq( $a, $b ) {
+  
+  @return $a == $b;
+  
+}
+
+/// Compares whether two values are not equal
+///
+/// @param {mixed} $a - First value to compare
+/// @param {arglist} $b - Second value to compare
+/// @returns {boolean}
+@function neq( $a, $b ) {
+  
+  @return $a != $b;
+  
+}
+
+/// Compares whether the first value is greater than the second value
+///
+/// @param {mixed} $a - First value to compare
+/// @param {arglist} $b - Second value to compare
+/// @returns {boolean}
+@function gt( $a, $b ) {
+  
+  @return $a > $b;
+  
+}
+
+/// Compares whether the first value is greater than or equal to the second value
+///
+/// @param {mixed} $a - First value to compare
+/// @param {arglist} $b - Second value to compare
+/// @returns {boolean}
+@function gteq( $a, $b ) {
+  
+  @return $a >= $b;
+  
+}
+
+/// Compares whether the first value is less than the second value
+///
+/// @param {mixed} $a - First value to compare
+/// @param {arglist} $b - Second value to compare
+/// @returns {boolean}
+@function lt( $a, $b ) {
+  
+  @return $a < $b;
+  
+}
+
+/// Compares whether the first value is less than or equal to the second value
+///
+/// @param {mixed} $a - First value to compare
+/// @param {arglist} $b - Second value to compare
+/// @returns {boolean}
+@function lteq( $a, $b ) {
+  
+  @return $a <= $b;
+  
+}
+
+/// Determines if a value is equal to `true`
+///
+/// @param {mixed} $a - Some value to test
+/// @returns {boolean}
+@function true( $a ) { @return $a == true; }
+
+/// Determines if a value is equal to `false`
+///
+/// @param {mixed} $a - Some value to test
+/// @returns {boolean}
+@function false( $a ) { @return $a == false; }

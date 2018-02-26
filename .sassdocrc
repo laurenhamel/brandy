@@ -12,11 +12,11 @@
     "brandy-funcs": "Functions",
     "brandy-utils": "Utilities",
     "brandy-help": "Helpers",
-    
+    "brandy-comp": "Comparators",
     "brandy-setters": "Setters",
     "brandy-getters": "Getters",
-    
     "brandy-casts": "Casts",
+    "brandy-type": "Typifications",
     "brandy-strings": "Strings",
     "brandy-numbers": "Numbers",
     "brandy-colors": "Colors",
@@ -24,7 +24,8 @@
     "brandy-screens": "Screens",
     "brandy-lists": "Lists",
     "brandy-maps": "Maps",
-    
+    "brandy-matrix": "Matrices",
+    "brandy-sprite": "Sprites",
     "brandy-math": "Math"
   }
 }

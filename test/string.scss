@@ -71,12 +71,30 @@
   'pixel': false
 ));
 
+@include test('str-is-number', (
+  '1px': true,
+  '-1px': true,
+  '1': true,
+  '-1': true,
+  'x': false
+));
+
 @include test('char-at', (
   ('lymph node', 2): 'y',
   ('doppleganger', 7): 'g',
 ));
 
+@include test('chars-at', (
+  ('lymph node', 2, 4, 6): 'y' 'p' ' ',
+  ('doppleganger', 7, 10): 'g' 'g',
+));
+
 @include test('char-first', (
+  'lymph node': 'l',
+  'doppleganger': 'd',
+));
+
+@include test('str-first', (
   'lymph node': 'l',
   'doppleganger': 'd',
 ));
@@ -86,12 +104,27 @@
   'doppleganger': 'r',
 ));
 
+@include test('str-last', (
+  'lymph node': 'e',
+  'doppleganger': 'r',
+));
+
+@include test('str-head', (
+  'lymph node': 'lymph nod',
+  'doppleganger': 'dopplegange',
+));
+
+@include test('str-tail', (
+  'lymph node': 'ymph node',
+  'doppleganger': 'oppleganger',
+));
+
 @include test('chars-between', (
-  ('lymph node', 'y', 'e'): 8,
-  ('doppleganger', 'p', 'p'): 1,
+  ('lymph node', 'y', 'e'): 9,
+  ('doppleganger', 'p', 'p'): 2,
   ('testing', 'i', 'z'): 0,
-  ('dagger', 'g' 2, 'r'): 2,
-  ('litter', 'l', 't' 2): 3,
+  ('dagger', 'g' 2, 'r'): 3,
+  ('litter', 'l', 't' 2): 4,
   ('foo', 'f', 'o' 2, false): 1
 ));
 
@@ -102,4 +135,30 @@
   ('dagger', 'g' 2, 'r'): 'ger',
   ('litter', 'l', 't' 2): 'litt',
   ('foo', 'f', 'o' 2, false): 'o'
+));
+
+@include test('str-last-index', (
+  ('friends with benefits', 'i'): 19
+));
+
+@include test('str-pad', (
+  ('1', 5, '0'): '00001',
+  ('buzz', 8, 'z', right): 'buzzzzzz'
+));
+
+@include test('to-upper-case-first', (
+  'the boy who cried wolf': 'The boy who cried wolf'
+));
+
+@include test('to-lower-case-first', (
+  'The boy who cried wolf': 'the boy who cried wolf'
+));
+
+@include test('to-capitalize', (
+  'a man and his dog': 'A Man And His Dog'
+));
+
+@include test('to-title-case', (
+  'a man and his dog': 'A Man and His Dog',
+  'a trilogy of fire: the burning sands': 'A Trilogy of Fire: The Burning Sands'
 ));

@@ -1,0 +1,13 @@
+@import '../scss/brandy';
+
+$image: 'http://assetsblogfly1.catchpoint.com/wp-content/uploads/2015/03/Image-Optimization41.png';
+
+$sprite: sprite($image, 3, (
+  't-facebook' 't-flickr' 't-dribbble' 't-google+' 't-linkedin' 't-pinterest' 't-rss' 't-skype' 't-twitter' 't-vimeo' 't-youtube'
+  'facebook' 'flickr' 'dribbble' 'google+' 'linkedin' 'pinterest' 'rss' 'skype' 'twitter' 'vimeo' 'youtube'
+  'g-facebook' 'g-flickr' 'g-dribbble' 'g-google+' 'g-linkedin' 'g-pinterest' 'g-rss' 'g-skype' 'g-twitter' 'g-vimeo' 'g-youtube'
+), (84 83), 0);
+
+.facebook-icon {
+  @include sprite-image($sprite, 'facebook');
+}

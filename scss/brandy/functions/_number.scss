@@ -1,3 +1,7 @@
+////
+/// @group brandy-numbers
+////
+
 /// Converts some string representation of a unit to its numeric digit
 ///
 /// @param {string} $unit - Some string representation of a unit
@@ -81,6 +85,7 @@
 /// @requires {function} is-string
 /// @requires {function} unit-to-digit
 /// @requires {function} str-is-number
+/// @requires {function} str-first
 /// @param {mixed} $value - Some numeric value
 /// @returns {boolean}
 @function is-negative( $value ) {
@@ -97,7 +102,7 @@
     
     @if( str-is-number($value) ) {
       
-      @return if( str-slice($value, 1, 1) == '-', true, false );
+      @return if( str-first($value) == '-', true, false );
       
     }
       

@@ -336,3 +336,8 @@ $brandy-numbers: (
   '8': 8,
   '9': 9
 );
+
+/// Defines a list of words that should not be capitalized when converting a string to titlecase.
+///
+/// @type list
+$brandy-title-blacklist: 'a' 'an' 'the' 'and' 'but' 'for' 'yet' 'at' 'by' 'from' 'to' 'as' 'in' 'or' 'for' 'nor' 'on' 'of' 'up';
