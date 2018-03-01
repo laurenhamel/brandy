@@ -57,6 +57,106 @@
   
 }
 
+/// Compares whether the first value is almost equal to the second value
+///
+/// @requires {function} is-string
+/// @requires {function} is-number
+/// @requires {function} is-map
+/// @requires {function} is-list
+/// @requires {function} is-arglist
+/// @requires {function} is-matrix
+/// @requires {function} is-boolean
+/// @param {mixed} $a - First value to compare
+/// @param {arglist} $b - Second value to compare
+/// @param {number} $e - Allowed tolerance for errors
+/// @returns {boolean}
+@function aeq( $a, $b, $t: 1 ) {
+  
+  // Handle numbers.
+  @if( is-number($a) and is-number($b) ) {
+    
+    // Convert to strings and handle as strings.
+    $a: cast-string($a);
+    $b: cast-string($b);
+    
+  }
+  
+  // Handle matrices.
+  @if( is-matrix($a) and is-matrix($b) ) {
+    
+    // Convert to flat lists and handle as lists.
+    $a: flatten($a);
+    $b: flatten($b);
+    
+  }
+  
+  // Handle strings.
+  @if( is-string($a) and is-string($b) ) {
+    
+    // Log differences.
+    $d: abs(str-length($a) - str-length($b));
+    
+    // Allow `$t` character differences.
+    @for $i from 1 through min(str-length($a), str-length($b)) {
+      
+      $aa: nth($a, $i);
+      $bb: nth($b, $i);
+      
+      @if( $aa != $bb ) { $d: $d + 1; }
+      
+    }
+    
+    @if( $d > $t ) { @return false; }
+    
+  }
+  
+  // Handle maps.
+  @else if( is-map($a) and is-map($b) ) {
+    
+    // Log differences.
+    $d: abs(length(map-keys($a)) - length(map-keys($b)));
+    
+    // Allow `$t` key-value differences.
+    @each $key, $value in $a {
+      
+      @if( map-has-key($b, $key) and $value != map-get($b, $key) ) { $d: $d + 1; }
+      
+    }
+    
+    @if( $d > $t ) { @return false; }
+    
+  }
+  
+  // Handle lists.
+  @else if( (is-list($a) or is-arglist($b)) and (is-list($b) or is-arglist($b))  ) {
+    
+    // Log differences.
+    $d: abs(length($a) - length($b));
+    
+    // Allow `$t` item differences.
+    @for $i from 1 through min(length($a), length($b)) {
+      
+      $aa: nth($a, $i);
+      $bb: nth($b, $i);
+      
+      @if( $aa != $bb ) { $d: $d + 1; }
+      
+    }
+    
+    @if( $d > $t ) { @return false; }
+    
+  }
+  
+  // Handle booleans.
+  @else if( is-boolean($a) and is-boolean($b) ) { @return $a == $b; }
+  
+  // Handle all other unrecognized values or values with mis-matched types.
+  @else { @return false; }
+  
+  @return true;
+  
+}
+
 /// Compares whether the first value is less than or equal to the second value
 ///
 /// @param {mixed} $a - First value to compare

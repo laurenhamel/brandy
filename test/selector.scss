@@ -1,0 +1,17 @@
+@import '../scss/brandy';
+
+@include compare((
+  $all-buttons: unstringify('button', 'input[type="button"]', 'input[type="submit"]', 'input[type="reset"]')
+));
+
+@include add-buttons( '.button' );
+
+@include compare((
+  $all-buttons: unstringify('button', 'input[type="button"]', 'input[type="submit"]', 'input[type="reset"]', '.button')
+));
+
+@include remove-buttons( '.button' );
+
+@include compare((
+  $all-buttons: unstringify('button', 'input[type="button"]', 'input[type="submit"]', 'input[type="reset"]')
+));

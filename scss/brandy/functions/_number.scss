@@ -197,3 +197,117 @@
   }
   
 }
+
+/// Determines if a number is an integer
+///
+/// @requires {function} is-number
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-integer( $value ) { @return is-number($value) and $value % 1 == 0; }
+
+/// Determines if a number is a float
+///
+/// @requires {function} is-number
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-float( $value ) { @return is-number($value) and $value % 1 != 0; }
+
+/// Determines if a number is a percentage
+///
+/// @requires {function} is-number
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-percentage( $value ) { @return is-number($value) and unit($value) == '%'; }
+
+/// Determines if a number is a percentage
+///
+/// @alias is-percentage
+/// @requires {function} is-number
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-percent( $value ) { @return is-percentage($value); }
+
+/// Determines if a number is even
+///
+/// @requires {function} is-number
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-even( $value ) { @return is-number($value) and $value % 2 == 0; }
+
+/// Determines if a number is odd
+///
+/// @requires {function} is-number
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-integer( $value ) { @return is-number($value) and $value % 2 != 0; }
+
+/// Determines if a number is an angle
+///
+/// @requires {function} is-number
+/// @requires {function} contains
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-angle( $value ) { @return is-number($value) and contains('deg' 'rad' 'grad' 'turn', unit($value)); }
+
+/// Determines if a number is an angle
+///
+/// @requires {function} is-number
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-frequency( $value ) { @return is-number($value) and contains('Hz' 'kHz', unit($value)); }
+
+/// Determines if a number is a relative length
+///
+/// @requires {function} is-number
+/// @requires {function} contains
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-relative-length( $value ) { @return is-number($value) and contains('em' 'ex' 'ch' 'rem' 'vw' 'vh' 'vmin' 'vmax', unit($value)); }
+
+/// Determines if a number is an absolute length
+///
+/// @requires {function} is-number
+/// @requires {function} contains
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-absolute-length( $value ) { @return is-number($value) and contains('cm' 'mm' 'in' 'px' 'pt' 'pc' 'pica', unit($value)); }
+
+/// Determines if a number is a length
+///
+/// @requires {function} is-relative-length
+/// @requires {function} is-absolute-length
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-length( $value ) { @return is-relative-length($value) or is-absolute-length($value); }
+
+/// Determines if a number is a resolution
+///
+/// @requires {function} is-number
+/// @requires {function} contains
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-resolution( $value ) { @return is-number($value) and contains('dpi' 'dpcm' 'dppx', unit($value)); }
+
+/// Determines whether some value is a time
+///
+/// @requires {function} is-number
+/// @requires {function} contains
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-time( $value ) { @return is-number($value) and contains('ms' 's', unit($value)); }
+
+/// Determines whether some value is a duration
+///
+/// @alias is-time
+/// @requires {function} is-time
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-duration( $value ) { @return is-time($value); }
+
+/// Determines whether some value is equal to `NaN`
+/// 
+/// @requires {function} is-number
+/// @requires {function} cast-string
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-NaN( $value ) { @return is-number($value) and cast-string($value) == 'NaN'; }

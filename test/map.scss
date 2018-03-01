@@ -1,0 +1,191 @@
+@import '../scss/brandy';
+
+$colors: (
+  
+  'black': black,
+  'white': white,
+  
+  'gray': (
+    'light': gainsboro,
+    'base': gray,
+    'dark': darkgray,
+    'silver': silver
+  ),
+  
+  'grey': (
+    'light': gainsboro,
+    'base': gray,
+    'dark': darkgray,
+    'silver': silver
+  ),
+  
+  'blue': purple,
+  'red': (
+    'base': red,
+    'dark': darkblue
+  )
+  
+);
+
+@include test('map-deep-get', (
+  ($colors, 'black'): black,
+  ($colors, 'gray.base'): gray
+));
+
+@include test('map-deep-set', (
+  ($colors, 'blue', blue): (
+  
+    'black': black,
+    'white': white,
+
+    'gray': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'grey': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'blue': blue,
+    'red': (
+      'base': red,
+      'dark': darkblue
+    )
+
+  ),
+  ($colors, 'red.dark', darkred): (
+  
+    'black': black,
+    'white': white,
+
+    'gray': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'grey': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'blue': purple,
+    'red': (
+      'base': red,
+      'dark': darkred
+    )
+
+  )
+));
+
+@include test('map-depth', (
+  $colors: 2
+), false);
+
+@include test('map-has-keys', (
+  ($colors, 'blue', 'red.dark'): true,
+  ($colors, 'blue', 'yellow'): false,
+  ($colors, 'blue'): true,
+  ($colors, 'yellow'): false
+));
+
+@include test('map-combine', (
+  ('red' 'green' 'blue' 'purple', red green blue ('base': purple)): (
+    'red': red,
+    'green': green,
+    'blue': blue,
+    'purple': (
+      'base': purple
+    )
+  )
+));
+
+@include test('map-extend', (
+  ($colors, ('blue': blue, 'red': ('dark': darkred))): (
+  
+    'black': black,
+    'white': white,
+
+    'gray': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'grey': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'blue': blue,
+    'red': (
+      'base': red,
+      'dark': darkred
+    )
+  
+  )
+));
+
+@include test('map-set', (
+  ($colors, 'blue', blue): (
+  
+    'black': black,
+    'white': white,
+
+    'gray': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'grey': (
+      'light': gainsboro,
+      'base': gray,
+      'dark': darkgray,
+      'silver': silver
+    ),
+
+    'blue': blue,
+    'red': (
+      'base': red,
+      'dark': darkblue
+    )
+
+  )
+));
+
+@include test('map-flatten', (
+  $colors: (
+  
+    'black': black,
+    'white': white,
+  
+    'gray.light': gainsboro,
+    'gray.base': gray,
+    'gray.dark': darkgray,
+    'gray.silver': silver,
+
+    'grey.light': gainsboro,
+    'grey.base': gray,
+    'grey.dark': darkgray,
+    'grey.silver': silver,
+
+    'blue': purple,
+    'red.base': red,
+    'red.dark': darkblue
+
+  )
+), false);

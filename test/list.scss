@@ -1,0 +1,228 @@
+@import '../scss/brandy';
+
+$numbers: 1 2 3 4 5 1 6 7 8 9 0;
+$letters: 'c' 'a' 'b' 'a' 'd' 'e';
+
+@include test('first', (
+  $numbers: 1,
+  $letters: 'c'
+), false);
+
+@include test('last', (
+  $numbers: 0,
+  $letters: 'e'
+), false);
+
+@include test('last-index', (
+  ($numbers, 1): 6,
+  ($letters, 'a'): 4
+));
+
+@include test('prepend', (
+  ($numbers, 0): 0 1 2 3 4 5 1 6 7 8 9 0,
+  ($letters, 'z'): 'z' 'c' 'a' 'b' 'a' 'd' 'e'
+));
+
+@include test('insert-nth', (
+  ($numbers, 5, 0): 1 2 3 4 0 5 1 6 7 8 9 0,
+  ($letters, 3, 'z'): 'c' 'a' 'z' 'b' 'a' 'd' 'e'
+));
+
+@include test('replace', (
+  ($numbers, 5, 0): 1 2 3 4 0 1 6 7 8 9 0,
+  ($letters, 'b', 'z'): 'c' 'a' 'z' 'a' 'd' 'e'
+));
+
+@include test('replace-nth', (
+  ($numbers, 5, 0): 1 2 3 4 0 1 6 7 8 9 0,
+  ($letters, 3, 'z'): 'c' 'a' 'z' 'a' 'd' 'e'
+));
+
+@include test('remove', (
+  ($numbers, 5): 1 2 3 4 1 6 7 8 9 0,
+  ($letters, 'b'): 'c' 'a' 'a' 'd' 'e'
+));
+
+@include test('remove-nth', (
+  ($numbers, 5): 1 2 3 4 1 6 7 8 9 0,
+  ($letters, 3): 'c' 'a' 'a' 'd' 'e'
+));
+
+@include test('slice', (
+  ($numbers, 1, 3): 1 2 3,
+  ($letters, -3, -1): 'a' 'd' 'e'
+));
+
+@include test('reverse', (
+  $numbers: 0 9 8 7 6 1 5 4 3 2 1,
+  $letters: 'e' 'd' 'a' 'b' 'a' 'c'
+), false);
+
+@include test('glue', (
+  ($numbers, ' + '): '1 + 2 + 3 + 4 + 5 + 1 + 6 + 7 + 8 + 9 + 0',
+  ($letters, '-'): 'c-a-b-a-d-e'
+));
+
+@include test('shift-index', (
+  ($numbers, 1): 0 1 2 3 4 5 1 6 7 8 9,
+  ($letters, 3): 'a' 'd' 'e' 'c' 'a' 'b'
+));
+
+@include test('contains', (
+  ($numbers, 0): true,
+  ($letters, 'z'): false
+));
+
+@include test('starts-with', (
+  ($numbers, 1): true,
+  ($letters, 'b'): false
+));
+
+@include test('ends-with', (
+  ($numbers, 0): true,
+  ($letters, 'd'): false
+));
+
+@include test('chunk', (
+  ($numbers, 2): ((1 2), (3 4), (5 1), (6 7), (8 9), cast-list(0)),
+  ($letters, 3): (('c' 'a' 'b'), ('a' 'd' 'e'))
+));
+
+@include test('count', (
+  ($numbers, 1): 2,
+  ($letters, 'a', 'z'): ('a': 2, 'z': 0)
+));
+
+@include test('every', (
+  ($numbers, 'gteq', 4): false,
+  ($letters, 'eq', 'z'): false
+));
+
+@include test('some', (
+  ($numbers, 'gteq', 4): true,
+  ($letters, 'eq', 'z'): false
+));
+
+@include test('is-empty', (
+  $numbers: false,
+  $letters: false, 
+  cast-list('foo'): false,
+  (): true
+), false);
+
+@include test('is-multiple', (
+  $numbers: true,
+  $letters: true,
+  cast-list('bar'): false,
+  (): false
+), false);
+
+@include test('is-single', (
+  $numbers: false,
+  $letters: false,
+  cast-list('baz'): true,
+  (): false
+), false);
+
+@include test('unique', (
+  $numbers: 1 2 3 4 5 6 7 8 9 0,
+  $letters: 'c' 'a' 'b' 'd' 'e'
+), false);
+
+@include test('is-truthy', (
+  $numbers: false,
+  $letters: false,
+  (true, true): true,
+  (true, false): false,
+  (false, false): false
+), false);
+
+@include test('is-falsy', (
+  $numbers: false,
+  $letters: false,
+  (true, true): false,
+  (true, false): false,
+  (false, false): true
+), false);
+
+@include test('intersection', (
+  ($numbers, $letters): (),
+  ($numbers, 2 4 6 8 10 12): 2 4 6 8,
+  ($letters, 'a' 'b' 'c' 'x' 'y' 'z'): 'c' 'a' 'b'
+));
+
+@include test('is-symmetrical', (
+  $numbers: false,
+  $letters: false,
+  join($numbers, reverse($numbers)): true,
+  join($letters, reverse($letters)): true
+), false);
+
+@include test('scrub', (
+  $numbers: $numbers,
+  $letters: $letters,
+  join(null, $numbers): $numbers,
+  join(false, $letters): $letters
+), false);
+
+@include test('range', (
+  5: 1 2 3 4 5,
+  3: 1 2 3
+));
+
+@include test('range-min-max', (
+  (2, 5): 2 3 4 5,
+  (7, 3): 7 6 5 4 3
+));
+
+@include test('range-alpha', (
+  'd': 'a' 'b' 'c' 'd',
+  'c': 'a' 'b' 'c'
+));
+
+@include test('range-alpha-min-max', (
+  ('d' 'f'): 'd' 'e' 'f',
+  ('c', 'a'): 'c' 'b' 'a'
+));
+
+@include test('stringify', (
+  $numbers: '1' '2' '3' '4' '5' '1' '6' '7' '8' '9' '0',
+  $letters: $letters
+), false);
+
+@include test('sum', (
+  $numbers: 46,
+  $letters: 0
+), false);
+
+@include test('avg', (
+  $numbers: 4.181818181818,
+  $letters: null
+), false);
+
+@include test('sort', (
+  $numbers: 0 1 1 2 3 4 5 6 7 8 9,
+  $letters: 'a' 'a' 'b' 'c' 'd' 'e'
+), false);
+
+@include test('joins', (
+  ($numbers, $letters, cast-list('foo')): join(join($numbers, $letters), 'foo')
+));
+
+@include test('walk', (
+  ($numbers, 'cast-string'):  '1' '2' '3' '4' '5' '1' '6' '7' '8' '9' '0'
+));
+
+@include test('head', (
+  $numbers: 1 2 3 4 5 1 6 7 8 9,
+  $letters: 'c' 'a' 'b' 'a' 'd'
+), false);
+
+@include test('tail', (
+  $numbers: 2 3 4 5 1 6 7 8 9 0,
+  $letters: 'a' 'b' 'a' 'd' 'e'
+), false);
+
+@include test('flatten', (
+  $numbers $letters: 1 2 3 4 5 1 6 7 8 9 0 'c' 'a' 'b' 'a' 'd' 'e'
+), false);

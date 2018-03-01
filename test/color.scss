@@ -1,0 +1,132 @@
+@import '../scss/brandy';
+
+$yellow: rgb(255, 255, 0);
+$orange: rgb(200, 100, 0);
+$grey: #333333;
+
+@include test('brightness', (
+  $yellow: 88.6%,
+  $orange: 46.4705882353%,
+  $grey: 20%
+));
+
+@include test('luminance', (
+  $yellow: .9278,
+  $orange: 0.2139370307,
+  $grey: 0.0331047666
+));
+
+@include test('contrast-ratio', (
+  ($yellow, $brandy-dark-text): 11.7658714457,
+  ($yellow, $brandy-light-text): 1.0738392309,
+  ($orange, $brandy-dark-text): 3.1759553823,
+  ($orange, $brandy-light-text): 3.9782216133,
+  ($grey, $brandy-dark-text): 1,
+  ($grey, $brandy-light-text): 12.6346543445
+));
+
+@include test('color-contrast', (
+  $yellow: $brandy-dark-text,
+  $orange: $brandy-light-text,
+  $grey: $brandy-light-text
+));
+
+@include test('to-hex', (
+  $yellow: FFFF00,
+  $orange: C86400,
+  $grey: 333333
+));
+
+@include test('to-rgb', (
+  $yellow: (255, 255, 0),
+  $orange: (200, 100, 0),
+  $grey: (51, 51, 51)
+));
+
+@include test('to-hsv', (
+  $yellow: (60deg, 100%, 100%),
+  $orange: (30deg, 100%, 78.431372549%),
+  $grey: (0deg, 0%, 20%)
+));
+
+@include test('to-hsb', (
+  $yellow: (60deg, 100%, 100%),
+  $orange: (30deg, 100%, 78.431372549%),
+  $grey: (0deg, 0%, 20%)
+));
+
+@include test('to-hsl', (
+  $yellow: (60deg, 100%, 50%),
+  $orange: (30deg, 100%, 39.2156862745%),
+  $grey: (0deg, 0%, 20%)
+));
+
+@include test('hsv', (
+  (60deg, 100%, 100%): $yellow,
+  (30deg, 100%, 78.431372549%): $orange,
+  (0deg, 0%, 20%): $grey
+));
+
+@include test('hsb', (
+  (60deg, 100%, 100%): $yellow,
+  (30deg, 100%, 78.431372549%): $orange,
+  (0deg, 0%, 20%): $grey
+));
+
+@include test('tint', (
+  ($yellow, 10%): #FFFF1A,
+  ($orange, 10%): #CE741A,
+  ($grey, 10%): #474747
+));
+
+@include test('shade', (
+  ($yellow, 10%): #E6E600,
+  ($orange, 10%): #B45A00,
+  ($grey, 10%): #2E2E2E
+));
+
+@include test('tone', (
+  ($yellow, 10%): #F2F20D,
+  ($orange, 10%): #C1670D,
+  ($grey, 10%): #3B3B3B
+));
+
+@include test('color-complementary', (
+  $orange: #0064C8
+));
+
+@include test('color-triad', (
+  $orange: ($orange, #00C864, #6400C8)
+));
+
+@include test('color-analogous', (
+  $orange: ($orange, #C8C800, #C80000)
+));
+
+@include test('color-split-complementary', (
+  $orange: ($orange, #0000C8, #00C8C8)
+));
+
+@include test('color-rectangle', (
+  $orange: ($orange, #C80064, #0064C8, #00C864)
+));
+
+@include test('color-square', (
+  $orange: ($orange, #C800C8, #0064C8, #00C800)
+));
+
+@include test('color-stops', (
+  ($orange, #0064C8, 9): ($orange, #B46414, #A06428, #8C643C, #786450, #646464, #506478, #3C648C, #2864A0, #1464B4, #0064C8)
+));
+
+@include test('color-tints', (
+  ($orange, 5): ($orange, #D17E2B, #DA9855, #E4B280, #EDCBAA, #F6E5D5, white)
+));
+
+@include test('color-shades', (
+  ($orange, 5): ($orange, #A75300, #854300, #643200, #432100, #211100, black)
+));
+
+@include test('color-tones', (
+  ($orange, 5): ($orange, #BC6915, #B06D2B, #A47240, #987755, #8C7B6B, gray)
+));

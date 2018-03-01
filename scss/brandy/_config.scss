@@ -111,7 +111,7 @@ $brandy-fonts-map: (
 /// @prop {number} <screenId> - A breakpoint associated with the corresponding screen identifier
 $brandy-screens-map: (
   'mobile': max-width 400px,
-  'tablet': 400px 800px,
+  'tablet': 401px 800px,
   'desktop': min-width 801px
 ) !default;
 
@@ -284,7 +284,7 @@ $brandy-units: (
   'Hz': 0Hz,
   'kHz': 0kHz,
   'dpi': 0dpi
-);
+) !default;
 
 /// Defines the recognized alphabet characters that Brandy uses for some function and mixins.
 /// Use the map keys to represent *lowercase* letters and map values to represent *uppercase* letters. 
@@ -317,7 +317,7 @@ $brandy-letters: (
   'x': 'X',
   'y': 'Y',
   'z': 'Z',
-);
+) !default;
 
 /// Defines the recognized numeric characters that Brandy uses for some function and mixins.
 /// Use the map keys to represent numbers in *string* form and the map values to represent
@@ -335,9 +335,18 @@ $brandy-numbers: (
   '7': 7,
   '8': 8,
   '9': 9
-);
+) !default;
 
 /// Defines a list of words that should not be capitalized when converting a string to titlecase.
 ///
 /// @type list
-$brandy-title-blacklist: 'a' 'an' 'the' 'and' 'but' 'for' 'yet' 'at' 'by' 'from' 'to' 'as' 'in' 'or' 'for' 'nor' 'on' 'of' 'up';
+$brandy-title-blacklist: 'a' 'an' 'the' 'and' 'but' 'for' 'yet' 'at' 'by' 'from' 'to' 'as' 'in' 'or' 'for' 'nor' 'on' 'of' 'up' !default;
+
+/// Defines the default sort order for characters
+/// 
+/// @type list
+$brandy-sort-order: (
+  "!", "#", "$", "%", "&", "'", "(", ")", "*", "+", ",", "-", ".", "/", "[", "\\", "]", "^", "_", "{", "|", "}", "~",
+  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+  'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+) !default;

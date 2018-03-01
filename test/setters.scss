@@ -2,6 +2,8 @@
 
 @include font('test', (Arial, sans-serif));
 @include color('test', ('base': blue));
+@include const('test', 'foo');
+@include screen('test', min-width 1920px);
 
 @include test('font', (
   'test': (Arial, sans-serif)
@@ -9,4 +11,12 @@
 
 @include test('color', (
   'test': blue
+));
+
+@include test('screen', (
+  'test': min-width 1920px
+));
+
+@include test('const', (
+  'test': 'foo'
 ));

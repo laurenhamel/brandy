@@ -5,10 +5,18 @@
 /// Retrieves a property value from a nested map
 /// 
 /// @author Hugo Giraudel
+/// @requires {function} is-map
 /// @param {map} $map - Some nested map
 /// @param {string} $key - A dot-delimited map property
 /// @returns {mixed}
+/// @throws 'Cannot execute `map-deep-get` on non-map #{$map}.'
 @function map-deep-get( $map, $key ){
+  
+  @if( not is-map($map) ) {
+    
+    @error 'Cannot execute `map-deep-get` on non-map #{$map}.';
+    
+  }
   
   // Split keys.
   $keys: str-split($key, '.');
@@ -26,6 +34,8 @@
 /// Sets a property value in a nested map
 /// 
 /// @author Hugo Giraudel
+/// @requires {function} is-map
+/// @requires {function} is-string
 /// @requires {function} str-split
 /// @requires {function} first
 /// @requires {function} last
@@ -33,34 +43,47 @@
 /// @param {string} $key - A dot-delimited map property
 /// @param {mixed} $value - Some value
 /// @returns {map}
-/// @throws 'Cannot execute `map-deep-set` since key `#{$key}` does not exist at current level in map.'
+/// @throws 'Cannot execute `map-deep-set` on non-map #{$map}.'
+/// @throws 'Function `map-deep-set` expects a string for argument `$key` but `#{type-of($key)}` was given.'
+/// @throws 'Cannot execute `map-deep-set` since key `#{$key}` does not exist at level #{$level} in map.'
 @function map-deep-set( $map, $key, $value ){
+  
+  @if( not is-map($map) ) {
+    
+    @error 'Cannot execute `map-deep-set` on non-map #{$map}.';
+    
+  }
+  
+  @if( not is-string($key) ) {
+    
+    @error 'Function `map-deep-set` expects a string for argument `$key` but `#{type-of($key)}` was given.';
+    
+  }
   
   // Split keys.
   $keys: str-split($key, '.');
   
   // Handle non-nested keys.
-  @if( length($keys) == 1) {
-      
-    @return map-merge($map, (first($keys): $value));
-    
-  }
+  @if( length($keys) == 1 ) { @return map-merge($map, ($key: $value)); }
   
   // Otherwise, handle nested keys.
   $maps: ($map, );
+  
+  $level: 1;
     
-  @for $i from 1 through length($keys) - 1 { 
+  @for $i from 1 through (length($keys) - 1) { 
     
     $key: nth($keys, $i);
     $nested: map-get(last($maps), $key);
     
     @if( is-null($nested) ) {
       
-      @error 'Cannot execute `map-deep-set` since key `#{$key}` does not exist at current level in map.';
+      @error 'Cannot execute `map-deep-set` since key `#{$key}` does not exist at level #{$level} in map.';
       
     }
       
     $maps: append( $maps, $nested );
+    $level: $level + 1;
     
   }
   
@@ -83,19 +106,23 @@
 /// Determines the depth of a map
 /// 
 /// @author Hugo Giraudel
+/// @requires {function} is-map
 /// @param {map} $map - Some map
 /// @returns {number}
+/// @throws 'Cannot execute `map-depth` on non-map #{$map}.'
 @function map-depth( $map ){
+  
+  @if( not is-map($map) ) {
+    
+    @error 'Cannot execute `map-depth` on non-map #{$map}.';
+    
+  }
     
   $levels: 1;
     
   @each $key, $value in $map {
         
-    @if( type-of($value) == 'map') {
-           
-      $levela: max(map-depth($value) + 1, $levels);
-        
-    }
+    @if( type-of($value) == 'map') { $levels: max(map-depth($value) + 1, $levels); }
     
   }
     
@@ -105,14 +132,21 @@
 
 /// Determines whether or not a map contains the one or more keys using dot-delimited syntax for keys
 /// 
+/// @author Hugo Giraudel
 /// @requires {function} first
 /// @requires {function} last
 /// @requires {function} is-map
-/// @author Hugo Giraudel
 /// @param {map} $map - Some nested map
 /// @param {string} $keys - A list of dot-delimited map properties to be searched for
 /// @returns {boolean}
+/// @throws 'Cannot execute `map-has-keys` on non-map #{$map}.'
 @function map-has-keys( $map, $keys... ){
+  
+  @if( not is-map($map) ) {
+    
+    @error 'Cannot execute `map-has-keys` on non-map #{$map}.';
+    
+  }
     
   @each $key in $keys {
     
@@ -155,10 +189,25 @@
 /// Combines a list of keys and a list of values as a map
 /// 
 /// @author Hugo Giraudel
+/// @requires {function} is-list
 /// @param {list} $keys - A list of keys
 /// @param {list} $values - A list of values
 /// @returns {map}
+/// @throws 'Function `map-combine` expects a list for argument `$keys` but `#{type-of($keys)}` was given.'
+/// @throws 'Function `map-combine` expects a list for argument `$values` but `#{type-of($values)}` was given.'
 @function map-combine( $keys, $values ){
+  
+  @if( not is-list($keys) ) {
+    
+    @error 'Function `map-combine` expects a list for argument `$keys` but `#{type-of($keys)}` was given.';
+    
+  }
+  
+  @if( not is-list($values) ) {
+    
+    @error 'Function `map-combine` expects a list for argument `$values` but `#{type-of($values)}` was given.';
+    
+  }
     
   $length-keys: length( $keys );
   $length-values: length( $values );
@@ -179,19 +228,36 @@
 /// Inspired by jQuery, enables a map to be extended with one or more maps with optional recursion
 /// 
 /// @author Hugo Giraudel
+/// @requires {function} is-map
+/// @requires {function} is-boolean
+/// @requires {function} last
 /// @param {map} $map - Some map to be extended
 /// @param {arglist} $maps - Additional maps to be used to extend the first map
-/// @param {boolean} $deep [false] - Passed in as the last argument, enables recursive mode
+/// @param {boolean} $shallow [false] - Passed in as the last argument, disables recursive mode
 /// @returns {map}
-@function map-extend( $map, $maps... /*, $deep */ ){
+/// @throws 'Cannot execute `map-extend` on non-map #{$map}.'
+/// @throws 'Cannot execute `map-extend` with non-map `#{$current}`.'
+@function map-extend( $map, $maps... /*, $shallow */ ){
+
+  @if( not is-map($map) ) {
     
-  $last: nth($maps, -1);
-  $deep: $last == true;
-  $max: if( $deep, length($maps) - 1, length($maps) );
+    @error 'Cannot execute `map-extend` on non-map #{$map}.';
     
+  }
+
+  $last: last($maps); 
+  $deep: if( $last == true, false, true );
+  $max: if( $last == true or $last == false, length($maps) - 1, length($maps) );
+ 
   @for $i from 1 through $max {
-        
+    
     $current: nth($maps, $i);
+    
+    @if( not is-map($current) ) {
+      
+      @error 'Cannot execute `map-extend` with non-map `#{$current}`.';
+      
+    }
         
     @if( not $deep ){ $map: map-merge( $map, $current ); }
         
@@ -199,7 +265,7 @@
           
       @each $key, $value in $current {
                 
-        @if( type-of($value) == 'map' and type-of(map-get($map,$key)) == 'map' ){
+        @if( is-map($value) and is-map(map-get($map, $key)) ){
                     
           $value: map-extend(map-get($map, $key), $value, true);
                 
@@ -220,21 +286,57 @@
 /// A simplified version of `map-merge()`, directly sets a map value
 /// 
 /// @author Miriam Suzanne
+/// @requires {function} is-map
+/// @requires {function} is-list
+/// @requires {function} is-empty
 /// @param {map} $map - Some map
 /// @param {mixed} $key - Some map property
 /// @param {mixed} $value - Some map value
 /// @returns {map}
+/// @throws 'Cannot execute `map-set` on non-map #{$map}.'
 @function map-set( $map, $key, $value ){
-    @return map-merge( $map, ($key: $value) );
+  
+  @if( not is-map($map) and not (is-list($map) and is-empty($map)) ) {
+    
+    @error 'Cannot execute `map-set` on non-map #{$map}.';
+    
+  }
+  
+  @return map-merge( $map, ($key: $value) );
+  
 }
 
 /// Flattens a nested map to a single level of depth
 ///
 /// @requires {function} map-set
+/// @requires {function} is-map
+/// @requires {function} is-string
 /// @param {map} $map - Some map
 /// @param {string} $delimiter ['.'] - Delimits previously nested map levels
 /// @param {string} $prefix [''] - A prefix to be added to keys at the first map level, used for recursion
+/// @returns {map}
+/// @throws 'Cannot execute `map-flatten` on non-map #{$map}.'
+/// @throws 'Function `map-flatten` expects a string for argument `$delimiter` but `#{type-of($delimiter)}` was given.'
+/// @throws 'Function `map-flatten` expects a string for argument `$prefix` but `#{type-of($prefix)}` was given.'
 @function map-flatten( $map, $delimiter: '.', $prefix: '' ){
+  
+  @if( not is-map($map) ) {
+    
+    @error 'Cannot execute `map-flatten` on non-map #{$map}.';
+    
+  }
+  
+  @if( not is-string($delimiter) ) {
+    
+    @error 'Function `map-flatten` expects a string for argument `$delimiter` but `#{type-of($delimiter)}` was given.';
+    
+  }
+  
+  @if( not is-string($prefix) ) {
+    
+    @error 'Function `map-flatten` expects a string for argument `$prefix` but `#{type-of($prefix)}` was given.';
+    
+  }
   
   $result: ();
   
@@ -242,17 +344,9 @@
     
     $key: if( $prefix != '', $prefix + $delimiter + $key, $key );
     
-    @if( type-of($value) == 'map' ) {
-      
-      $result: map-merge($result, map-flatten($value, $delimiter, $key));
-      
-    }
+    @if( is-map($value) ) { $result: map-merge($result, map-flatten($value, $delimiter, $key)); }
     
-    @else {
-      
-      $result: map-set($result, $key, $value);
-      
-    }
+    @else { $result: map-set($result, $key, $value); }
     
   }
   

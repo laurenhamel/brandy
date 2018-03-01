@@ -1,0 +1,18 @@
+@import '../scss/brandy';
+
+@include test('font-source', (
+  ('Lato', '../fonts/lato'): (
+    url("../fonts/lato.eot?#iefix") format("embedded-opentype"), 
+    url("../fonts/lato.woff") format("woff"), 
+    url("../fonts/lato.woff2") format("woff2"), 
+    url("../fonts/lato.svg#Lato") format("svg"), 
+    url("../fonts/lato.ttf") format("truetype")
+  ),
+  ('Times New Roman', '../fonts/times-new-roman'): (
+    url("../fonts/times-new-roman.eot?#iefix") format("embedded-opentype"), 
+    url("../fonts/times-new-roman.woff") format("woff"), 
+    url("../fonts/times-new-roman.woff2") format("woff2"), 
+    url("../fonts/times-new-roman.svg#Times-New-Roman") format("svg"), 
+    url("../fonts/times-new-roman.ttf") format("truetype")
+  )
+));

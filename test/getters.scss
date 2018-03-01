@@ -9,3 +9,13 @@
   'black': #000000,
   'white': #FFFFFF
 ));
+
+@include test('screen', (
+  'mobile': max-width 400px,
+  'tablet': 401px 800px
+));
+
+@include test('const', (
+  'PI': 3.1415926535897932384626433832795028841971693993751,
+  'Z-INDEX.MAX': 2147483648
+));

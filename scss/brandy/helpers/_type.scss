@@ -43,11 +43,13 @@
 ///
 /// @param {mixed} $value - Some value
 /// @returns {boolean}
-@function is-list( $value ) {
-  
-  @return type-of($value) == 'list';
-  
-}
+@function is-list( $value ) { @return type-of($value) == 'list'; }
+
+/// Determines whether some value is of type `arglist`
+///
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-arglist( $value ) { @return type-of($value) == 'arglist'; }
 
 /// Determines whether some value is of type `string`
 ///
@@ -96,3 +98,12 @@
   @return true;
     
 }
+
+/// Determines whether some value is a position
+///
+/// @requires {function} is-length
+/// @requires {function} is-percentage
+/// @requires {function} contains
+/// @param {mixed} $value - Some value
+/// @returns {boolean}
+@function is-position( $value ) { @return is-length($value) or is-percentage($value) or contains('top' 'left' 'right' 'bottom', $value); }

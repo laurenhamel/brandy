@@ -424,7 +424,7 @@
   
   @while( $sp != $s ) {
     
-    $x: $x + $sq;
+    $x: $x * $sq;
     $i: $i + 2;
     $sp: $s;
     $s: $s + $x / $i;
@@ -476,18 +476,20 @@
   @else {
     
     $e: floor($exp);
+    $r1: pow($base, $e);
+    $r2: 0;
+    
     $x: log($base) * ($exp - $e);
-    $t: 0;
     $i: 1;
     
     @for $n from 0 to 24 {
       
-      $t: $t + $i;
+      $r2: $r2 + $i;
       $i: $i * $x / ($n + 1);
       
     }
     
-    @return pow($base, $e) * $t;
+    @return $r1 * $r2;
     
   }
   

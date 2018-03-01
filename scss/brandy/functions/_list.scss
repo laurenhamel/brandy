@@ -6,12 +6,13 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {mixed}
 /// @throws 'Cannot get `first` item from non-list `#{$list}`.'
 @function first( $list ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot get `first` item from non-list `#{$list}`.';
     
@@ -25,12 +26,13 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {mixed}
 /// @throws 'Cannot get `last` item from non-list `#{$list}`.'
 @function last( $list ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot get `last` item from non-list `#{$list}`.';
     
@@ -44,13 +46,14 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @param {mixed} $value - Some value to be searched for
 /// @returns {number} - Returns the index of the last occurrence of the value or `0` when not found
 /// @throws Cannot get `last-index` from non-list `#{$list}`.'
 @function last-index( $list, $value ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot get `last-index` from non-list `#{$list}`.';
     
@@ -74,13 +77,14 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @param {mixed} $value - Some value to add to the beginning of the list
 /// @returns {list}
 /// @throws 'Cannot execute `prepend` on non-list `#{$list}`.'
 @function prepend( $list, $value ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `prepend` on non-list `#{$list}`.';
     
@@ -94,8 +98,9 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-number
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {number} $index - The index where the value should be inserted
 /// @param {mixed} $value - Some value to be inserted into the list
 /// @returns {list}
@@ -103,7 +108,7 @@
 /// @throws 'Function `insert-nth` expects a number for argument `$index` but `#{type-of($index)}` was given.'
 @function insert-nth( $list, $index, $value ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `insert-nth` on non-list `#{$list}`.';
     
@@ -116,12 +121,22 @@
   }
     
   $result: ();
+  
+  @if( $index <= length($list) ) {
     
-  @for $i from 1 through length($list) {
-        
-    @if( $i == $index ){ $result: append( $result, $value ); }
-        
-    $result: append( $result, nth( $list, $i ) );
+    @for $i from 1 through length($list) {
+
+      @if( $i == $index ){ $result: append( $result, $value ); }
+
+      $result: append( $result, nth( $list, $i ) );
+
+    }
+    
+  }
+  
+  @else {
+    
+    $result: append($list, $value);
     
   }
     
@@ -133,8 +148,9 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} contains
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {mixed} $old - The old value to be replaced
 /// @param {mixed} $new - The new value to be inserted in place of the old value
 /// @param {boolean} $recursive [false] - Determines whether only the first occurrence or all occurrences should be replaced
@@ -143,7 +159,7 @@
 /// @throws 'Function `replace` expects `true` or `false` for argument `$recursive` but `#{$recursive}` was given.'
 @function replace( $list, $old, $new, $recursive: false ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `replace` on non-list `#{$list}`.';
     
@@ -183,8 +199,9 @@
 /// 
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-number
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {number} $index - The index where the value should be replaced
 /// @param {mixed} $value - The value to be inserted in place of the old value
 /// @returns {list}
@@ -192,7 +209,7 @@
 /// @throws 'Function `replace-nth` expects a number for argument `$index` but `#{type-of($index)}` was given.'
 @function replace-nth( $list, $index, $value ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `replace-nth` on non-list `#{$list}`.';
     
@@ -222,8 +239,9 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} contains
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {mixed} $value - Some value to be removed from the list
 /// @param {boolean} $recurive [false] - Determines whether only the first occurrence or all occurrences should be removed
 /// @returns {list}
@@ -231,7 +249,7 @@
 /// @throws 'Function `remove` expects `true` or `false` for argument `$recursive` but `#{$recursive}` was given.'
 @function remove( $list, $value, $recursive: false ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `remove` on non-list `#{$list}`.';
     
@@ -269,15 +287,16 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-number
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {number} $index - The index where the value should be removed
 /// @returns {list}
 /// @throws 'Cannot execute `remove-nth` on non-list `#{$list}`.'
 /// @throws 'Function `remove-nth` expects a number for argument `$index` but `#{type-of($index)}` was given.'
 @function remove-nth( $list, $index ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `remove-nth` on non-list `#{$list}`.';
     
@@ -306,9 +325,10 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-number
 /// @requires {function} is-negative
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {number} $start [1] - The starting index where the slice should begin
 /// @param {number} $end [length($list)] - The ending index where the slice should stop
 /// @returns {list}
@@ -318,7 +338,7 @@
 /// @throws 'Cannot execute `slice` when start `#{$start}` exceeds end `#{$end}`.'
 @function slice( $list, $start: 1, $end: length($list) ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `slice` on non-list `#{$list}`.';
     
@@ -360,15 +380,16 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} contains
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {boolean} $recursive [false] - Determines whether nested lists should also be reversed
 /// @returns {list}
 /// @throws 'Cannot execute `reverse` on non-list `#{$list}`.'
 /// @throws 'Function `reverse` expects `true` or `false` for argument `$recursive` but `#{$recursive}` was given.'
 @function reverse( $list, $recursive: false ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `reverse` on non-list `#{$list}`.';
     
@@ -405,15 +426,16 @@
 /// Shuffles the order of items within a list
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} contains
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {boolean} $recursive [false] - Determines whether nested lists should also be shuffled
 /// @returns {list}
 /// @throws 'Cannot execute `reverse` on non-list `#{$list}`.'
 /// @throws 'Function `reverse` expects `true` or `false` for argument `$recursive` but `#{$recursive}` was given.'
 @function shuffle( $list, $recursive: false ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `shuffle` on non-list `#{$list}`.';
     
@@ -447,9 +469,10 @@
 ///
 /// @author Hugo Giraudel
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-string
 /// @requires {function} contains
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {string} $glue [''] - Acts as the glue between list items
 /// @param {boolean} $nested [false] - Determines whether the list is part of a nested list, used for recursion
 /// @returns {string | null}
@@ -458,7 +481,7 @@
 /// @throws 'Function `glue` expects `true` or `false` for argument `$nested` but `#{$nested}` was given.'
 @function glue( $list, $glue: '', $nested: false ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `glue` on non-list `#{$list}`.';
     
@@ -470,7 +493,7 @@
     
   }
   
-  @if( not contains(true false, $glue) ) {
+  @if( not contains(true false, $nested) ) {
     
     @error 'Function `glue` expects `true` or `false` for argument `$nested` but `#{$nested}` was given.';
     
@@ -482,7 +505,7 @@
         
     $e: nth($list, $i);
         
-    @if( is-list($e) ){ $result: $result + glue($e, $glue, true) ; }
+    @if( is-list($e) ){ $result: $result + glue($e, $glue, true); }
     
     @else { $result: if( $i != length($list) or $nested, $result + $e + $glue, $result + $e ); }
         
@@ -496,15 +519,16 @@
 ///
 /// @author Ana Tudor
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-number
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {number} $shift [1] - The number of places by which to shift the list indices
 /// @returns {list}
 /// @throws 'Cannot execute `shift-index` on non-list `#{$list}`.'
 /// @throws 'Function `shift-index` expects a number for argument `$shift` but `#{type-of($shift)}` was given.'
 @function shift-index( $list, $shift: 1 ){
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `shift-index` on non-list `#{$list}`.';
     
@@ -527,13 +551,14 @@
 /// Determines whether or not the list contains the given value
 ///
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @param {mixed} $search - The value to be searched for
 /// @returns {boolean}
 /// @throws 'Cannot execute `contains` on non-list `#{$list}`.'
 @function contains( $list, $search ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `contains` on non-list `#{$list}`.';
     
@@ -554,14 +579,15 @@
 /// Determines whether or not the list starts with the given value
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} first
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {mixed} $search - The value to be searched for
 /// @returns {boolean}
 /// @throws 'Cannot execute `starts-with` on non-list `#{$list}`.'
 @function starts-with( $list, $search ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `starts-with` on non-list `#{$list}`.';
     
@@ -574,14 +600,15 @@
 /// Determines whether or not the list ends with the given value
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} last
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {mixed} $search - The value to be searched for
 /// @returns {boolean}
 /// @throws 'Cannot execute `ends-with` on non-list `#{$list}`.'
 @function ends-with( $list, $search ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `ends-with` on non-list `#{$list}`.';
     
@@ -594,21 +621,22 @@
 /// Chunks a list into subsets of the given size
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-number
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {number} $length - The maximum length of chunked lists
 /// @returns {list}
 /// @throws 'Cannot execute `chunk` on non-list `#{$list}`.'
 /// @throws 'Function `chunk` expects a number for argument `$length` but `#{type-of($length)}` was given.'
 @function chunk( $list, $length ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `chunk` on non-list `#{$list}`.';
     
   }
   
-  @if( not is-list($list) ) {
+  @if( not is-number($length) ) {
     
     @error 'Function `chunk` expects a number for argument `$length` but `#{type-of($length)}` was given.';
     
@@ -624,11 +652,11 @@
   
   @while( $i <= length($list) ) {
     
-    @if( nth($list, $i) ) { $subset: append($subset, nth($list, $i)); }
+    @if( nth($list, $i) ) { $subset: append($subset, nth($list, $i), list-separator($list)); }
     
     @if( $n == $length or $i == length($list) ) { 
-      
-      $result: append($result, $subset); 
+  
+      $result: append($result, $subset, comma); 
       
       $subset: ();
       
@@ -648,22 +676,31 @@
 /// Counts the number of times a value occurs within a list
 ///
 /// @requires {function} is-list
-/// @requires {function} is-empty
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @requires {function} is-arglist
+/// @requires {function} cast-list
+/// @param {list | arglist} $list - Some list
 /// @param {arglist} $items - Filters the items to be counted
-/// @returns {map}
+/// @returns {map | number}
 /// @throws 'Cannot execute `count` on non-list `#{$list}`.'
+/// @throws 'Function `count` expects an arglist for argument `$items` but #{type-of($items)}` was given.'
 @function count( $list, $items... ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `count` on non-list `#{$list}`.';
     
   }
   
+  @if( not is-arglist($items) ) {
+    
+    @error 'Function `count` expects an arglist for argument `$items` but #{type-of($items)}` was given.';
+    
+  }
+  
   $result: ();
   
-  @if( not is-empty($items) ) {
+  @if( length($items) > 0 ) {
     
     @each $item in $items {
       
@@ -697,15 +734,16 @@
     
   }
   
-  @return $result;
+  @return if(length(map-keys($result)) == 1, map-get($result, first(map-keys($result))), $result);
   
 }
 
 /// Tests if every item in the list meets some criteria presented by the `$test` function
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-string
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {string} $test - The name of the function to be used as a test
 /// @param {arglist} $input - Any arguments to pass into the function
 /// @returns {boolean}
@@ -714,7 +752,7 @@
 /// @throws 'Cannot execute `every` due to invalid function `#{$test}`.'
 @function every( $list, $test, $input... ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `every` on non-list `#{$list}`.';
     
@@ -749,8 +787,9 @@
 /// Tests if some items in the list meet some criteria presented by the `$test` function
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-string
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @param {string} $test - The name of the function to be used as a test
 /// @param {arglist} $input - Any arguments to pass into the function
 /// @returns {boolean}
@@ -759,7 +798,7 @@
 /// @throws 'Cannot execute `some` due to invalid function `#{$test}`.'
 @function some( $list, $test, $input... ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `some` on non-list `#{$list}`.';
     
@@ -794,12 +833,13 @@
 /// Determines if a list is empty
 ///
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {boolean}
 /// @throws 'Cannot execute `is-empty` on non-list `#{$list}`.'
 @function is-empty( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `is-empty` on non-list `#{$list}`.';
     
@@ -812,12 +852,13 @@
 /// Determines if a list contains more than one item
 ///
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {boolean}
 /// @throws 'Cannot execute `is-multiple` on non-list `#{$list}`.'
 @function is-multiple( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `is-multiple` on non-list `#{$list}`.';
     
@@ -830,12 +871,13 @@
 /// Determines if a list contains only one item
 ///
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {boolean}
 /// @throws 'Cannot execute `is-single` on non-list `#{$list}`.'
 @function is-single( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `is-single` on non-list `#{$list}`.';
     
@@ -848,13 +890,14 @@
 /// Removes duplicate values from a list
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} contains
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @returns {list}
 /// @throws 'Cannot execute `unique` on non-list `#{$list}`.'
 @function unique( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `unique` on non-list `#{$list}`.';
     
@@ -879,12 +922,13 @@
 /// Determines if every value in a list is equal to `true`
 ///
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {boolean}
 /// @throws 'Cannot execute `is-truthy` on non-list `#{$list}`.'
 @function is-truthy( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `is-truthy` on non-list `#{$list}`.';
     
@@ -903,12 +947,13 @@
 /// Determines if every value in a list is equal to `false`
 ///
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {boolean}
 /// @throws 'Cannot execute `is-falsy` on non-list `#{$list}`.'
 @function is-falsy( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `is-falsy` on non-list `#{$list}`.';
     
@@ -927,14 +972,16 @@
 /// Pinpoints the intersection between two or more lists
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} unique
-/// @param {list} $list - Some list to be used as a reference
+/// @requires {function} contains
+/// @param {list | arglist} $list - Some list to be used as a reference
 /// @param {arglist} $lists - Additional lists to be used for comparison
 /// @returns {list}
 /// @throws 'Cannot execute `intersection` on non-list `#{$list}`.'
 @function intersection( $list, $lists... ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `intersection` on non-list `#{$list}`.';
     
@@ -942,21 +989,21 @@
   
   $result: $list;
   
-  @each $list in $lists {
+  @each $comp in $lists {
     
-    $intersect: ();
+    $intersection: ();
     
     @each $item in $result {
       
-      @if( index($list, $item) != null ) {
+      @if( contains($comp, $item) ) {
         
-        $intersect: append($intersect, $item, list-separator($list));
+        $intersection: append($intersection, $item, list-separator($list));
         
       }
       
     }
     
-    $result: $intersect;
+    $result: $intersection;
     
   }
   
@@ -967,13 +1014,14 @@
 /// Determines whether a list is symmetrical
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} reverse
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @returns {boolean}
 /// @throws 'Cannot execute `is-symmetrical` on non-list `#{$list}`.'
 @function is-symmetrical( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `is-symmetrical` on non-list `#{$list}`.';
     
@@ -983,15 +1031,16 @@
   
 }
 
-/// Removes empty values, such as `null`, `false`, and `()`, from a list
+/// Removes empty values, such as `null`, `false`, `''`, and `()`, from a list
 ///
 /// @requires {function} is-list
-/// @param {list} $list - Some list
+/// @requires {function} is-arglist
+/// @param {list | arglist} $list - Some list
 /// @returns {list}
 /// @throws 'Cannot execute `scrub` on non-list `#{$list}`.'
 @function scrub( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `scrub` on non-list `#{$list}`.';
     
@@ -1001,7 +1050,7 @@
   
   @each $item in $list {
     
-    @if( $item != false or $item != () or $item != null ) {
+    @if( $item != false and $item != () and $item != null and $item != '' ) {
       
       $result: append($result, $item);
       
@@ -1016,14 +1065,15 @@
 /// Retrieves a random item from a list
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-empty
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @returns {mixed}
 /// @throws 'Cannot execute `chance` on non-list `#{$list}`.'
 /// @throws 'Cannot return a random value from an empty list.'. 
 @function chance( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `chance` on non-list `#{$list}`.';
     
@@ -1152,23 +1202,23 @@
     
   @if( not $inverted ) {
   
-      @for $i from strip-unit($min) through strip-unit($max) {
+    @for $i from strip-unit($min) through strip-unit($max) {
 
-        $result: append($result, $i * $unit);
+      $result: append($result, $i + $unit);
 
-      }
-      
     }
+      
+  }
     
   @else {
       
-      @for $i from strip-unit($max) through strip-unit($min) {
+    @for $i from (strip-unit($min) * -1) through (strip-unit($max) * -1) {
         
-        $result: append($result, $i * $unit);
+      $result: append($result, abs($i) + $unit);
         
-      }
-      
     }
+      
+  }
   
   @return $result;
   
@@ -1203,7 +1253,7 @@
   
   $result: ();
   
-  $insensitive-x: to-lower-case(cast-string($x));
+  $insensitive-x: to-lower-case($x);
   
   @if( not str-is-letter($insensitive-x) ) {
     
@@ -1263,8 +1313,8 @@
   
   $result: ();
   
-  $insensitive-min: to-lower-case(cast-string($min));
-  $insensitive-max: to-lower-case(cast-string($max));
+  $insensitive-min: to-lower-case($min);
+  $insensitive-max: to-lower-case($max);
   
   @if( not str-is-letter($insensitive-min) ) {
     
@@ -1278,7 +1328,7 @@
     
   }
     
-  $mindex: index(map-keys($brandy-letters), $insensitive-min);
+  $mindex: index(map-keys($brandy-letters), $insensitive-min); 
   $maxdex: index(map-keys($brandy-letters), $insensitive-max);
 
   $inverted: if( $maxdex >= $mindex, false, true );
@@ -1287,7 +1337,7 @@
 
     @for $n from $mindex through $maxdex {
 
-      $letter: nth($letters, $n); 
+      $letter: nth(map-keys($brandy-letters), $n); 
 
       $result: append($result, if($lowercase, $letter, to-upper-case($letter)));
 
@@ -1297,9 +1347,9 @@
 
   @else {
 
-    @for $n from $maxdex through $mindex {
+    @for $n from ($mindex * -1) through ($maxdex * -1) {
 
-      $letter: nth($letters, $n);
+      $letter: nth(map-keys($brandy-letters), abs($n));
 
       $result: append($result, if($lowercase, $letter, to-upper-case($letter)));
 
@@ -1314,17 +1364,21 @@
 /// Converts every item in a list to a string
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} cast-string
-/// @param {list} $list
+/// @requires {function} first
+/// @param {list | arglist} $list
 /// @returns {list}
 /// @throws 'Cannot execute `stringify` on non-list `#{$list}`.'
-@function stringify( $list ) {
+@function stringify( $list... ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `stringify` on non-list `#{$list}`.';
     
   }
+  
+  @if( length($list) == 1 and is-list(first($list)) ) { $list: first($list); }
   
   $result: ();
   
@@ -1338,25 +1392,106 @@
   
 }
 
+/// Converts unquotes every string in a list
+///
+/// @requires {function} is-list
+/// @requires {function} is-arglist
+/// @requires {function} is-string
+/// @requires {function} cast-string
+/// @requires {function} first
+/// @param {list | arglist} $list
+/// @returns {list}
+/// @throws 'Cannot execute `stringify` on non-list `#{$list}`.'
+@function unstringify( $list... ) {
+  
+  @if( not is-list($list) and not is-arglist($list) ) {
+    
+    @error 'Cannot execute `unstringify` on non-list `#{$list}`.';
+    
+  }
+  
+  @if( length($list) == 1 and is-list(first($list)) ) { $list: first($list); }
+  
+  $result: ();
+  
+  @each $item in $list {
+    
+    $item: if( is-string($item), unquote($item), $item);
+    
+    $result: append($result, $item, list-separator($list));
+    
+  }
+  
+  @return $result;
+  
+}
+
+/// Joins multile lists together into one list
+///
+/// @requires {function} is-list
+/// @requires {function} is-arglist
+/// @requires {function} first
+/// @param {arglist} $lists - Multiple lists
+/// @returns {list}
+/// @throws 'Cannot execute `joins` with non-list `#{first($lists)}`.'
+/// @throws 'Cannot execute `joins` with non-list `#{$list}`.'
+@function joins( $lists... ) { 
+  
+  @if( length($lists) == 1 ) { 
+    
+    @if( not is-list(first($lists)) and not is-arglist(first($lists)) ) {
+      
+      @error 'Cannot execute `joins` with non-list `#{first($lists)}`.';
+      
+    }
+    
+    @return first($lists); 
+  
+  }
+  
+  $result: ();
+  
+  $separator: null;
+  
+  @each $list in $lists {
+    
+    @if( not is-list($list) and not is-arglist($list) ) {
+      
+      @error 'Cannot execute `joins` with non-list `#{$list}`.';
+      
+    }
+    
+    @if( is-null($separator) ) { $separator: list-separator($list); }
+    
+    $result: join($result, $list, $separator);
+    
+  }
+  
+  @return $result;
+  
+}
+
 /// Sums all numeric values in a list, ignoring non-numeric values
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
+/// @requires {function} is-string
+/// @requires {function} is-null
 /// @requires {function} str-is-number
 /// @requires {function} stringify
 /// @requires {function} cast-number
-/// @requires {function} cast-string
-/// @requires {function} every
 /// @requires {function} strip-unit
 /// @requires {function} extract-unit
-/// @param {list} $list - Some list containing numeric values
+/// @param {list | arglist} $list - Some list containing numeric values
 /// @param {boolean} $ignorant [false] - Whether units should be ignored and subsequently stripped
 /// @returns {number} - Returns sum of all numeric values or `0` otherwise
 /// @throws 'Cannot execute `sum` on non-list `#{$list}`.'
 /// @throws 'Function `sum` expects `true` or `false` for argument `$ignorant` but `#{$ignorant}` was given.'
 /// @throws 'Some list items are non-numeric for `sum`.'
+/// @throws 'Some list items in `sum` were ignored due to units. Set `$ignorant` to `true` to ignore units.'
 @function sum( $list, $ignorant: false ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `sum` on non-list `#{$list}`.';
     
@@ -1368,51 +1503,51 @@
     
   }
   
+  $add: ();
+  
+  $warn: false;
+  
   $result: 0;
   
   @each $item in $list {
     
-    $stringified: append($stringified, '#{$item}');
+    @if( is-string($item) and str-is-number($item) ) { $add: append($add, cast-number($item)); }
+    
+    @else if( is-number($item) ) { $add: append($add, $item); }
+    
+    @else { $warn: true; }
     
   }
   
-  @if( not every(stringify($list), 'str-is-number') ) {
-    
-    @warn 'Some list items are non-numeric for `sum`.';
-    
-  }
+  @if( $warn ) { @warn 'Some list items are non-numeric for `sum`.'; }
   
   $units: null;
   
-  @each $item in $list {
-    
-    @if( str-is-number(cast-string($item)) ) {
+  $warn: false;
+  
+  @each $item in $add {
       
-      @if( type-of($item) == 'string' ) { $item: cast-number($item); }
+    @if( $ignorant ) {
+        
+      $result: $result + strip-unit($item);
+        
+    }
       
-      @if( $ignorant ) {
+    @else {
         
-        $result: $result + strip-unit($item);
+      $unit: extract-unit( $item );
         
-      }
+      @if( is-null($units) ) { $units: $unit; }
+        
+      @if( $unit == $units ) { $result: $result + $item; }
       
-      @else {
+      @else { $warn: true; }
         
-        $unit: extract-unit( $item );
-        
-        @if( $units == null ) { $units: $unit; }
-        
-        @if( $unit == $units ) {
-          
-          $result: $result + $item;
-          
-        }
-        
-      }
-      
     }
     
   }
+  
+  @if( $warn ) { @warn 'Some list items in `sum` were ignored due to units. Set `$ignorant` to `true` to ignore units.'; }
   
   @return $result;
   
@@ -1421,22 +1556,23 @@
 /// Averages all numeric values in a list, ignoring non-numeric values
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
+/// @requires {function} is-number
 /// @requires {function} str-is-number
-/// @requires {function} stringify
 /// @requires {function} cast-number
-/// @requires {function} cast-string
-/// @requires {function} every
 /// @requires {function} strip-unit
 /// @requires {function} extract-unit
-/// @param {list} $list - Some list containing numeric values
+/// @requires {function} is-null
+/// @param {list | arglist} $list - Some list containing numeric values
 /// @param {boolean} $ignorant [false] - Whether units should be ignored and subsequently stripped
-/// @returns {number} - Returns average of all numeric values or `0` otherwise
+/// @returns {number | null} - Returns average of all numeric values or `null` otherwise
 /// @throws 'Cannot execute `avg` on non-list `#{$list}`.'
 /// @throws 'Function `range-alpha` expects `true` or `false` for argument `$ignorant` but `#{$ignorant}` was given.'
 /// @throws 'Some list items are non-numeric for `avg`.'
+/// @throws 'Some list items in `avg` were ignored due to units. Set `$ignorant` to `true` to ignore units.'
 @function avg( $list, $ignorant: false ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `avg` on non-list `#{$list}`.';
     
@@ -1448,70 +1584,82 @@
     
   }
   
+  $add: ();
+  
+  $warn: false;
+  
   $sum: 0;
+  
   $count: 0;
   
   @each $item in $list {
     
-    $stringified: append($stringified, '#{$item}');
+    @if( is-string($item) and str-is-number($item) ) { $add: append($add, cast-number($item)); }
+    
+    @else if( is-number($item) ) { $add: append($add, $item); }
+    
+    @else { $warn: true; }
     
   }
   
-  @if( not every(stringify($list), 'str-is-number') ) {
-    
-    @warn 'Some list items are non-numeric for `avg`.';
-    
-  }
+  @if( $warn ) { @warn 'Some list items are non-numeric for `avg`.'; }
   
   $units: null;
   
-  @each $item in $list {
-    
-    @if( str-is-number(cast-string($item)) ) {
+  $warn: false;
+  
+  @each $item in $add {
       
-      @if( type-of($item) == 'string' ) { $item: cast-number($item); }
+    @if( $ignorant ) {
+
+      $sum: $sum + strip-unit($item);
       
-      @if( $ignorant ) {
-        
-        $sum: $sum + strip-unit($item);
+      $count: $count + 1;
+
+    }
+
+    @else {
+
+      $unit: extract-unit( $item );
+
+      @if( $units == null ) { $units: $unit; }
+
+      @if( $unit == $units ) {
+
+        $sum: $sum + $item;
+
         $count: $count + 1;
-        
+
       }
       
-      @else {
-        
-        $unit: extract-unit( $item );
-        
-        @if( $units == null ) { $units: $unit; }
-        
-        @if( $unit == $units ) {
-          
-          $sum: $sum + $item;
-          
-          $count: $count + 1;
-          
-        }
-        
-      }
-      
+      @else { $warn: true; }
+
     }
     
   }
   
-  @return $sum / $count;
+  @if( $warn ) { @warn 'Some list items in `avg` were ignored due to units. Set `$ignorant` to `true` to ignore units.'; }
+
+  $average: $sum / $count;
+  
+  @return if(is-NaN($average), null, $average);
   
 }
 
 /// Sorts a list
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} insert-nth
-/// @param {list} $list - Some list to be sorted
+/// @requires {function} is-number
+/// @requires {function} cast-string
+/// @requires {variable} $brandy-sort-order
+/// @param {list | arglist} $list - Some list to be sorted
 /// @returns {list}
 /// @throws 'Cannot execute `sort` on non-list `#{$list}`.'
 @function sort( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `sort` on non-list `#{$list}`.';
     
@@ -1519,25 +1667,44 @@
   
   $result: ();
   
-  $index: 1;
-  
-  @while( length($result) < length($list) ) {
+  @for $x from 1 through length($list) {
     
-    $item: nth($list, $index);
+    $a: nth($list, $x);
     
     $n: 1;
     
-    @for $i from 1 through length($result) {
-      
-      $comp: nth($result, $i);
-      
-      @if( $comp < $item ) { $n: $i; }
+    @if( length($result) > 0 ) {
+    
+      @for $i from 1 through length($result) {
+
+        $b: nth($result, $i);
+        
+        @if( is-number($a) and is-number($b) and $b < $a ) { $n: $n + 1; }
+        
+        @else {
+          
+          $a-str: to-lower-case(cast-string($a));
+          $b-str: to-lower-case(cast-string($b));
+          
+          @for $i from 1 through min(str-length($a-str), str-length($b-str)) {
+            
+            $a-char: char-at($a-str, $i);
+            $b-char: char-at($b-str, $i);
+           
+            $a-index: index($brandy-sort-order, $a-char);
+            $b-index: index($brandy-sort-order, $b-char); 
+            
+            @if( $b-index < $a-index ) { $n: $n + 1; }
+            
+          }
+          
+        }
+
+      }
       
     }
     
-    $result: insert-nth($result, $n, $item);
-    
-    $index: $index + 1;
+    $result: insert-nth($result, $n, $a);
     
   }
   
@@ -1548,15 +1715,16 @@
 /// Applies a function to every item within the list
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-string
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @returns {list}
 /// @throws 'Cannot execute `walk` on non-list `#{$list}`.'
 /// @throws 'Function `walk` expects a string for argument `$function` but `#{type-of($function)}` was given.'
 /// @throws 'Cannot execute `walk` due to invalid function `#{$function}`.'
 @function walk( $list, $function, $inputs... ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `walk` on non-list `#{$list}`.';
     
@@ -1577,9 +1745,21 @@
   
   $result: ();
   
+  $separator: list-separator( $list );
+  
   @each $item in $list {
     
-    $result: append($result, call(get-function($function), $inputs...), list-separator($list));
+    @if( length($inputs) > 0 ) {
+      
+      $result: append($result, call(get-function($function), ($item, $inputs)...), $separator);
+      
+    }
+    
+    @else {
+    
+      $result: append($result, call(get-function($function), $item), $separator);
+      
+    }
     
   }
   
@@ -1590,13 +1770,14 @@
 /// Retrieves all items from a list except for the last
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} slice
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @returns {list}
 /// @throws 'Cannot execute `head` on non-list `#{$list}`.'
 @function head( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `head` on non-list `#{$list}`.';
     
@@ -1609,13 +1790,14 @@
 /// Retrieves all items from a list except for the first
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} slice
-/// @param {list} $list - Some list
+/// @param {list | arglist} $list - Some list
 /// @returns {list}
 /// @throws 'Cannot execute `tail` on non-list `#{$list}`.'
 @function tail( $list ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `tail` on non-list `#{$list}`.';
     
@@ -1628,8 +1810,9 @@
 /// Flattens a list with any nested lists to a single level
 ///
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} is-number
-/// @param {list} $list - Some list to be flattened
+/// @param {list} | arglist $list - Some list to be flattened
 /// @param {number} $limit - Limits the number of list levels that should be flattened or `0` when no limit is imposed
 /// @param {number} $level - The nesting level of the current list, used for recursion
 /// @returns {list}
@@ -1638,7 +1821,7 @@
 /// @throws 'Function `flatten` expects a number for argument `$level` but `#{type-of($level)}` was given.'
 @function flatten( $list, $limit: 0, $level: 1 ) {
   
-  @if( not is-list($list) ) {
+  @if( not is-list($list) and not is-arglist($list) ) {
     
     @error 'Cannot execute `flatten` on non-list `#{$list}`.';
     
@@ -1663,12 +1846,12 @@
   @each $item in $list {
     
     // Handle limits.
-    @if ( $limit != 0 ) {
+    @if ( $limit > 0 ) {
       
       @if( is-list( $item ) ) {
       
         // Continue to flatten up to the allotted limit.
-        @if( $level <= $limit ) { $result: append($result, flatten($item, $limit, $level + 1)); }
+        @if( $level <= $limit ) { $result: join($result, flatten($item, $limit, $level + 1)); }
         
         // Otherwise, keep lists intact.
         @else { $result: append($result, $item); }
@@ -1682,7 +1865,7 @@
     // Otherwise, flatten everything.
     @else {
       
-      @if( is-list( $item ) ) { $result: append($result, flatten($item, $limit, $level + 1)); }
+      @if( is-list( $item ) ) { $result: join($result, flatten($item, $limit, $level + 1)); }
       @else { $result: append($result, $item); }
       
     }

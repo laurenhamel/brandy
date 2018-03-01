@@ -19,7 +19,7 @@
     
   }
   
-  @return map-deep-get($brandy-config-map, str-split($property, '.')...);
+  @return map-deep-get($brandy-config-map, $property);
   
 }
 
@@ -40,7 +40,7 @@
     
   }
   
-  @return map-deep-get($brandy-const-map, str-split($property, '.')...);
+  @return map-deep-get($brandy-const-map, $property);
   
 }
 
@@ -90,7 +90,7 @@
     
   }
   
-  @return map-deep-get($brandy-fonts-map, str-split($property, '.')...);
+  @return map-deep-get($brandy-fonts-map, $property);
   
 }
 
@@ -111,6 +111,6 @@
     
   }
   
-  @return map-deep-get($brandy-screens-map, str-split($property, '.')...);
+  @return map-deep-get($brandy-screens-map, $property);
   
 }
