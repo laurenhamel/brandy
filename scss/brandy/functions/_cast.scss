@@ -23,6 +23,8 @@
 /// Casts a value to a *boolean*
 ///
 /// @requires {function} is-boolean
+/// @requires {function} is-number
+/// @requires {function} is-NaN
 /// @requires {function} contains
 /// @param {mixed} $value - Some value
 /// @returns {boolean}
@@ -30,7 +32,9 @@
   
   @if( not is-boolean($value) ) {
     
-    @if( contains('' 0 () null 'false', $value) ) { @return false; }
+    @if( is-number($value) and is-NaN($value) ) { @return false; }
+    
+    @else if( contains('' 0 () null 'false', $value) ) { @return false; }
     
     @return true;
     
