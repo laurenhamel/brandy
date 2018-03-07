@@ -1,0 +1,19 @@
+@import '../scss/brandy';
+
+@include test('cast-string', (
+  1: '1',
+  9px: '9px',
+  40%: '40%',
+  'foo': 'foo',
+  true: 'true',
+  (bar, baz): 'bar, baz'
+), false);
+
+@include test('cast-boolean', (
+  1: true,
+  9px: false,
+  40%: false,
+  'foo': false,
+  true: true,
+  (bar, baz): false
+), false);

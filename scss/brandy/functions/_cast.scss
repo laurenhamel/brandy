@@ -23,13 +23,16 @@
 /// Casts a value to a *boolean*
 ///
 /// @requires {function} is-boolean
+/// @requires {function} contains
 /// @param {mixed} $value - Some value
 /// @returns {boolean}
 @function cast-boolean( $value ) { 
   
   @if( not is-boolean($value) ) {
-  
-    @return not ($value or $value == "" or $value == 0 or $value == ()); 
+    
+    @if( contains('' 0 () null 'false', $value) ) { @return false; }
+    
+    @return true;
     
   }
   
