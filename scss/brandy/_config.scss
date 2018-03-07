@@ -134,41 +134,6 @@ $brandy-scale-map: (
   'desktop': 1
 ) !default;
 
-/// Signals to the `scale-font()` function whether or not font scaling should also
-/// be responsive. If set to *true*, fonts will be scaled according to the values in
-/// the `$font-scale-map` variable above for each screen breakpoint in the
-/// $brandy-screens-map. If set to *false*, no scaling will occur.
-///
-/// @type boolean
-$brandy-scale-responsive: true !default;
-
-/// Signals to the `scale-font()` function to proportionately increase or
-/// decrease the font size for the given elements. If set to *true*, font size
-/// will increase from the first element in the list through the last 
-/// element. If set to *false*, the reverse effect will occur.
-///
-/// @type boolean
-$brandy-scale-increasing: false !default;
-
-/// Sets the maximum font size for the `scale-font()` function. The maximum font 
-/// size is applied to the first element in the element list if 
-/// `$brandy-scale-increasing` above is set to *true*. If the above variable is
-/// set to *false*, the reverse effect will occur. If no maximum value is given
-/// for `$brandy-scale-min`, then the minimum value will also be used as the maximum. 
-/// This maximum value is optional.
-/// 
-/// @type number
-$brandy-scale-max: 1em !default;
-
-/// Sets the minimum font size for the `scale-font()` function. The minimum font 
-/// size is applied to the last element if `$brandy-scale-increasing` is set to
-/// *true*. If the it's set to *false*, the reverse effect will occur. If no maximum 
-/// value is given for `$brandy-scale-max`, then the minimum value will also be used 
-/// as the maximum. This minimum value is always **required**.
-/// 
-/// @type number
-$brandy-scale-min: 1em !default;
-
 /// Sets the default map to be used for the `config()` function. This value
 /// can be set equal to a map or a variable which references a map and can
 /// be nested as deep as desired.
@@ -202,55 +167,6 @@ $brandy-const-map: (
     'MAX': 2147483648
   )
 ) !default;
-
-/// Defines the number of columns to be used by default for the grid layout 
-/// generated using the `grid()` function. This configuration will override 
-/// the `grid()` function at a global level. For instance-specific overrides, 
-/// consider feeding a column option into the `grid()` function during use instead.
-/// 
-/// @type number
-$brandy-grid-columns: 12 !default;
-
-/// Defines the number of rows to be used by default for the grid layout 
-/// generated using the `grid()` function. This configuration will override 
-/// the `grid()` function at a global level. For instance-specific overrides, 
-/// consider feeding a row option into the `grid()` function during use instead.
-/// 
-/// @type number
-$brandy-grid-rows: 100 !default;
-
-/// Defines the size of gutters to be used by default for the grid layout 
-/// generated using the `grid()` function. This configuration will override 
-/// the `grid()` function at a global level. For instance-specific overrides, 
-/// consider feeding a gutter option into the `grid()` function during use instead.
-/// 
-/// @type number
-$brandy-grid-gutter: 25 !default;
-
-/// Defines the grid class name to be used by default for the grid layout 
-/// generated using the `grid()` function. This configuration will override 
-/// the `grid()` function at a global level. For instance-specific overrides, 
-/// consider feeding a class name into the `grid()` function during use instead.
-/// 
-/// @type string
-$brandy-grid-name: 'grid' !default;
-
-/// Defines the grid item class name to be used by default for the grid layout 
-/// generated using the `grid()` function. This configuration will override 
-/// the `grid()` function at a global level. For instance-specific overrides, 
-/// consider feeding a class name into the `grid()` function during use instead.
-/// 
-/// @type string
-$brandy-grid-items: 'griditem' !default;
-
-/// Defines the unit expressions supported by default for the grid layout 
-/// generated using the `grid()` function. This should be a list of strings
-/// representing numerical units. This configuration will override 
-/// the `grid()` function at a global level. For instance-specific overrides, 
-/// consider feeding a list of units into the `grid()` function during use instead.
-/// 
-/// @type list
-$brandy-grid-units: 'px' 'em' 'pct' !default;
 
 /// Defines the recognized units that Brandy uses for some functions and mixins.
 ///

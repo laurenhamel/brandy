@@ -8,15 +8,13 @@
     "brandy": "Brandy",
     "brandy-config": "Configurations",
     "brandy-vars": "Variables",
-    "brandy-mixins": "Mixins",
-    "brandy-funcs": "Functions",
     "brandy-utils": "Utilities",
     "brandy-help": "Helpers",
     "brandy-comp": "Comparators",
     "brandy-setters": "Setters",
     "brandy-getters": "Getters",
     "brandy-casts": "Casts",
-    "brandy-type": "Typifications",
+    "brandy-type": "Types",
     "brandy-strings": "Strings",
     "brandy-numbers": "Numbers",
     "brandy-colors": "Colors",
@@ -26,6 +24,13 @@
     "brandy-maps": "Maps",
     "brandy-matrix": "Matrices",
     "brandy-sprite": "Sprites",
-    "brandy-math": "Math"
+    "brandy-math": "Math",
+    "brandy-comps": "Components",
+    "brandy-selects": "Selectors",
+    "brandy-shapes": "Shapes",
+    "brandy-states": "States",
+    "brandy-scope": "Scope",
+    "brandy-layout": "Layout",
+    "brandy-test": "Testing"
   }
 }

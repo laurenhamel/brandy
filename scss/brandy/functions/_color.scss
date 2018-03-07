@@ -350,6 +350,82 @@
   
 }
 
+/// Returns a valid color given CMYK values
+///
+/// @requires {function} is-number
+/// @requires {function} is-float
+/// @param {number} $c - A number representing a percentage of cyan
+/// @param {number} $m - A number representing a percentage of magenta
+/// @param {number} $y - A number representing a percentage of yellow
+/// @param {number} $k [0] - A number representing a percentage of black
+/// @returns {color}
+/// @throws 'Function `cmyk` expects a number for argument `$c but `#{type-of($c)}` was given.'
+/// @throws 'Function `cmyk` expects a number for argument `$m` but `#{type-of($m)}` was given.'
+/// @throws 'Function `cmyk` expects a number for argument `$y` but `#{type-of($y)}` was given.'
+/// @throws 'Function `cmyk` expects a number for argument `$k` but `#{type-of($k)}` was given.'
+/// @throws 'Function `cmyk` expects a unitless whole number or percentage for argument `$c`.'
+/// @throws 'Function `cmyk` expects a unitless whole number or percentage for argument `$m`.'
+/// @throws 'Function `cmyk` expects a unitless whole number or percentage for argument `$y`.'
+/// @throws 'Function `cmyk` expects a unitless whole number or percentage for argument `$k`.'
+@function cmyk( $c, $m, $y, $k: 0 ) {
+  
+  @if( not is-number($c) ) {
+    
+    @error 'Function `cmyk` expects a number for argument `$c` but `#{type-of($c)}` was given.';
+    
+  }
+  @else if( is-float($c) ) {
+    
+    @error 'Function `cmyk` expects a unitless whole number or percentage for argument `$c`.';
+    
+  }
+  
+  @if( not is-number($m) ) {
+    
+    @error 'Function `cmyk` expects a number for argument `$m` but `#{type-of($m)}` was given.';
+    
+  }
+  @else if( is-float($m) ) {
+    
+    @error 'Function `cmyk` expects a unitless whole number or percentage for argument `$m`.';
+    
+  }
+  
+  @if( not is-number($y) ) {
+    
+    @error 'Function `cmyk` expects a number for argument `$y` but `#{type-of($y)}` was given.';
+    
+  }
+  @else if( is-float($y) ) {
+    
+    @error 'Function `cmyk` expects a unitless whole number or percentage for argument `$y`.';
+    
+  }
+  
+  @if( not is-number($k) ) {
+    
+    @error 'Function `cmyk` expects a number for argument `$k` but `#{type-of($k)}` was given.';
+    
+  }
+  @else if( is-float($k) ) {
+    
+    @error 'Function `cmyk` expects a unitless whole number or percentage for argument `$k`.';
+    
+  }
+  
+  @if( is-percentage($c) ) { $c: $c / 1%; }
+  @if( is-percentage($m) ) { $m: $m / 1%; }
+  @if( is-percentage($y) ) { $y: $y / 1%; }
+  @if( is-percentage($k) ) { $k: $k / 1%; }
+  
+  $r: (1 - $k) * (1 - $c) * 255;
+  $g: (1 - $k) * (1 - $m) * 255;
+  $b: (1 - $k) * (1 - $y) * 255;
+  
+  @return rgb($r, $g, $b);
+  
+}
+
 /// Returns a valid color given HSV values
 ///
 /// @requires {function} is-number
@@ -517,6 +593,19 @@
   }
    
   @return mix(gray, $color, $percent);
+  
+}
+
+/// Generates a random color
+/// 
+/// @returns {color}
+@function random-color() {
+  
+  $r: random(255);
+  $g: random(255);
+  $b: random(255);
+  
+  @return rgb($r, $g, $b);
   
 }
 

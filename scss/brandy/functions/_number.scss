@@ -311,3 +311,23 @@
 /// @param {mixed} $value - Some value
 /// @returns {boolean}
 @function is-NaN( $value ) { @return is-number($value) and cast-string($value) == 'NaN'; }
+
+/// Inverts the sign of a number
+///
+/// @author Jason Nickel
+/// @requires {function} is-positive
+/// @requires {function} is-number
+/// @param {number} $number - Some number to invert
+/// @returns {number}
+/// @throws 'Cannot execute `inverse` with non-number `#{$number}`.'
+@function inverse( $number ) {
+  
+  @if( not is-numner($number) ) {
+    
+    @error 'Cannot execute `inverse` with non-number `#{$number}`.';
+    
+  }
+  
+  @return $number * -1;
+  
+}

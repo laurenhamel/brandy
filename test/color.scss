@@ -130,3 +130,23 @@ $grey: #333333;
 @include test('color-tones', (
   ($orange, 5): ($orange, #BC6915, #B06D2B, #A47240, #987755, #8C7B6B, gray)
 ));
+
+.foo {
+  @include linear-gradient( to right, red 20%, white 40%, blue );
+}
+
+.bar {
+  @include stripes( to right, red, white, blue );
+}
+
+.baz {
+  @include n-stripes( to right, 25, red, blue );
+}
+
+.bic {
+  @include layered-linear-gradient(
+    (25deg, rgba(cyan, .25), rgba(cyan, .75) 40%, transparent),
+    (135deg, rgba(orange, .5), rgba(orange, .9) 60%, transparent),
+    (45deg, red, blue)
+  );
+}

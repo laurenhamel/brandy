@@ -1,3 +1,7 @@
+////
+/// @group brandy-test
+////
+
 /// Enables unit testing of Sass functions
 ///
 /// @requires {function} cast-string
@@ -12,7 +16,7 @@
   $index: 1;
   $break: '\a ';
   
-  $results: '#{$break}#{$break}Testing function `#{$function}`#{$break}----------------------------------#{$break}';
+  $results: '#{$break}#{$break}Started: Testing function `#{$function}`#{$break}----------------------------------#{$break}';
   
   @each $arguments, $expected in $tests {
 
@@ -20,14 +24,14 @@
 
     @if ( $result == $expected or cast-string($result) == cast-string($expected) ) { 
         
-      $results: $results + 'Test #{$index} of #{$length} passed.#{$break}';
+      $results: $results + 'Test #{$index} of #{$length}... ✔#{$break}';
       $passed: $passed + 1;
       
     }
     
     @else {
   
-      $results: $results + 'Test #{$index} of #{$length} failed.#{$break}' + 
+      $results: $results + 'Test #{$index} of #{$length}... ✘#{$break}' + 
                            '  Expected: `#{cast-string($expected)}`#{$break}' +
                            '  Result: `#{cast-string($result)}`#{$break}'; 
       $failed: $failed + 1;
@@ -39,8 +43,7 @@
   }
     
   $results: $results + '----------------------------------#{$break}' +
-            '#{$passed} out of #{$length} tests passing.#{$break}' +
-            '#{$failed} out of #{$length} tests failing.#{$break}';
+            'Finished: #{$failed} out of #{$length} test(s) failing.#{$break}';
   
   @debug quote($results);
   
@@ -78,14 +81,14 @@
 
     @if ( $result == true ) { 
         
-      $results: $results + 'Test #{$index} of #{$length} passed.#{$break}';
+      $results: $results + 'Test #{$index} of #{$length}... ✔#{$break}';
       $passed: $passed + 1;
       
     }
     
     @else {
   
-      $results: $results + 'Test #{$index} of #{$length} failed.#{$break}'; 
+      $results: $results + 'Test #{$index} of #{$length}... ✘#{$break}'; 
       $failed: $failed + 1;
       
     }
@@ -95,8 +98,7 @@
   }
     
   $results: $results + '----------------------------------#{$break}' +
-            '#{$passed} out of #{$length} tests passing.#{$break}' +
-            '#{$failed} out of #{$length} tests failing.#{$break}';
+            'Finished: #{$failing} out of #{$length} test(s) failing.#{$break}';
   
   @debug quote($results);
   
