@@ -58,16 +58,29 @@
 /// Casts values to a *list*
 ///
 /// @requires {function} is-list
+/// @requires {function} last
+/// @requires {function} head
 /// @param {mixed} $values - Some values
+/// @param {string} $separator [space] - The preferred list separator passed in as the last argument, either `space` or `comma` 
 /// @returns {list}
-@function cast-list( $values... ) { 
+@function cast-list( $values... /* $separator */ ) { 
+  
+  $separator: space;
+  
+  @if( contains('space' 'comma', last($values)) ) { 
+    
+    $separator: last($values);
+    
+    $values: head($values);
+  
+  }
   
   $result: ();
   
   @each $value in $values {
     
-    @if( is-list($value) ) { $result: join($result, $value, list-separator($result)); }
-    @else { $result: append($result, $value); }
+    @if( is-list($value) ) { $result: join($result, $value, $separator); }
+    @else { $result: append($result, $value, $separator); }
     
   }
   
@@ -79,13 +92,14 @@
 ///
 /// @requires {function} is-map
 /// @requires {function} is-list
+/// @requires {function} is-arglist
 /// @requires {function} first
 /// @requires {function} tail
 /// @requires {function} map-set
 /// @param {mixed} $pairs - Some key-value pairs, expected as either a `map`, `list`, or `string`
 /// @returns {map}
 @function cast-map( $pairs... ) { 
-  
+
   $map: ();
   
   @each $pair in $pairs {
@@ -96,12 +110,12 @@
       
     }
     
-    @else if( is-list($pair) ) {
+    @else if( is-list($pair) or is-arglist($pair) ) {
       
       $key: first($pair);
       $value: tail($pair);
       
-      $map: map-merge($map, ($key, $value));
+      $map: map-merge($map, ($key: $value));
       
     }
     
@@ -110,7 +124,7 @@
       $key: nth(str-split($pair, '='), 1);
       $value: nth(str-split($pair, '='), 2);
       
-      $map: map-set($key, $value);
+      $map: map-set($map, $key, $value);
       
     }
     
@@ -123,45 +137,55 @@
 /// Casts values to a *number*
 ///
 /// @author Hugo Giraudel
+/// @requires {function} is-number
+/// @requires {function} is-string
+/// @requires {function} cast-string
+/// @requires {function} char-at
 /// @requires {function} str-is-unit
-/// @requires {function} str-is-letter
+/// @requires {function} str-is-number
 /// @requires {function} unit-to-digit
 /// @requires {function} is-negative
 /// @requires {variable} $brandy-numbers
 /// @returns {number | null}
-/// @throws 'Unknown character `#{$characters}`.'
-/// @throws 'Unknown unit `#{$unit}`.'
+/// @throws 'Cannot `cast-number` for invalid character `#{$characters}`.'
+/// @throws 'Cannot `cast-number` for invalid units `#{$unit}`.'
 @function cast-number( $string ) {
+  
+  @if( is-number($string) ) { @return $string; }
+  
+  @else( not is-string($string) ) { @return null; }
   
   $result: 0;
   
-  $decimal: 1;
+  $decimal: 0;
   
   $negative: is-negative($string);
   
   @if ( $negative ) { $string: str-slice($string, 2); }
   
+  $length: str-length($string);
+  
   $break: false;
   
   $index: 1;
   
-  @while ( not $break ) {
+  @while ( not $break and $index <= $length ) {
     
-    $character: str-slice($string, $index, 1);
+    $character: cast-string(char-at($string, $index));
     
     @if( $character == '.' ) { $decimal: 1; }
     
-    @else if( not str-is-letter($character) ) {
+    @else if( str-is-number($character) ) {
     
       @if( not map-has-key($brandy-numbers, $character) ) {
 
-        @warn 'Unknown character `#{$character}`.';
+        @warn 'Cannot `cast-number` for invalid character `#{$character}`.';
 
-        @return false;
+        @return null;
 
       }
 
-      $number: map-get($brandy-numbers, $character);
+      $number: map-get($brandy-numbers, $character); 
       
       @if( $decimal > 0 ) {
         
@@ -183,23 +207,19 @@
       
     }
     
-    @else {
-      
-      $break: true;
-      
-    }
+    @else { $break: true; }
     
   }
-  
+
   @if( $break ) {
     
     $unit: str-slice($string, $index);
     
     @if( not str-is-unit($unit) ) {
       
-      @warn 'Unknown unit `#{$unit}`.';
+      @warn 'Cannot `cast-number` for invalid units `#{$unit}`.';
       
-      @return false;
+      @return null;
       
     }
     
