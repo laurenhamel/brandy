@@ -162,3 +162,9 @@
   'a man and his dog': 'A Man and His Dog',
   'a trilogy of fire: the burning sands': 'A Trilogy of Fire: The Burning Sands'
 ));
+
+@include test('str-is-symbol', (
+  '%': true,
+  'a': false,
+  '1': false
+));

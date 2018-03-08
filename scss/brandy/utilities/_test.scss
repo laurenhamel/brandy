@@ -98,7 +98,7 @@
   }
     
   $results: $results + '----------------------------------#{$break}' +
-            'Finished: #{$failing} out of #{$length} test(s) failing.#{$break}';
+            'Finished: #{$failed} out of #{$length} test(s) failing.#{$break}';
   
   @debug quote($results);
   

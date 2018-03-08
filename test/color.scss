@@ -131,6 +131,10 @@ $grey: #333333;
   ($orange, 5): ($orange, #BC6915, #B06D2B, #A47240, #987755, #8C7B6B, gray)
 ));
 
+@include test('cmyk', (
+  (100%, 44%, 53%, 0%): rgb(0, 143, 120)
+));
+
 .foo {
   @include linear-gradient( to right, red 20%, white 40%, blue );
 }

@@ -1,0 +1,13 @@
+@import '../scss/brandy';
+
+.foo {
+  
+  @include expand-properties((
+    'background-color': black,
+    'font-size': 14px,
+    'color': white,
+    'border': 1px solid gray,
+    'linear-gradient': (to bottom, transparent 80%, gray)
+  ));
+  
+}

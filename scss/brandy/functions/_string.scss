@@ -373,7 +373,6 @@
 /// Determines if a string is a letter
 ///
 /// @requires {function} is-string
-/// @requires {function} contains
 /// @requires {function} char-at
 /// @requires {variable} $brandy-letters
 /// @param {string} $string - Some string
@@ -393,7 +392,36 @@
     
     $letter: char-at($insensitive, $i);
     
-    @if( not contains(map-keys($brandy-letters), $letter) ) { @return false; }
+    @if( not map-has-key($brandy-letters, $letter) ) { @return false; }
+    
+  }
+  
+  @return true;
+  
+}
+
+/// Determines if a string is a symbol
+///
+/// @requires {function} is-string
+/// @requires {function} char-at
+/// @requires {function} contains
+/// @requires {variable} $brandy-symbols
+/// @param {string} $string - Some string
+/// @returns {boolean}
+/// @throws 'Cannot execute `str-is-symbol` on non-string `#{$string}`.'
+@function str-is-symbol( $string ) {
+  
+  @if( not is-string($string) ) {
+    
+    @error 'Cannot execute `str-is-symbol` on non-string `#{$string}`.';
+    
+  }
+  
+  @for $i from 1 through str-length($string) {
+    
+    $symbol: char-at($string, $i);
+    
+    @if( not contains($brandy-symbols, $symbol) ) { @return false; }
     
   }
   
@@ -404,7 +432,6 @@
 /// Determines if a string is representative of some units
 ///
 /// @requires {function} is-string
-/// @requires {function} contains
 /// @requires {variable} $brandy-units
 /// @param {string} $string - Some string representation of a unit
 /// @returns {boolean}
@@ -417,15 +444,15 @@
     
   }
   
-  @return contains(map-keys($brandy-units), $string);
+  @return map-has-key($brandy-units, $string);
   
 }
 
 /// Determines if a string is a number
 ///
 /// @requires {function} is-string
-/// @requires {function} contains
 /// @requires {function} str-is-letter
+/// @requires {function} str-is-symbol
 /// @requires {function} str-is-unit
 /// @requires {function} is-negative
 /// @requires {function} char-at
@@ -449,7 +476,13 @@
   
   $found-letters: false;
   
+  $found-decimal: false;
+  
+  $digits: 0;
+  
   $unit: null;
+  
+  $decimal-place: 0;
   
   @for $i from 1 through str-length($string) {
     
@@ -457,17 +490,31 @@
     
     @if( not $found-letters ) {
     
-      @if( not str-is-letter($character) ) {
-
-        @if( not contains(map-keys($brandy-numbers), $character) ) { @return false; }
-
+      @if( $character == '.' ) {
+        
+        @if( $found-decimal ) { @return false; }
+        
+        $found-decimal: true;
+        
+        $decimal-place: $i;
+        
       }
-    
-      @else {
+      
+      @else if( str-is-letter($character) or str-is-symbol($character) ) {
+        
+        @if( $i + 1 == $decimal-place + 1 ) { @return false; }
       
         $found-letters: true;
         
         $unit: $character;
+
+      }
+    
+      @else {
+        
+        @if( not map-has-key($brandy-numbers, $character) ) { @return false; }
+        
+        $digits: $digits + 1;
       
       }
       
@@ -480,8 +527,14 @@
     }
     
   }
+
+  @if( not is-null($unit) ) {
+    
+    @if( $digits == 0 ) { @return false; }
+    
+    @return str-is-unit( $unit ); 
   
-  @if( not is-null($unit) ) { @return str-is-unit( $unit ); }
+  }
   
   @return true;
   

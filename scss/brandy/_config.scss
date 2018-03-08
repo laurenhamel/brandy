@@ -18,6 +18,12 @@ $brandy-dark-text: rgb(51, 51, 51) !default;
 /// @type color
 $brandy-light-text: rgb(255, 255, 255) !default;
 
+/// Sets the default font size for unit conversion functions. Typically, this
+/// font size should be set equal to the font size used for your `body` element.
+///
+/// @type number
+$brandy-font-size: 16px !default;
+
 
 /// Set the `color-contrast()` function to use the given background color
 /// to generate dark and light color values. Setting this to *true* tells
@@ -197,12 +203,19 @@ $brandy-units: (
   'ms': 0ms,
   'dpcm': 0dpcm,
   'dppx': 0dppx,
-  'Hz': 0Hz,
-  'kHz': 0kHz,
+  'hz': 0hz,
+  'khz': 0khz,
+  'Hz': 0hz,
+  'kHz': 0khz,
   'dpi': 0dpi
 ) !default;
 
-/// Defines the recognized alphabet characters that Brandy uses for some function and mixins.
+/// Defines the recognized symbolic characters that Brandy uses for some functions and mixins.
+///
+/// @type list
+$brandy-symbols: '~' '`' '!' '@' '#' '$' '%' '^' '&' '*' '(' ')' '-' '_' '+' '=' '{' '}' '[' ']' '|' '\\' '\'' '"' ':' ';' '<' ',' '>' '.' '?' '/';
+
+/// Defines the recognized alphabet characters that Brandy uses for some functions and mixins.
 /// Use the map keys to represent *lowercase* letters and map values to represent *uppercase* letters. 
 ///
 /// @type map

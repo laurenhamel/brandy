@@ -1,0 +1,189 @@
+@import '../scss/brandy';
+
+@include test('unit-to-digit', (
+  'pct': 0%,
+  '%': 0%,
+  'th': 0,
+  'px': 0px
+));
+
+@include test('strip-unit', (
+  16px: 16,
+  3em: 3
+));
+
+@include test('is-negative', (
+  6px: false,
+  -2px: true,
+  '10': false,
+  '-0.4': true,
+  0: false
+));
+
+@include test('is-positive', (
+  6px: true,
+  -2px: false,
+  '10': true,
+  '-0.4': false,
+  0: true
+));
+
+@include test('is-zero', (
+  6px: false,
+  -2px: false,
+  '10': false,
+  '-0.4': false, 
+  0: true
+));
+
+@include test('extract-unit', (
+  6px: px,
+  -2px: px,
+  '10': null,
+  '-0.4': null, 
+  0: null
+));
+
+@include test('is-integer', (
+  6px: true,
+  -2px: true,
+  '10': true,
+  '-0.4': false, 
+  0: true
+));
+
+@include test('is-float', (
+  6px: false,
+  -2px: false,
+  '10': false,
+  '-0.4': true, 
+  0: false
+));
+
+@include test('is-percentage', (
+  6px: false,
+  -2px: false,
+  '10': false,
+  '-0.4': false, 
+  0: false,
+  '10%': true,
+  -8%: true
+));
+
+@include test('is-even', (
+  6px: true,
+  -2px: true,
+  '10': true,
+  '-0.4': false, 
+  0: true,
+  '10%': true,
+  -8%: true
+));
+
+@include test('is-odd', (
+  6px: false,
+  -2px: false,
+  '10': false,
+  '-0.4': true, 
+  0: false,
+  '10%': false,
+  -8%: false
+));
+
+@include test('is-angle', (
+  '4turn': true,
+  45deg: true,
+  5px: false,
+  0: false,
+  '-6em': false
+));
+
+@include test('is-frequency', (
+  '4khz': true,
+  45hz: true,
+  5px: false,
+  0: false,
+  '-6em': false
+));
+
+@include test('is-relative-length', (
+  '4rem': true,
+  45em: true,
+  5px: false,
+  0: false,
+  '-6em': true
+));
+
+@include test('is-absolute-length', (
+  '4rem': false,
+  45em: false,
+  5px: true,
+  0: false,
+  '-6em': false
+));
+
+@include test('is-length', (
+  '4rem': true,
+  45em: true,
+  5px: true,
+  0: false,
+  '-6em': true
+));
+
+@include test('is-resolution', (
+  '4dpi': true,
+  45dppx: true,
+  5px: false,
+  0: false,
+  '-6em': false
+));
+
+@include test('is-time', (
+  '4ms': true,
+  45s: true,
+  5px: false,
+  0: false,
+  '-6em': false
+));
+
+@include test('is-NaN', (
+  0: false,
+  0/0: true
+));
+
+@include test('inverse', (
+  4em: -4em,
+  '3px': -3px,
+  0: 0
+));
+
+@include compare((
+  px(4em): 64px,
+  pt(4px): 3pt,
+  pc(4px): 0.25pc,
+  in(4pc): 0.6666666667in,
+  mm(4cm): 40mm,
+  cm(4mm): .4cm,
+  deg(4turn): 1440deg,
+  rad(4deg): 0.0698131701rad,
+  grad(4deg): 4.4444444444grad,
+  turn(4deg): 0.0111111111turn,
+  dpi(4dppx): 384dpi,
+  dpcm(4dppx): 151.1811023622dpcm,
+  dppx(4dpi): 0.0416666667dppx,
+  ms(4s): 4000ms,
+  hz(4khz): 4000hz,
+  khz(4hz): 0.004khz,
+  rem(4px): .25rem,
+  em(4px): .25em,
+  ex(4px): 4ex,
+  ch(4px): 4ch,
+  vw(4px): 4vw,
+  vh(4px): 4vh,
+  vmin(4px): 4vmin,
+  vmax(4px): 4vmax
+), 'aeq');
+
+@include test('ratio', (
+  1.7777778: '16/9'
+));

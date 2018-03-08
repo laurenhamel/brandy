@@ -66,6 +66,7 @@
 /// @requires {function} is-arglist
 /// @requires {function} is-matrix
 /// @requires {function} is-boolean
+/// @requires {function} char-at
 /// @param {mixed} $a - First value to compare
 /// @param {arglist} $b - Second value to compare
 /// @param {number} $e - Allowed tolerance for errors
@@ -95,12 +96,12 @@
     
     // Log differences.
     $d: abs(str-length($a) - str-length($b));
-    
+
     // Allow `$t` character differences.
     @for $i from 1 through min(str-length($a), str-length($b)) {
       
-      $aa: nth($a, $i);
-      $bb: nth($b, $i);
+      $aa: char-at($a, $i);
+      $bb: char-at($b, $i);
       
       @if( $aa != $bb ) { $d: $d + 1; }
       
