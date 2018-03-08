@@ -492,6 +492,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `px` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `px` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `px` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -529,7 +530,7 @@
 
 /// Converts some numeric value to its `pt` equivalent
 ///
-/// @authro Jakob Eriksen
+/// @author Jakob Eriksen
 /// @author {function} is-number
 /// @requires {function} convert-unit
 /// @requires {function} is-string
@@ -538,6 +539,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `pt` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `pt` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `pt` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -584,6 +586,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `pc` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `pc` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `pc` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -630,6 +633,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `in` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `in` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `in` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -676,6 +680,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `mm` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `mm` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `mm` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -722,6 +727,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `cm` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `cm` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `cm` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -768,6 +774,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `deg` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `deg` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `deg` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -814,6 +821,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `rad` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `rad` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `rad` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -860,6 +868,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `grad` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `grad` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `grad` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -906,6 +915,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `turn` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `turn` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `turn` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -952,6 +962,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `dpi` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `dpi` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `dpi` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -998,6 +1009,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `dpcm` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `dpcm` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `dpcm` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1044,6 +1056,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `dppx` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `dppx` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `dppx` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1090,6 +1103,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `ms` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `ms` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `ms` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1136,6 +1150,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `s` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `s` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `s` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1182,6 +1197,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `hz` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `hz` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `hz` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1228,6 +1244,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `khz` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `khz` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `khz` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1274,6 +1291,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `rem` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `rem` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `rem` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1320,6 +1338,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `em` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `em` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `em` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1378,6 +1397,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `ex` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `ex` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `ex` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1424,6 +1444,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `ch` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `ch` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `ch` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1470,6 +1491,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `vw` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `vw` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `vw` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1516,6 +1538,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `vh` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `vh` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `vh` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1562,6 +1585,7 @@
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `vmin` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `vmin` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `vmin` expects some `px` value for argument `$base` but `#{$base}` was given.'
@@ -1607,8 +1631,8 @@
 /// @requires {function} cast-number
 /// @requires {variable} $brandy-font-size
 /// @param {number} $value - Some value to convert
-/// @returns {number}
 /// @param {number} $base [$brandy-font-size] - The base size in `px`
+/// @returns {number}
 /// @throws 'Function `vmax` expects a number for argument `$value` but `#{type-of($value)}` was given.'
 /// @throws 'Function `vmax` expects a number for argument `$base` but `#{type-of($base)}` was given.'
 /// @throws 'Function `vmax` expects some `px` value for argument `$base` but `#{$base}` was given.'
