@@ -55,8 +55,8 @@
 /// @param {number} $border - Some border setting
 @mixin border-y( $border ){
   
-  border-top: $padding;
-  border-bottom: $padding;
+  border-top: $border;
+  border-bottom: $border;
   
 }
 
@@ -65,8 +65,8 @@
 /// @param {number} $border - Some border setting
 @mixin border-x( $border ){
   
-  border-left: $padding;
-  border-right: $padding;
+  border-left: $border;
+  border-right: $border;
   
 }
 
