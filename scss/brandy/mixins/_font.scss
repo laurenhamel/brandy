@@ -9,6 +9,7 @@
 /// @requires {function} tail
 /// @requires {function} is-list
 /// @requires {function} is-number
+/// @requires {function} glue
 /// @param {arglist} $fonts - A list of font names followed by any font weights, such as `Lato 300 400, Raleway 300`
 /// @throws 'Mixin `google-font` could not load invalid font weight `#{$w}`.'
 @mixin google-font( $fonts... ){
@@ -22,29 +23,7 @@
     $weights: if( is-list($font), tail($font), () );
     $weight: '';
 
-    @if( length($weights) > 0 ) {
-      
-      $weight: $weight + ':';
-      
-      @each $w in $weights {
-        
-        @if( is-number($w) ) {
-
-          $weight: $weight + $w;
-        
-          @if( index($weights, $w) != length($weights) ) { $weight: $weight + ','; }
-          
-        }
-        
-        @else {
-          
-          @warn 'Mixin `google-font` could not load invalid font weight `#{$w}`.';
-          
-        }
-
-      }
-      
-    }
+    @if( length($weights) > 0 ) { $weight: $weight + ':' + glue($weights, ','); }
 
     @import url( #{$cdn}#{$name}#{$weight} );
 
