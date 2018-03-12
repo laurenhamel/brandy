@@ -35,7 +35,19 @@
 @mixin on-hover-focus( $property, $normal, $hover-focus ) {
   
   #{$property}: $normal;
-  &:hover, &:focus { #{$property}: $focus; }
+  &:hover, &:focus { #{$property}: $hover-focus; }
+  
+}
+
+/// Sets a property's normal, hover, and focus state
+///
+/// @alias on-hover-focus
+/// @param {string} $property - Some property to set
+/// @param {mixed} $normal - Some property value for the normal state
+/// @param {mixed} $hover-focus - Some property value for the hover and focus state
+@mixin on-focus-hover( $property, $normal, $hover-focus ) {
+  
+  @include on-hover-focus( $property, $normal, $hover-focus );
   
 }
 
