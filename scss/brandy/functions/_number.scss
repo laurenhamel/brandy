@@ -1898,3 +1898,89 @@
   @return ratio($x, $y, $p);
   
 }
+
+/// Creates an evenly spaced numeric scale ranging from `$min` to `$max` based on the number of desired `$stops`. 
+/// Can be either increasing or decreasing based on the value of `$increasing`. Typically used to
+/// help scale fonts sizes, for instance, from `h1` to `h6`.
+///
+/// @requires {function} is-number
+/// @requires {function} strip-unit
+/// @param {number} $min [1] - Some numeric minimum, where `$min` and `$max` have the same units
+/// @param {number} $max [1] - Some numeric maximum, where `$min` and `$max` have the same units
+/// @returns {number} $stops [2] - The desired number of stops within the numeric scale, including the two end points `$min` and `$max`
+/// @param {boolean} $increasing [false] - Whether the scale should be increasing or decreasing
+/// @throws 'Function `numeric-scale` expects a number for argument `$min` but `#{type-of($min)}` was given.'
+/// @throws 'Function `numeric-scale` expects a number for argument `$max` but `#{type-of($max)}` was given.'
+/// @throws 'Function `numeric-scale` expects `$min` and `$max` to have the same units but `#{unit($min)}` and `#{unit($max)}` were given.'
+/// @throws 'Function `numeric-scale` expects `$max` to be greater than or equal to `$min` but the opposite was true. The function will continue under the assumption that you meant for these values to be switched.'
+/// @throws 'Function `numeric-scale` expects a number for argument `$stops` but `#{type-of($stops)}` was given.'
+/// @throws 'Function `numeric-scale` expects a minimum value of 2 for argument `$stops` but `#{$stops}` was given.'
+/// @throws 'Function `numeric-scale` expects `true` or `false` for argument `$increasing` but `#{$increasing}` was given.'
+@function numeric-scale( $min: 1, $max: 1, $stops: 2, $increasing: false ) {
+  
+  @if( not is-number($min) ) {
+    
+    @error 'Function `numeric-scale` expects a number for argument `$min` but `#{type-of($min)}` was given.';
+    
+  }
+  
+  @if( not is-number($max) ) {
+    
+    @error 'Function `numeric-scale` expects a number for argument `$max` but `#{type-of($max)}` was given.';
+    
+  }
+  
+  @if( unit($min) != unit($max) ) {
+    
+    @error 'Function `numeric-scale` expects `$min` and `$max` to have the same units but `#{unit($min)}` and `#{unit($max)}` were given.';
+    
+  }
+  
+  @if( $min > $max ) { 
+    
+    @warn 'Function `numeric-scale` expects `$max` to be greater than or equal to `$min` but the opposite was true. ' +
+          'The function will continue under the assumption that you meant for these values to be switched.';
+    
+    $temp: $min;
+    $max: $min;
+    $min: $temp;
+    
+  }
+  
+  @if( not is-number($stops) ) {
+    
+    @error 'Function `numeric-scale` expects a number for argument `$stops` but `#{type-of($stops)}` was given.';
+    
+  }
+  
+  @if( $stops < 2 ) {
+    
+    @error 'Function `numeric-scale` expects a minimum value of 2 for argument `$stops` but `#{$stops}` was given.';
+    
+  }
+  
+  @if( not unitless($stops) ) { $stops: strip-unit($stops); }
+  
+  @if( not contains(true false, $increasing) ) {
+    
+    @error 'Function `numeric-scale` expects `true` or `false` for argument `$increasing` but `#{$increasing}` was given.';
+    
+  }
+  
+  $scale: ();
+  
+  $first: if($increasing, 1, -$stops);
+  
+  $last: if($increasing, $stops, -1);
+  
+  @for $i from $first through $last {
+    
+    $factor: ($max - $min) * ((abs($i) - 1) / ($stops - 1)) + $min;
+    
+    $scale: append($scale, $factor, comma);
+    
+  }
+  
+  @return $scale;
+  
+}

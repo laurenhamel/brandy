@@ -35,6 +35,8 @@
 ///
 /// @requires {function} is-number
 /// @requires {function} contains
+/// @requires {function} numeric-scale
+/// @requires {function} map-set
 /// @param {list} $elements - A list of elements that should have font sizes assigned according to scale
 /// @param {number} $min - The minimum font size allowed when scaling
 /// @param {number} $max - The maximum font size allowed when scaling
@@ -94,74 +96,22 @@
     
   }
   
-  $length: length($elements);
-  $steps: $length - 2;
   $map: ();
   
+  $scaled: numeric-scale( $min, $max, length($elements), $increasing );
+  
   // Scale elements.
-  @each $element in $elements {
-
-    $index: index($elements, $element);
-    $factor: ($min / $max) / $steps * $index;
-    $size: null;
-    $ratio: null;
-
-    @if( $increasing == true ) {
-
-      @if( $index == $length ) { 
-
-        $ratio: $max / $min;
-        $size: $max; 
-
-      }
-
-      @else if( $index == 1 ) { 
-
-        $ratio: 1;
-
-        $size: $min 
-
-      }
-
-      @else { 
-
-        $ratio: ($min + $factor) / $min;
-        $size: $min * $ratio; 
-
-      }
-
-    }
-
-    @else {  
-
-      @if( $index == $length ) { 
-
-        $ratio: $min / $max;
-        $size: $min; 
-
-      }
-
-      @else if( $index == 1 ) { 
-
-        $ratio: 1;
-        $size: $max; 
-
-      }
-
-      @else { 
-
-        $ratio: ($max - $factor) / $max;
-        $size: $max * $ratio;
-
-      }
-
-    }
+  @for $n from 1 through length($elements) {
+    
+    $element: nth($elements, $n);
+    
+    $size: nth($scaled, $n);
 
     #{$element} { font-size: $size; }
 
     $map: map-set($map, $element, $ratio);
 
-    @if( type-of($save) == 'map') { $save: map-set($save, $element, $ratio); }
+    @if( type-of($save) == 'map' ) { $save: map-set($save, $element, $ratio); }
 
   } 
   
@@ -227,6 +177,7 @@
         } 
         
       } 
+      
     }
     
   }

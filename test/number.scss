@@ -187,3 +187,7 @@
 @include test('ratio', (
   1.7777778: '16/9'
 ));
+
+@include test('numeric-scale', (
+  (1em, 2em, 6): (2em, 1.8em, 1.6em, 1.4em, 1.2em, 1em)
+));
