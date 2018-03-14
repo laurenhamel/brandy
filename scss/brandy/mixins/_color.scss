@@ -4,18 +4,17 @@
 
 /// Creates a cross-browser linear gradient
 ///
-/// @requires {function} is-boolean
 /// @requires {function} last
 /// @requires {function} head
 /// @param {arglist} $args - Some arguments defining the gradient
-/// @param {boolean} $flag [null] - Whether to set an `!important` flag on the property, passed in as the last argument
-@mixin linear-gradient( $args... /* $important: false */ ) {
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin linear-gradient( $args... /* $important */ ) {
   
   $important: '';
   
-  @if( is-boolean(last($args)) ) { 
+  @if( last($args) == '!important' ) { 
     
-    $important: if(last($args), '!important', ''); 
+    $important: last($args);
     $args: head($args);
   
   }
@@ -29,12 +28,11 @@
 
 /// Creates a cross-browser layered linear gradient from one or more gradient arguments
 ///
-/// @requires {function} is-boolean
 /// @requires {function} last
 /// @requires {function} head
 /// @param {arglist} $gradients - One or more argument lists for a gradient
-/// @param {boolean} $important [false] - Whether to set an `!important` flag on the property, passed in as the last argument
-@mixin layered-linear-gradient( $gradients... /* $important: false */ ) {
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin layered-linear-gradient( $gradients... /* $important */ ) {
   
   $webkit: ();
   $moz: ();
@@ -42,9 +40,9 @@
   $args: ();
   $important: '';
   
-  @if( is-boolean(last($args)) ) { 
+  @if( last($args) == '!important' ) { 
     
-    $important: if(last($args), '!important', ''); 
+    $important: last($args);
     $args: head($args);
   
   }
@@ -67,18 +65,17 @@
 
 /// Creates a cross-browser radial gradient
 ///
-/// @requires {function} is-boolean
 /// @requires {function} last
 /// @requires {function} head
 /// @param {arglist} $args - Some arguments defining the gradient
-/// @param {boolean} $important [false] - Whether to set an `!important` flag on the property, passed in as the last argument
-@mixin radial-gradient( $args... /* $important: false */ ) {
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin radial-gradient( $args... /* $important */ ) {
   
   $important: '';
   
-  @if( is-boolean(last($args)) ) { 
+  @if( last($args) == '!important' ) { 
     
-    $important: if(last($args), '!important', ''); 
+    $important: last($args);
     $args: head($args);
   
   }
@@ -92,18 +89,17 @@
 
 /// Creates a cross-browser layered radial gradient from one or more gradient arguments
 ///
-/// @requires {function} is-boolean
 /// @requires {function} last
 /// @requires {function} head
 /// @param {arglist} $gradients - One or more argument lists for a gradient
-/// @param {boolean} $important [false] - Whether to set an `!important` flag on the property, passed in as the last argument
-@mixin layered-radial-gradient( $gradients... /* $important: false */ ) {
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin layered-radial-gradient( $gradients... /* $important */ ) {
   
   $important: '';
   
-  @if( is-boolean(last($args)) ) { 
+  @if( last($args) == '!important' ) { 
     
-    $important: if(last($args), '!important', ''); 
+    $important: last($args);
     $args: head($args);
   
   }
