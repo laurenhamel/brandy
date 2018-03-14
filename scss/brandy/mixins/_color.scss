@@ -4,25 +4,50 @@
 
 /// Creates a cross-browser linear gradient
 ///
+/// @requires {function} is-boolean
+/// @requires {function} last
+/// @requires {function} head
 /// @param {arglist} $args - Some arguments defining the gradient
-@mixin linear-gradient( $args... ) {
+/// @param {boolean} $flag [null] - Whether to set an `!important` flag on the property, passed in as the last argument
+@mixin linear-gradient( $args... /* $important: false */ ) {
+  
+  $important: '';
+  
+  @if( is-boolean(last($args)) ) { 
+    
+    $important: if(last($args), '!important', ''); 
+    $args: head($args);
+  
+  }
 
-  background-image: -webkit-linear-gradient($args);
-  background-image: -moz-linear-gradient($args);
-  background-image: -o-linear-gradient($args);
-  background-image: linear-gradient($args);
+  background-image: -webkit-linear-gradient($args) #{$important};
+  background-image: -moz-linear-gradient($args) #{$important};
+  background-image: -o-linear-gradient($args) #{$important};
+  background-image: linear-gradient($args) #{$important};
   
 }
 
 /// Creates a cross-browser layered linear gradient from one or more gradient arguments
 ///
+/// @requires {function} is-boolean
+/// @requires {function} last
+/// @requires {function} head
 /// @param {arglist} $gradients - One or more argument lists for a gradient
-@mixin layered-linear-gradient( $gradients... ) {
+/// @param {boolean} $important [false] - Whether to set an `!important` flag on the property, passed in as the last argument
+@mixin layered-linear-gradient( $gradients... /* $important: false */ ) {
   
   $webkit: ();
   $moz: ();
   $o: ();
   $args: ();
+  $important: '';
+  
+  @if( is-boolean(last($args)) ) { 
+    
+    $important: if(last($args), '!important', ''); 
+    $args: head($args);
+  
+  }
   
   @each $gradient in $gradients {
     
@@ -33,29 +58,55 @@
     
   }
 
-  background-image: $webkit;;
-  background-image: $moz;
-  background-image: $o;
-  background-image: $args;
+  background-image: $webkit  #{$important};
+  background-image: $moz  #{$important};
+  background-image: $o  #{$important};
+  background-image: $args  #{$important};
   
 }
 
 /// Creates a cross-browser radial gradient
 ///
+/// @requires {function} is-boolean
+/// @requires {function} last
+/// @requires {function} head
 /// @param {arglist} $args - Some arguments defining the gradient
-@mixin radial-gradient( $args... ) {
+/// @param {boolean} $important [false] - Whether to set an `!important` flag on the property, passed in as the last argument
+@mixin radial-gradient( $args... /* $important: false */ ) {
   
-  background-image: -webkit-radial-gradient($args);
-  background-image: -moz-radial-gradient($args);
-  background-image: -o-radial-gradient($args);
-  background-image: radial-gradient($args);
+  $important: '';
+  
+  @if( is-boolean(last($args)) ) { 
+    
+    $important: if(last($args), '!important', ''); 
+    $args: head($args);
+  
+  }
+  
+  background-image: -webkit-radial-gradient($args)  #{$important};
+  background-image: -moz-radial-gradient($args)  #{$important};
+  background-image: -o-radial-gradient($args)  #{$important};
+  background-image: radial-gradient($args)  #{$important};
   
 }
 
 /// Creates a cross-browser layered radial gradient from one or more gradient arguments
 ///
+/// @requires {function} is-boolean
+/// @requires {function} last
+/// @requires {function} head
 /// @param {arglist} $gradients - One or more argument lists for a gradient
-@mixin layered-radial-gradient( $gradients... ) {
+/// @param {boolean} $important [false] - Whether to set an `!important` flag on the property, passed in as the last argument
+@mixin layered-radial-gradient( $gradients... /* $important: false */ ) {
+  
+  $important: '';
+  
+  @if( is-boolean(last($args)) ) { 
+    
+    $important: if(last($args), '!important', ''); 
+    $args: head($args);
+  
+  }
   
   $webkit: ();
   $moz: ();
@@ -71,10 +122,10 @@
     
   }
 
-  background-image: $webkit;;
-  background-image: $moz;
-  background-image: $o;
-  background-image: $args;
+  background-image: $webkit  #{$important};
+  background-image: $moz  #{$important};
+  background-image: $o  #{$important};
+  background-image: $args  #{$important};
   
 }
 
