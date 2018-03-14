@@ -72,18 +72,34 @@
 
 /// Sets `top`, `right`, `bottom`, `left`, and optionally `position`  properties in one fell swoop
 ///
+/// @requires {function} is-number
+/// @requires {function} first
+/// @requires {function} last
 /// @param {list | number} $offset - Some `top`, `right`, `bottom`, and `left` values, respectively
 /// @param {string} $position [null] - The positioning property for the element
 @mixin position( $offset, $position: null ) {
   
-  @for $i from 1 through length($offset) {
+  @if( is-number($offset) ) {
     
-    $value: nth($offset, $i); 
+    top: $offset;
+    right: $offset;
+    bottom: $offset;
+    left: $offset;
     
-    @if( $i == 1 ) { top: $value; }
-    @if( $i == 2 ) { right: $value; }
-    @if( $i == 3 ) { bottom: $value; }
-    @if( $i == 4 ) { left: $value; }
+  }
+  
+  @else {
+  
+    @for $i from 1 through length($offset) {
+
+      $value: nth($offset, $i); 
+
+      @if( $i == 1 ) { top: $value; bottom: $value; }
+      @if( $i == 2 ) { right: $value; left: $value; }
+      @if( $i == 3 ) { bottom: $value; }
+      @if( $i == 4 ) { left: $value; }
+
+    }
     
   }
   
