@@ -15,7 +15,7 @@
   @if( last($args) == '!important' ) { 
     
     $important: last($args);
-    $args: head($args);
+    $args: join((), head($args), comma);
   
   }
 
@@ -43,7 +43,7 @@
   @if( last($args) == '!important' ) { 
     
     $important: last($args);
-    $args: head($args);
+    $args: join((), head($args), comma);
   
   }
   
@@ -76,7 +76,7 @@
   @if( last($args) == '!important' ) { 
     
     $important: last($args);
-    $args: head($args);
+    $args: join((), head($args), comma);
   
   }
   
@@ -100,7 +100,7 @@
   @if( last($args) == '!important' ) { 
     
     $important: last($args);
-    $args: head($args);
+    $args: join((), head($args), comma);
   
   }
   
