@@ -238,9 +238,12 @@
 /// Adds a clearfix for floated elements
 ///
 /// @author Thoughtbot, Inc.
-@mixin clearfix() {
+/// @param {boolean} $before [false] - Whether the clearfix should come `::before` or `::after` the contents of the element
+@mixin clearfix( $before: false ) {
   
-  &::after {
+  $selector: if($before, '::before', '::after');
+  
+  &#{$selector} {
     content: '';
     clear: both;
     display: block;
