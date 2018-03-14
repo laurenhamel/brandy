@@ -94,8 +94,8 @@
 
       $value: nth($offset, $i); 
 
-      @if( $i == 1 ) { top: $value; bottom: $value; }
-      @if( $i == 2 ) { right: $value; left: $value; }
+      @if( $i == 1 ) { top: $value; }
+      @if( $i == 2 ) { right: $value; }
       @if( $i == 3 ) { bottom: $value; }
       @if( $i == 4 ) { left: $value; }
 
