@@ -40,7 +40,7 @@
 /// @param {list} $elements - A list of elements that should have font sizes assigned according to scale
 /// @param {number} $min - The minimum font size allowed when scaling
 /// @param {number} $max - The maximum font size allowed when scaling
-/// @param {map | null} $export - A variable pointing to a map where scaled font sizes should be saved to at a global level or `null` otherwise
+/// @param {map | null} $save - A variable pointing to a map where scaled font sizes should be saved to at a global level or `null` otherwise
 /// @param {boolean} $increasing [false] - Whether to increase or decrease font sizes according to scale
 /// @param {boolean} $responsive [true] - Whether to also make font sizes scale responsive across defined breakpoints
 /// @param {map} $scale [$brandy-scale-map] - A map containing font scales by breakpoint name
@@ -54,7 +54,7 @@
   $elements,
   $min: 1em, 
   $max: 1em, 
-  $export: null, 
+  $save: null, 
   $increasing: false, 
   $responsive: true, 
   $scale: $brandy-scale-map, 
@@ -109,9 +109,9 @@
 
     #{$element} { font-size: $size; }
 
-    $map: map-set($map, $element, $ratio);
+    $map: map-set($map, $element, $size);
 
-    @if( type-of($save) == 'map' ) { $save: map-set($save, $element, $ratio); }
+    @if( type-of($save) == 'map' ) { $save: map-set($save, $element, $size); }
 
   } 
   
