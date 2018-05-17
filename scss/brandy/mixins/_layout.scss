@@ -70,7 +70,7 @@
   
 }
 
-/// Sets `top`, `right`, `bottom`, `left`, and optionally `position`  properties in one fell swoop
+/// Sets `top`, `right`, `bottom`, `left`, and optionally `position` properties in one fell swoop
 ///
 /// @requires {function} is-number
 /// @requires {function} first
@@ -98,6 +98,72 @@
       @if( $i == 2 ) { right: $value; }
       @if( $i == 3 ) { bottom: $value; }
       @if( $i == 4 ) { left: $value; }
+
+    }
+    
+  }
+  
+  @if( contains(static relative fixed absolute sticky, $position) ) { position: $position; }
+  
+}
+
+/// Sets `top`, `bottom`, and optionally `position` properties in one fell swoop
+///
+/// @requires {function} is-number
+/// @requires {function} first
+/// @requires {function} last
+/// @param {list | number} $offset - Some `top` and  `bottom` values, respectively
+/// @param {string} $position [null] - The positioning property for the element
+@mixin position-y( $offset, $position: null ) {
+  
+  @if( is-number($offset) ) {
+    
+    top: $offset;
+    bottom: $offset;
+    
+  }
+  
+  @else {
+  
+    @for $i from 1 through length($offset) {
+
+      $value: nth($offset, $i); 
+
+      @if( $i == 1 ) { top: $value; }
+      @if( $i == 2 ) { bottom: $value; }
+
+    }
+    
+  }
+  
+  @if( contains(static relative fixed absolute sticky, $position) ) { position: $position; }
+  
+}
+
+/// Sets `left`, `right`, and optionally `position` properties in one fell swoop
+///
+/// @requires {function} is-number
+/// @requires {function} first
+/// @requires {function} last
+/// @param {list | number} $offset - Some `left` and  `right` values, respectively
+/// @param {string} $position [null] - The positioning property for the element
+@mixin position-x( $offset, $position: null ) {
+  
+  @if( is-number($offset) ) {
+    
+    left: $offset;
+    right: $offset;
+    
+  }
+  
+  @else {
+  
+    @for $i from 1 through length($offset) {
+
+      $value: nth($offset, $i); 
+
+      @if( $i == 1 ) { left: $value; }
+      @if( $i == 2 ) { right: $value; }
 
     }
     
