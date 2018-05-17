@@ -75,6 +75,7 @@
 /// @requires {function} is-number
 /// @requires {function} first
 /// @requires {function} last
+/// @requires {function} is-null
 /// @param {list | number} $offset - Some `top`, `right`, `bottom`, and `left` values, respectively
 /// @param {string} $position [null] - The positioning property for the element
 @mixin position( $offset, $position: null ) {
@@ -94,10 +95,10 @@
 
       $value: nth($offset, $i); 
 
-      @if( $i == 1 ) { top: $value; }
-      @if( $i == 2 ) { right: $value; }
-      @if( $i == 3 ) { bottom: $value; }
-      @if( $i == 4 ) { left: $value; }
+      @if( $i == 1 and not is-null($value) and $value != false ) { top: $value; }
+      @if( $i == 2 and not is-null($value) and $value != false ) { right: $value; }
+      @if( $i == 3 and not is-null($value) and $value != false ) { bottom: $value; }
+      @if( $i == 4 and not is-null($value) and $value != false ) { left: $value; }
 
     }
     
@@ -112,6 +113,7 @@
 /// @requires {function} is-number
 /// @requires {function} first
 /// @requires {function} last
+/// @requires {function} is-null
 /// @param {list | number} $offset - Some `top` and  `bottom` values, respectively
 /// @param {string} $position [null] - The positioning property for the element
 @mixin position-y( $offset, $position: null ) {
@@ -129,8 +131,8 @@
 
       $value: nth($offset, $i); 
 
-      @if( $i == 1 ) { top: $value; }
-      @if( $i == 2 ) { bottom: $value; }
+      @if( $i == 1 and not is-null($value) and $value != false ) { top: $value; }
+      @if( $i == 2 and not is-null($value) and $value != false ) { bottom: $value; }
 
     }
     
@@ -145,6 +147,7 @@
 /// @requires {function} is-number
 /// @requires {function} first
 /// @requires {function} last
+/// @requires {function} is-null
 /// @param {list | number} $offset - Some `left` and  `right` values, respectively
 /// @param {string} $position [null] - The positioning property for the element
 @mixin position-x( $offset, $position: null ) {
@@ -162,8 +165,8 @@
 
       $value: nth($offset, $i); 
 
-      @if( $i == 1 ) { left: $value; }
-      @if( $i == 2 ) { right: $value; }
+      @if( $i == 1 and not is-null($value) and $value != false ) { left: $value; }
+      @if( $i == 2 and not is-null($value) and $value != false ) { right: $value; }
 
     }
     
