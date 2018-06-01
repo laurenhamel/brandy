@@ -24,7 +24,7 @@ Brandy was built as way of compiling some of the best-of-the-best Sass snippets 
 
 # Getting Started
 
-To start using Brandy, simply [download the latest release](/releases/latest) and include the contents of the `scss/` folder in your project.
+To start using Brandy, simply [download the latest release](//github.com/laurenhamel/brandy/releases/latest) and include the contents of the `scss/` folder in your project.
 
 ## Disclaimer
 This library has been compiled by [Lauren Hamel](www.laurenhamel.me). While some mixins and functions are the author's original work, many mixins and functions have been pulled from other sources, meaning they likely have other authors and/or may use different licenses. The author of this library has attempted to give credit where credit was due, but please note that some inconsistencies may still exist. 
