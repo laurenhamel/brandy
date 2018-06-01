@@ -122,7 +122,8 @@ module.exports = function(grunt) {
         files: [{
           expand: true,
           flatten: true,
-          src: ['site/*.html']
+          src: ['site/*.html'],
+          dest: 'site/'
         }]
       }
     },
@@ -148,6 +149,13 @@ module.exports = function(grunt) {
           config: '.sassdocrc'
         }
       }
+    },
+    
+    'gh-pages': {
+      options: {
+        base: 'site'
+      }, 
+      src: ['**']
     }
     
   });
@@ -336,7 +344,8 @@ module.exports = function(grunt) {
     'sass:test'
   ]);
   grunt.registerTask('prod', [
-    'build:prod'
+    'build:prod',
+    'gh-pages'
   ]);
   grunt.registerTask('default', ['dev']);
 
