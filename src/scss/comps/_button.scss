@@ -1,0 +1,38 @@
+%button {
+  @include absolute-center-contents;
+  display: inline-flex;
+  font-family: font('body');
+  border-style: solid;
+  border-width: 1px;
+  transition: config('transition.all');
+  cursor: pointer;
+  color: inherit;
+  background-color: transparent;
+  
+  a { color: inherit; }
+  
+}
+
+@mixin button( $color: inherit, $radius: 3px ) {
+  @extend %button;
+  border-radius: $radius;
+  @if( is-color($color) ) { color: $color; } 
+  border-color: $color;
+  
+  &:hover, &:focus {
+    @if( is-color($color) ) {
+      background-color: $color;
+      color: color-contrast($color);
+    }
+  }
+  
+  &.-reverse {
+    @if( is-color($color) ) { 
+      @include on-hover-focus(background-color, $color, transparent); 
+      @include on-hover-focus(color, color-contrast($color), $color);
+    }
+  }
+  
+  @content;
+  
+}

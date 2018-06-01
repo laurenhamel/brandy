@@ -1,0 +1,25 @@
+.header {
+  
+  $background: color('white');
+  $foreground: color-contrast($background);
+  
+  padding: config('header.padding') (config('header.padding') * 2);
+  height: config('header.height');
+  background-color: $background;
+  color: $foreground;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  
+  &-logo { flex-grow: 1; }
+  &-nav { margin-left: 25px; }
+  &-logo, &-nav {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    align-self: stretch;
+  }
+  
+  svg { height: 100%; }
+  
+}

@@ -1,0 +1,21 @@
+.footer {
+  
+  $background: color('maroon');
+  $foreground: color-contrast($background);
+  
+  background: $background;
+  color: $foreground;
+  padding: config('header.padding') (config('header.padding') * 2);
+  text-align: center;
+  
+  .fa-heart { color: color('blush'); }
+  
+  a {
+    
+    $color: tint(color('purple', 'light'), 50%);
+    
+    @include on-hover-focus(color, $color, shade($color, 10%));
+    
+  }
+  
+}

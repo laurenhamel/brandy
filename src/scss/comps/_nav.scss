@@ -1,0 +1,101 @@
+.nav {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  
+  @include medium { flex-wrap: nowrap; }
+  
+  &-toggle {
+    display: block;
+    align-self: stretch;
+    @include size( config('header.height') - (config('header.padding') * 2) );
+
+    &::before { 
+      @include icon($fa-var-bars);
+      @include absolute-center-within-container;
+    }
+    
+    @include medium { @include visually-hidden; }
+    
+  }
+  
+  &-input { @include visually-hidden; }
+  
+  &-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    color: color('maroon');
+    overflow: hidden;
+    max-height: 0;
+    transition: config('transition.all');
+    position: absolute;
+    @include linear-gradient(to bottom, color('white'), rgba(color('white'), .9));
+    width: 100vw;
+    top: (config('header.height') - config('header.padding'));
+    right: -(config('header.padding') * 2 + 1px);
+    @include padding-x( config('header.padding') * 2 );
+    z-index: z('dropdown');
+    
+    @include when-adjacent-sibling-of( '.nav-input:checked' ) { 
+      max-height: 250px;
+      @include padding-y( config('header.padding') );
+    };
+    
+    $active: rgba(color('blush'), .25);
+    $hover: rgba(color('blush'), .5);
+    
+    &-item { 
+      display: block;
+      border-radius: 3px;
+      transition: config('transition.all');
+      line-height: 1;
+      white-space: nowrap;
+      
+      .is-active { background-color: $active; }
+      
+      @include on-hover-focus(background-color, transparent, $hover);
+      
+      a { 
+        color: inherit; 
+        display: block;
+        padding: 10px;
+      }
+      
+    }
+    
+    &-item + &-item {
+      margin-top: config('header.padding');
+
+      @include medium { 
+        margin-top: 0; 
+        margin-left: config('header.padding'); 
+      };
+      
+    }
+    
+    &-btn {
+      @include button(color('maroon'));
+      
+      a { transition: none; }
+      
+    }
+    
+    @include medium {
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow: auto;
+      width: auto;
+      max-height: none !important;
+      top: auto;
+      right: auto;
+      padding: 0 !important;
+      position: relative;
+      background-image: none;
+      z-index: auto !important;
+    };
+    
+  }
+  
+}

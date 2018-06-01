@@ -1,4 +1,10 @@
 module.exports = function(grunt) {
+  
+  const {exec} = require('child_process');
+  const extend = require('extend');
+  const path = require('path');
+  const Deferred = require('deferred-js');
+  const chalk = require('chalk');
 
   grunt.initConfig({
     
@@ -9,7 +15,7 @@ module.exports = function(grunt) {
         livereload: true
       },
       handlebars: {
-        files: ['src/*.{handlebars,hbs}', 'src/partials/**/*.{handlebars,hbs}'],
+        files: ['src/*.{handlebars,hbs}', 'src/{partials,layouts}/**/*.{handlebars,hbs}', 'data/*.{json,yml}'],
         tasks: ['assemble', 'replace:dev']
       },
       scss: {
@@ -24,67 +30,28 @@ module.exports = function(grunt) {
       brandy: {
         files: ['scss/**/*.scss'],
         tasks: ['docs']
+      },
+      assets: {
+        files: ['src/fonts/**/*', 'src/assets/**/*'],
+        tasks: ['copy']
       }
     },
     
     assemble: {
       options: {
-        assets: 'assets',
+        assets: 'site/assets',
         partials: ['src/partials/**/*.{handlebars,hbs}'],
         layouts: ['src/layouts/**/*.{handlebars,hbs}'],
-        data: ['data/*.{json,yml}'],
+        data: ['data/*.{json,yml}', 'package.json'],
         plugins: [],
-        helpers: []
+        helpers: ['helper-moment']
       },
       site: {
         files: [{
           expand: true,
-          cwd: 'src/',
-          src: ['*.{handlebars,hbs}'],
+          flatten: true,
+          src: ['src/*.{handlebars,hbs}'],
           dest: 'site/'
-        }]
-      }
-    },
-    
-    sass: {
-      dev: {
-        options: {
-          noCache: true,
-          style: 'nested',
-          sourcemap: 'none',
-          update: true,
-        },
-        files: [{
-          expand: true,
-          cwd: 'src/scss/',
-          src: ['*.scss'],
-          dest: 'site/css/',
-          ext: '.css'
-        }]
-      },
-      prod: {
-        options: {
-          noCache: true,
-          style: 'compressed'
-        },
-        files: [{
-          expand: true,
-          cwd: 'src/scss/',
-          src: ['*.scss'],
-          dest: 'site/css/',
-          ext: '.css'
-        }]
-      },
-      test: {
-        options: {
-          noCache: true
-        },
-        files: [{
-          expand: true,
-          cwd: 'test/',
-          src: ['*.scss'],
-          dest: '.',
-          ext: '.css'
         }]
       }
     },
@@ -126,7 +93,7 @@ module.exports = function(grunt) {
               match: 'js',
               replacement: () => [
                 '//localhost:35729/livereload.js'
-              ].map((script) => `<script src="${script}">`).join("\n")
+              ].map((script) => `<script src="${script}"></script>`).join("\n")
             }
           ]
         },
@@ -148,7 +115,7 @@ module.exports = function(grunt) {
             },
             {
               match: 'js',
-              replacement: () => [].map((script) => `<script src="${script}">`).join("\n")
+              replacement: () => [].map((script) => `<script src="${script}"></script>`).join("\n")
             }
           ]
         },
@@ -186,6 +153,152 @@ module.exports = function(grunt) {
   });
 
   require('load-grunt-tasks')(grunt);
+  
+  const sass = function( options, targets = [] ) { 
+    
+    const deferred = new Deferred();
+    
+    const settings = extend({
+      sourcemap: true,
+      style: 'expanded',
+      update: false
+    }, options);
+
+    let params = ' ';
+
+    params += `--${settings.sourcemap ? '' : 'no-'}source-map `;
+    params += `--style=${settings.style} `;
+    params += settings.update ? '--update ' : '';
+
+    let files = [];
+
+    targets.forEach((target) => {
+
+      const config = {};
+
+      if( target.cwd ) config.cwd = target.cwd;
+      if( target.flatten ) config.flatten = target.flatten;
+      if( target.ext ) config.ext = target.ext;
+      if( target.extDot ) config.extDot = target.extDot;
+      if( target.rename ) config.rename = target.rename;
+
+      const globs = grunt.file.expandMapping(target.src, target.dest, config);
+
+      files = files.concat(globs);
+
+    });
+    
+    const subtasks = [];
+    
+    const logs = [];
+
+    files.forEach((file) => {
+      
+      const subdeferred = new Deferred();
+
+      exec(`sass ${file.src} ${file.dest} ${params}`, (error, stdout, stderr) => {
+
+        if( error ) subdeferred.reject(error);
+
+        let stderrType = 'log';
+        
+        if( stderr.indexOf('ERROR') === 0 ) stderrType = 'error';
+        if( stderr.indexOf('WARN') === 0 ) stderrType = 'warn';
+        if( stderr.indexOf('DEBUG') === 0 ) stderrType = 'debug';
+
+        if( stdout ) logs.push({type: 'log', message: stdout});
+        if( stderr ) logs.push({type: stderrType, message: stderr});
+        
+        subdeferred.resolve();
+
+      });
+      
+      subtasks.push(subdeferred.promise());
+
+    });
+    
+    Deferred.when(...subtasks)
+      .done(() => { 
+      
+        const styles = {
+          log: [],
+          error: ['red'],
+          warn: ['yellow'],
+          debug: ['blue']
+        };
+      
+        logs.forEach((log) => {
+          
+          if( styles[log.type].length > 0 ) {
+          
+            console[log.type](chalk`{${styles[log.type].join('.')} ${log.message}}`);
+          
+          }
+          
+          else {
+            
+            console[log.type](log.message);
+            
+          }
+            
+        });
+      
+        deferred.resolve(logs);
+      
+      })
+      .fail((error) => deferred.reject(error));
+    
+    return deferred.promise();
+    
+  };
+  
+  grunt.registerTask('sass:dev', function() {
+    
+    const done = this.async();
+    
+    sass({
+      sourcemap: false,
+    }, [{
+      expand: true,
+      cwd: 'src/scss/',
+      src: ['*.scss'],
+      dest: 'site/css/',
+      ext: '.css'
+    }]).then(() => done()).fail((error) => done(error));
+    
+  });
+  grunt.registerTask('sass:prod', function() {
+    
+    const done = this.async();
+    
+    sass({
+      sourcemap: false,
+      style: 'compressed'
+    }, [{
+      expand: true,
+      cwd: 'src/scss/',
+      src: ['*.scss'],
+      dest: 'site/css/',
+      ext: '.css'
+    }]).then(() => done()).fail((error) => done(error));
+    
+  });
+  grunt.registerTask('sass:test', function() {
+    
+    const done = this.async();
+    
+    sass({
+      sourcemap: false,
+      style: 'compressed'
+    }, [{
+      expand: true,
+      cwd: 'test/',
+      src: ['*.scss'],
+      dest: '.',
+      ext: '.css'
+    }]).then(() => done()).fail((error) => done(error));
+    
+  });
 
   grunt.registerTask('site:dev', [
     'clean',

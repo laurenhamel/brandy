@@ -1,0 +1,18 @@
+@include google-font('Baloo');
+@include google-font('Raleway');
+@include google-font('Source Code Pro');
+
+$fonts: (
+  
+  'heading': ('Baloo', sans-serif),
+  'body': ('Raleway', sans-serif),
+  'code': ('Source Code Pro', monospace),
+  'fa': (
+    'regular': 'Font Awesome 5 Free',
+    'thin': 'Font Awesome 5 Thin',
+    'brands': 'Font Awesome 5 Brands',
+  )
+  
+);
+
+$brandy-fonts-map: $fonts;

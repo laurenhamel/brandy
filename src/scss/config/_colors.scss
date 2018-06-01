@@ -1,0 +1,37 @@
+$colors: (
+  
+  'maroon': (
+    base: #2D1214
+  ),
+  
+  'blush': (
+    base: #E4BCBA
+  ),
+  
+  'white': (
+    base: #FFFFFF,
+    dark: #EBEBEB
+  ),
+  
+  'purple': (
+    light: #6C6A74,
+    base: #36333D
+  ),
+  
+  'black': (
+    base: #000000,
+    light: #333333
+  ),
+  
+  'grey': (
+    light: #E0E0E0,
+    base: #DDDDDD,
+    dark: #888888,
+    darker: #555555
+  )
+  
+);
+
+$brandy-colors-map: $colors;
+$brandy-dark-text: color('black', 'light');
+$brandy-light-text: color('white');

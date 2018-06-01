@@ -1,0 +1,105 @@
+.hero {
+  min-height: calc(100% - #{config('header.height')} - 1.5em - (#{config('header.padding')} * 2));
+  background-color: color('grey', 'light');
+  padding: 50px;
+  text-align: center;
+  
+  @include medium { padding: 100px; };
+  
+  &-title,
+  &-tag,
+  &-call {
+    margin-bottom: (config('rhythm.y') * 2);
+    
+    @include last { margin-bottom: 0; }
+    
+  }
+  
+  &-title {
+    
+    svg {
+      width: 100%;
+      max-width: 500px;
+      filter: drop-shadow(2px 3px 2px rgba(color('black'), .25));
+    }
+    
+    $offset: 25px;
+    
+     &-sup,
+     &-sub {
+      font-size: .8em;
+      line-height: 1;
+      color: color('purple', 'light');
+      position: absolute;
+      right: 0;
+       
+      @include medium { right: $offset; };
+       
+    }
+    
+    &-sup { top: 0; @include medium { top: $offset; }; }
+    &-sub { bottom: 0; @include medium { bottom: $offset; }; }
+    
+    @include medium {
+      width: 650px;
+      @include margin-x(auto);
+    };
+    
+  }
+  
+  &-tag { font-size: 1.2em; }
+  
+  &-call {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    
+    &-btn {
+      
+      $color: color('maroon');
+      
+      width: 150px;
+      height: 50px;
+      @include button($color);
+      
+      &:hover, &:focus {
+        $hover: color('white');
+        background-color: $hover;
+        color: $color;
+        border-color: $hover;
+      }
+      
+      &.-reverse {
+        &:hover, &:focus {
+          
+          $hover: color('blush');
+          
+          background-color: $hover;
+          color: color-contrast($hover);
+          border-color: $hover;
+          
+        }
+      }
+      
+    }
+    
+    &-btn + &-btn { 
+      
+      $spacing: 10px;
+      
+      margin-top: $spacing;
+      
+      @include medium { 
+        margin-top: 0;
+        margin-left: $spacing;
+      };
+      
+    }
+    
+    @include medium { flex-direction: row; }
+    
+  }
+  
+}

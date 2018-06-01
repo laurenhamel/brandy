@@ -3,3 +3,23 @@ layout: default.handlebars
 title: Brandy
 ---
   
+<div class="hero">
+
+  <div class="hero-title">
+    
+    {{> logo}}
+    
+    <div class="hero-title-sup">v{{package.version}}</div>
+  
+  </div>
+  
+  <div class="hero-tag">A Sass tool set that's strong and sweet, just the way you like it.</div>
+  
+  <div class="hero-call">
+  
+    <a href="{{package.homepage}}/archive/master.zip" class="hero-call-btn -reverse">Download</a>
+    <a href="docs/" class="hero-call-btn">Documentation</a>
+  
+  </div>
+  
+</div>

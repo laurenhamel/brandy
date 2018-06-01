@@ -1,0 +1,28 @@
+$config: (
+
+  'transition': (
+    'duration': .5s,
+    'timing': ease
+  ),
+  
+  'header': (
+    'padding': 10px,
+    'height': 60px
+  ),
+  
+  'rhythm': (
+    'y': 25px,
+    'x': 25px
+  )
+  
+);
+
+$brandy-config-map: $config;
+
+$brandy-config-map: map-extend($config, (
+  
+  'transition': (
+    'all': all config('transition.duration') config('transition.timing')
+  )
+  
+));

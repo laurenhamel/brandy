@@ -1,0 +1,28 @@
+@include normalize();
+
+body {
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: font('body');
+  color: $brandy-dark-text;
+}
+
+* {
+  position: relative;
+  box-sizing: border-box;
+}
+
+a { 
+  
+  $color: color('purple');
+  
+  text-decoration: none; 
+  color: $color;
+  @include on-hover-focus(color, $color, shade($color, 10%));
+  transition: config('transition.all');
+  
+}
+
+#{$all-buttons} { appearance: none; }
+
+a, #{$all-buttons} { cursor: pointer; }
