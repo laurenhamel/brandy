@@ -1,3 +1,5 @@
+[![Brandy](//laurenhamel.github.io/brandy/assets/images/brandy.logo.svg)](//laurenhamel.github.io/brandy)
+
 > A Sass tool set that's strong and sweet, just the way you like it.
 
 # Table of Contents
