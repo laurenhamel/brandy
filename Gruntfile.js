@@ -156,6 +156,39 @@ module.exports = function(grunt) {
         base: 'site'
       }, 
       src: ['**']
+    },
+    
+    'dart-sass': {
+      dev: {
+        files: [{
+          expand: true,
+          cwd: 'src/scss/',
+          src: ['*.scss'],
+          dest: 'site/css/',
+          ext: '.css'
+        }]
+      },
+      prod: {
+        options: {
+          outputStyle: 'compressed'
+        },
+        files: [{
+          expand: true,
+          cwd: 'src/scss/',
+          src: ['*.scss'],
+          dest: 'site/css/',
+          ext: '.css'
+        }]
+      },
+      test: {
+        files: [{
+          expand: true,
+          cwd: 'test/',
+          src: ['*.scss'],
+          dest: '.',
+          ext: '.css'
+        }]
+      }
     }
     
   });
@@ -259,60 +292,12 @@ module.exports = function(grunt) {
     return deferred.promise();
     
   };
-  
-  grunt.registerTask('sass:dev', function() {
-    
-    const done = this.async();
-    
-    sass({
-      sourcemap: false,
-    }, [{
-      expand: true,
-      cwd: 'src/scss/',
-      src: ['*.scss'],
-      dest: 'site/css/',
-      ext: '.css'
-    }]).then(() => done()).fail((error) => done(error));
-    
-  });
-  grunt.registerTask('sass:prod', function() {
-    
-    const done = this.async();
-    
-    sass({
-      sourcemap: false,
-      style: 'compressed'
-    }, [{
-      expand: true,
-      cwd: 'src/scss/',
-      src: ['*.scss'],
-      dest: 'site/css/',
-      ext: '.css'
-    }]).then(() => done()).fail((error) => done(error));
-    
-  });
-  grunt.registerTask('sass:test', function() {
-    
-    const done = this.async();
-    
-    sass({
-      sourcemap: false,
-      style: 'compressed'
-    }, [{
-      expand: true,
-      cwd: 'test/',
-      src: ['*.scss'],
-      dest: '.',
-      ext: '.css'
-    }]).then(() => done()).fail((error) => done(error));
-    
-  });
 
   grunt.registerTask('site:dev', [
     'clean',
     'assemble',
     'replace:dev',
-    'sass:dev',
+    'dart-sass:dev',
     'postcss',
     'copy'
   ]);
@@ -320,7 +305,7 @@ module.exports = function(grunt) {
     'clean',
     'assemble',
     'replace:prod',
-    'sass:prod',
+    'dart-sass:prod',
     'postcss',
     'cssmin',
     'copy'
