@@ -123,7 +123,7 @@
   
     @for $i from 1 through length($offset) {
 
-      $value: nth($offset, $i); 
+      $value: nth($offset, $i);
 
       @if( $i == 1 and not is-null($value) and $value != false ) { top: $value; }
       @if( $i == 2 and not is-null($value) and $value != false ) { right: $value; }
@@ -249,16 +249,16 @@
   
 }
 
-/// Absolutely centers the contents of an element horizontally using the flexbox method
-@mixin absolute-center-contents-x() {
+/// Absolutely centers the contents of an element vertically using the flexbox method
+@mixin absolute-center-contents-y() {
   
   display: flex;
   align-items: center;
   
 }
 
-/// Absolutely centers the contents of an element vertically using the flexbox method
-@mixin absolute-center-contents-y() {
+/// Absolutely centers the contents of an element horizontally using the flexbox method
+@mixin absolute-center-contents-x() {
   
   display: flex;
   justify-content: center;
