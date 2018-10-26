@@ -136,13 +136,15 @@
 /// @requires {function} first
 /// @requires {function} last
 /// @requires {function} is-map
+/// @requires {function} is-list
+/// @requires {function} is-empty
 /// @param {map} $map - Some nested map
 /// @param {string} $keys - A list of dot-delimited map properties to be searched for
 /// @returns {boolean}
 /// @throws 'Cannot execute `map-has-keys` on non-map #{$map}.'
 @function map-has-keys( $map, $keys... ){
   
-  @if( not is-map($map) ) {
+  @if( not is-map($map) and not (is-list($map) and is-empty($map)) ) {
     
     @error 'Cannot execute `map-has-keys` on non-map #{$map}.';
     
@@ -231,6 +233,8 @@
 /// @requires {function} is-map
 /// @requires {function} is-boolean
 /// @requires {function} last
+/// @requires {function} is-list
+/// @requires {function} is-empty
 /// @param {map} $map - Some map to be extended
 /// @param {arglist} $maps - Additional maps to be used to extend the first map
 /// @param {boolean} $shallow [false] - Passed in as the last argument, disables recursive mode
@@ -239,7 +243,7 @@
 /// @throws 'Cannot execute `map-extend` with non-map `#{$current}`.'
 @function map-extend( $map, $maps... /*, $shallow */ ){
 
-  @if( not is-map($map) ) {
+  @if( not is-map($map) and not (is-list($map) and is-empty($map)) ) {
     
     @error 'Cannot execute `map-extend` on non-map #{$map}.';
     
@@ -253,7 +257,7 @@
     
     $current: nth($maps, $i);
     
-    @if( not is-map($current) ) {
+    @if( not is-map($current) and not (is-list($current) and is-empty($current)) ) {
       
       @error 'Cannot execute `map-extend` with non-map `#{$current}`.';
       
