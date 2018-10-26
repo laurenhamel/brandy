@@ -83,6 +83,7 @@
     "brandy-getters": "Getters",
     "brandy-casts": "Casts",
     "brandy-type": "Types",
+    "brandy-text": "Text",
     "brandy-strings": "Strings",
     "brandy-numbers": "Numbers",
     "brandy-colors": "Colors",
