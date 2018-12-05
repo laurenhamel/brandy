@@ -50,26 +50,29 @@
 /// @requires {function} map-deep-get
 /// @requires {function} cast-string
 /// @requires {variable} $brandy-colors-map
+/// @requires {function} is-map
 /// @param {string} $property - A property from the colors map given in dot notation
 /// @param {string} $tone ['base'] - A preferred color tone
-/// @param {string} $amount [null] - A tonal amount, usually representing a percent
+/// @param {string} $variation ['base'] - A tonal variation from the selected tone
 /// @return {mixed}
 /// @throws 'Unknown color `#{$property}`.'
-@function color( $property, $tone: 'base', $amount: null ) {
+@function color( $property, $tone: 'base', $variation: 'base' ) {
   
   @if ( not map-has-key($brandy-colors-map, $property) ) {
     
-    @error 'Unknown color `#{$property}`.'
+    @error 'Unknown color `#{$property}`.';
     
   }
   
-  @if( $amount == null ) {
+  $tone: map-deep-get($brandy-colors-map, '#{$property}.#{$tone}');
+  
+  @if ( is-map($tone) ) {
     
-    @return map-deep-get($brandy-colors-map, '#{$property}.#{$tone}');
+    @return map-deep-get($tone, '#{$tone}.#{$variation}');
     
   }
   
-  @return map-deep-get($brandy-colors-map, '#{$property}.#{$tone}.#{cast-string($amount)}');
+  @return $tone;
   
 }
 
