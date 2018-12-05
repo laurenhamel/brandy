@@ -68,7 +68,7 @@
   
   @if ( is-map($tone) ) {
     
-    @return map-deep-get($tone, '#{$tone}.#{$variation}');
+    @return map-deep-get($tone, $variation);
     
   }
   
