@@ -241,6 +241,8 @@
 }
 
 /// Absolutely centers the contents of an element using the flexbox method
+///
+/// @param {boolean} $inline [false] - Determines whether the element should be a block or inline element
 @mixin absolute-center-contents( $inline: false ) {
   
   @if( $inline == true ) { display: inline-flex; } @else { display: flex; }
@@ -250,6 +252,8 @@
 }
 
 /// Absolutely centers the contents of an element vertically using the flexbox method
+///
+/// @param {boolean} $inline [false] - Determines whether the element should be a block or inline element
 @mixin absolute-center-contents-y( $inline: false ) {
   
   @if( $inline == true ) { display: inline-flex; } @else { display: flex; }
@@ -258,6 +262,8 @@
 }
 
 /// Absolutely centers the contents of an element horizontally using the flexbox method
+///
+/// @param {boolean} $inline [false] - Determines whether the element should be a block or inline element
 @mixin absolute-center-contents-x( $inline: false ) {
   
   @if( $inline == true ) { display: inline-flex; } @else { display: flex; }
