@@ -241,26 +241,26 @@
 }
 
 /// Absolutely centers the contents of an element using the flexbox method
-@mixin absolute-center-contents() {
+@mixin absolute-center-contents( $inline: false ) {
   
-  display: flex;
+  @if( $inline == true ) { display: inline-flex; } @else { display: flex; }
   align-items: center;
   justify-content: center;
   
 }
 
 /// Absolutely centers the contents of an element vertically using the flexbox method
-@mixin absolute-center-contents-y() {
+@mixin absolute-center-contents-y( $inline: false ) {
   
-  display: flex;
+  @if( $inline == true ) { display: inline-flex; } @else { display: flex; }
   align-items: center;
   
 }
 
 /// Absolutely centers the contents of an element horizontally using the flexbox method
-@mixin absolute-center-contents-x() {
+@mixin absolute-center-contents-x( $inline: false ) {
   
-  display: flex;
+  @if( $inline == true ) { display: inline-flex; } @else { display: flex; }
   justify-content: center;
   
 }
