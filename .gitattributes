@@ -1,4 +1,4 @@
 docs/* linguist-documentation
-site/* linguist-documentation
 src/* linguist-documentation
 test/* linguist-documentation
+site/* linguist-generated
