@@ -293,7 +293,7 @@
     @include size(1px);
     margin: -1px;
     overflow: hidden;
-    @include paddin-y( 0 );
+    @include padding-y( 0 );
     position: absolute;
     
   }
