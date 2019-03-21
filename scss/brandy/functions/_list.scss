@@ -1875,3 +1875,28 @@
   @return $result;
   
 }
+
+/// Fills a list with the given value `$x` number of times.
+///
+/// @requires {function} is-integer
+/// @requires {function} is-positive
+/// @param {mixed} $value - Some value to fill the list with
+/// @param {number} $x - The number of items to insert into the list
+/// @param {string} $seperator [auto] - The list separator to use, either `comma`, `space`, or `auto` (defaults to `space`)
+/// @returns {list}
+/// @throws 'Function `fill` expects a positive integer for argument `$x` but `#{$x}` was given.'
+@function fill( $value, $x: 1, $separator: auto ) {
+  
+  @if( not is-positive($x) or not is-integer($x) ) {
+    
+    @error 'Function `fill` expects a positive number for argument `$x` but `#{$x}` was given.';
+    
+  }
+  
+  $result: ();
+  
+  @for $i from 1 through $x { $result: append($result, $value, $separator); }
+  
+  @return $result;
+  
+}

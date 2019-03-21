@@ -226,3 +226,8 @@ $letters: 'c' 'a' 'b' 'a' 'd' 'e';
 @include test('flatten', (
   $numbers $letters: 1 2 3 4 5 1 6 7 8 9 0 'c' 'a' 'b' 'a' 'd' 'e'
 ), false);
+
+@include test('fill', (
+  ('foo', 3): ('foo' 'foo' 'foo'),
+  (0, 5, comma): (0, 0, 0, 0, 0)
+));
