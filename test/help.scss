@@ -7,3 +7,9 @@
   (2px 4px 5px 6px, null): ('top': 2px, 'right': 4px, 'bottom': 5px, 'left': 6px),
   (2px 4px 5px 6px, right): 4px
 ));
+
+@include test('opposite-direction', (
+  'left': 'right',
+  'top': 'bottom',
+  'rtl': 'ltr'
+));
