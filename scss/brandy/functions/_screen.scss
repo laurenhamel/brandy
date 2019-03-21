@@ -13,6 +13,7 @@
 /// @requires {function} is-length
 /// @requires {function} map-set
 /// @requires {function} map-deep-get
+/// @requires {function} px
 /// @param {list | number} $media - A one or more media query parameters
 /// @param {boolean} $max [true] - Whether numeric values given for `$media` are assumed as `max-` or `min-`
 /// @returns {map} - Where `null` is used in place of any missing values
@@ -125,8 +126,16 @@
   // Assume a single value is max-width or min-width.
   @if( length($media) == 1 ) {
     
-    @if( $max ) { $result: map-set($result, 'max-width', if(unitless($media), $media + 0px, $media)); }
-    @else { $result: map-set($result, 'min-width', if(unitless($media), $media + 0px, $media)); }
+    @if( $max ) { 
+      
+      $result: map-set($result, 'max-width', if(unitless($media), px($media), $media)); 
+    
+    }
+    @else { 
+      
+      $result: map-set($result, 'min-width', if(unitless($media), px($media), $media)); 
+    
+    }
     
   } 
   
@@ -143,6 +152,12 @@
 
         // Interprets number values.
         @if( contains($number, $key) and is-number($value) ) { 
+          
+          @if( ($key == 'max-width' or $key == 'min-width') and unitless($value) ) {
+            
+            $value: px($value);
+            
+          }
           
           $result: map-set($result, $key, $value);
 

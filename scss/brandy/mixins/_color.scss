@@ -40,10 +40,10 @@
   $args: ();
   $important: '';
   
-  @if( last($args) == '!important' ) { 
+  @if( last($gradients) == '!important' ) { 
     
-    $important: last($args);
-    $args: join((), head($args), comma);
+    $important: last($gradients);
+    $gradients: join((), head($gradients), comma);
   
   }
   
@@ -97,10 +97,10 @@
   
   $important: '';
   
-  @if( last($args) == '!important' ) { 
+  @if( last($gradients) == '!important' ) { 
     
-    $important: last($args);
-    $args: join((), head($args), comma);
+    $important: last($gradients);
+    $gradients: join((), head($gradients), comma);
   
   }
   

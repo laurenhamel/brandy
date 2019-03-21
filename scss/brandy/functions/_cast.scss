@@ -8,10 +8,16 @@
 /// @requires {function} str-trim
 /// @param {mixed} $value - Some value
 /// @returns {string}
-@function cast-string( $value ) { 
+@function cast-string( $value ) {
   
-  @if( not is-string($value) ) {
+  @if ( is-number($value) and inspect($value % 1) == 'NaN' ) {
+    
+    @return 'NaN';
+    
+  }
   
+  @if( not is-string($value) ) { 
+
     @return unquote(str-trim(inspect($value), '"' "'" ' ')); 
     
   }

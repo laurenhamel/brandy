@@ -146,9 +146,22 @@
   '-6em': false
 ));
 
-@include test('is-NaN', (
-  0: false,
-  0/0: true
+@include test('is-number', (
+  0: true,
+  1: true,
+  '2': false,
+  3px: true,
+  '4em': false,
+  5%: true
+));
+  
+@include compare((
+  is-NaN(0): false,
+  is-NaN(0/0): true
+));
+@include compare((
+  is-NaN(1/1): false,
+  is-NaN(1/0): true
 ));
 
 @include test('inverse', (
@@ -160,16 +173,16 @@
 @include compare((
   px(4em): 64px,
   pt(4px): 3pt,
-  pc(4px): 0.25pc,
-  in(4pc): 0.6666666667in,
+  pc(6px): 0.375pc,
+  in(12pc): 2in,
   mm(4cm): 40mm,
   cm(4mm): .4cm,
   deg(4turn): 1440deg,
   rad(4deg): 0.0698131701rad,
-  grad(4deg): 4.4444444444grad,
-  turn(4deg): 0.0111111111turn,
+  grad(6deg): 6.6666666667grad,
+  turn(8deg): 0.0222222222turn,
   dpi(4dppx): 384dpi,
-  dpcm(4dppx): 151.1811023622dpcm,
+  dpcm(6dppx): 226.7716535433dpcm,
   dppx(4dpi): 0.0416666667dppx,
   ms(4s): 4000ms,
   hz(4khz): 4000hz,

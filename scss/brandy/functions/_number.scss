@@ -450,9 +450,9 @@
 /// @requires {function} cast-string
 /// @param {mixed} $value - Some value
 /// @returns {boolean}
-@function is-NaN( $value ) { 
+@function is-NaN( $value ) {
   
-  @return is-number($value) and cast-string($value) == 'NaN'; 
+  @return (is-number($value) and cast-string($value) == 'NaN'); 
 
 }
 

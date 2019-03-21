@@ -163,19 +163,25 @@
 /// @requires {variable} $brandy-const-map
 /// @requires {function} atan
 /// @requires {function} is-NaN
+/// @requires {function} is-integer
+/// @requires {function} is-list
 /// @param {number} $y - Some number
 /// @param {number} $x - Some number
+/// @param {list} $negated [false false] - Indicates whether the numbers should be negative
 /// @returns {number}
 ///
 /// @example 
-///   atanq(0, 0)       // -3.14159
+///   atanq(0, 0)       // 0
 ///   atanq(0, -0.0)    // -3.14159
-///   atanq(-0.0, 0)    // -3.14159
+///   atanq(-0.0, 0)    // 0
 ///   atanq(-0.0, -0.0) // -3.14159
 ///   atanq(0, 1)       // 0
 ///   atanq(0, -1)      // 3.14159
-@function atanq( $y, $x ) {
+@function atanq( $y, $x, $negated: false false ) {
   
+  $negy: if( is-list($negated) and length($negated) == 2, nth($negated, 1), $negated);
+  $negx: if( is-list($negated) and length($negated) == 2, nth($negated, 2), $negated);
+
   @if( $x > 0 ) { @return atan( $y / $x ); }
   @else if( $x < 0 ) {
     
@@ -189,10 +195,10 @@
     @else if( $y > 0 ) { @return const('PI') / 2; }
     @else {
       
-      @if( is-NaN(1 / $x) ) { @return 0; }
+      @if( $x == 0 and not $negx ) { @return 0; }
       @else {
-        
-        @if( is-NaN(1 / $y) ) { @return const('PI'); }
+
+        @if( $y == 0 and not $negx ) { @return const('PI'); }
         @else { @return (-1 * const('PI')); }
         
       }
