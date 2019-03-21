@@ -1907,7 +1907,7 @@
 /// @requires {function} strip-unit
 /// @param {number} $min [1] - Some numeric minimum, where `$min` and `$max` have the same units
 /// @param {number} $max [1] - Some numeric maximum, where `$min` and `$max` have the same units
-/// @returns {number} $stops [2] - The desired number of stops within the numeric scale, including the two end points `$min` and `$max`
+/// @param {number} $stops [2] - The desired number of stops within the numeric scale, including the two end points `$min` and `$max`
 /// @param {boolean} $increasing [false] - Whether the scale should be increasing or decreasing
 /// @throws 'Function `numeric-scale` expects a number for argument `$min` but `#{type-of($min)}` was given.'
 /// @throws 'Function `numeric-scale` expects a number for argument `$max` but `#{type-of($max)}` was given.'
@@ -1916,6 +1916,7 @@
 /// @throws 'Function `numeric-scale` expects a number for argument `$stops` but `#{type-of($stops)}` was given.'
 /// @throws 'Function `numeric-scale` expects a minimum value of 2 for argument `$stops` but `#{$stops}` was given.'
 /// @throws 'Function `numeric-scale` expects `true` or `false` for argument `$increasing` but `#{$increasing}` was given.'
+/// @return {list}
 @function numeric-scale( $min: 1, $max: 1, $stops: 2, $increasing: false ) {
   
   @if( not is-number($min) ) {
