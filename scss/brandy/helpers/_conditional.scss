@@ -1,0 +1,114 @@
+////
+/// @group brandy.help
+////
+
+/// Defaults to a certain value if no other given values are set.
+///
+/// @param {arglist} values - Some values to use in order of preference, where the last value is the default
+///
+/// @return {mixed} - The first value that is set or the default value
+@function default( $values.../*, $default*/ ) {
+  
+  // Get the default value.
+  $default: last($values);
+  
+  // Get the desired values in order of preference.
+  $values: head($values);
+  
+  // Try to use any of the given values.
+  @each $value in $values {
+    
+    // See if the value is valid.
+    @if( $value != false and is-null($value) == false ) {
+      
+      // Use the value if valid.
+      @return $value;
+      
+    }
+    
+  }
+  
+  // Otherwise, return the default.
+  @return $default;
+  
+}
+
+/// Default to a certain value if no other given value passes the condition test.
+///
+/// @param {string} condition - The name of a function to be used as the test condition
+/// @param {arglist} values - Some values to use in order of preference, where the last value is the default
+///
+/// @return {mixed} - The first value that meets the condition or the default value
+@function default-if( $condition, $values.../*, $default*/ ) {
+  
+  // Get the default value.
+  $default: last($values);
+  
+  // Get the desired values in order of preference.
+  $values: head($values);
+  
+  // Try to use any of the given values.
+  @each $value in $values {
+    
+    // See if the value is valid.
+    @if( call(get-function($condition), $value) == true ) {
+      
+      // Use the value if valid.
+      @return $value;
+      
+    }
+    
+  }
+  
+  // Otherwise, return the default.
+  @return $default;
+  
+}
+
+/// Default to a certain value if no other given value fails the condition test.
+///
+/// @param {string} condition - The name of a function to be used as the test condition
+/// @param {arglist} values - Some values to use in order of preference, where the last value is the default
+///
+/// @return {mixed} - The first value that does not meet the condition or the default value
+@function default-if-not( $condition, $values.../*, $default*/ ) {
+  
+  // Get the default value.
+  $default: last($values);
+  
+  // Get the desired values in order of preference.
+  $values: head($values);
+  
+  // Try to use any of the given values.
+  @each $value in $values {
+    
+    // See if the value is valid.
+    @if( call(get-function($condition), $value) == false ) {
+      
+      // Use the value if valid.
+      @return $value;
+      
+    }
+    
+  }
+  
+  // Otherwise, return the default.
+  @return $default;
+  
+}
+
+/// Conditionally makes a property value `!important` if a flag is set, where the flag is typically set based on the result of some conditional expression or result of a function.
+///
+/// @param {mixed} value - Some property value
+/// @param {boolean} important [false] - A flag indicating whether the value should be `!important`
+///
+/// @return {mixed} - The given value either with or without !important
+@function important( $value, $important: false ) {
+  
+  // The value is !important.
+  @if( $important == true ) { @return $value !important; }
+  
+  // Otherwise, the value is not !important.
+  @return $value;
+  
+}
