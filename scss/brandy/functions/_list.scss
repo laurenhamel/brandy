@@ -243,7 +243,7 @@
 /// @requires {function} contains
 /// @param {list | arglist} $list - Some list
 /// @param {mixed} $value - Some value to be removed from the list
-/// @param {boolean} $recurive [false] - Determines whether only the first occurrence or all occurrences should be removed
+/// @param {boolean} $recursive [false] - Determines whether only the first occurrence or all occurrences should be removed
 /// @returns {list}
 /// @throws 'Cannot execute `remove` on non-list `#{$list}`.'
 /// @throws 'Function `remove` expects `true` or `false` for argument `$recursive` but `#{$recursive}` was given.'
