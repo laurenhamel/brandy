@@ -1,0 +1,61 @@
+////
+/// @group brandy-help
+////
+
+/// Gets a positional value form a position-oriented property value.
+///
+/// @param {list} $value - The prosition-oriented property value that a positional value should be extracted from
+/// @param {string} position [null] - An optional positional value to extract otherwise all positional values are extracted
+///
+/// @returns {mixed}
+@function positional-value( $value, $position: null ) {
+  
+  // Initialize positional values.
+  $positions: (
+    top: null,
+    right: null,
+    bottom: null,
+    left: null
+  );
+  @debug length($value);
+  // Extract positional values.
+  @if( length($value) == 1 ) {
+    
+    $positions: map-set($positions, top, $value);
+    $positions: map-set($positions, right, $value);
+    $positions: map-set($positions, bottom, $value);
+    $positions: map-set($positions, left, $value);
+    
+  }
+  @else if( length($value) == 2 ) {
+    
+    $positions: map-set($positions, top, nth($value, 1));
+    $positions: map-set($positions, right, nth($value, 2));
+    $positions: map-set($positions, bottom, nth($value, 1));
+    $positions: map-set($positions, left, nth($value, 2));
+    
+  }
+  @else if( length($value) == 3 ) {
+    
+    $positions: map-set($positions, top, nth($value, 1));
+    $positions: map-set($positions, right, nth($value, 2));
+    $positions: map-set($positions, bottom, nth($value, 3));
+    $positions: map-set($positions, left, nth($value, 2));
+    
+  }
+  @else if( length($value) == 4 ) {
+    
+    $positions: map-set($positions, top, nth($value, 1));
+    $positions: map-set($positions, right, nth($value, 2));
+    $positions: map-set($positions, bottom, nth($value, 3));
+    $positions: map-set($positions, left, nth($value, 4));
+    
+  }
+  
+  // Return the position.
+  @if( $position != null ) { @return map-get($positions, $position); }
+  
+  // Otherwise, return all positions.
+  @return $positions;
+  
+}

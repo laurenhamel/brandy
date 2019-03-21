@@ -1,0 +1,9 @@
+@import '../scss/brandy';
+
+@include test('positional-value', (
+  2px: ('top': 2px, 'right': 2px, 'bottom': 2px, 'left': 2px),
+  (2px 4px, null): ('top': 2px, 'right': 4px, 'bottom': 2px, 'left': 4px),
+  (2px 4px 5px, null): ('top': 2px, 'right': 4px, 'bottom': 5px, 'left': 4px),
+  (2px 4px 5px 6px, null): ('top': 2px, 'right': 4px, 'bottom': 5px, 'left': 6px),
+  (2px 4px 5px 6px, right): 4px
+));
