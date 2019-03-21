@@ -61,6 +61,32 @@
   
 }
 
+/// Creates a layered border effect using box shadow.
+///
+/// @param {arglist} layers - The desired border layers
+@mixin layered-border( $layers... ) {
+  
+  // Initialize the box shadow value needed to create the desired border layers.
+  $borders: ();
+  
+  // Build the border layers.
+  @each $layer in $layers {
+    
+    // Get border properties.
+    $width: nth($layer, 1);
+    $style: nth($layer, 2); // Ignore this and always treat it as `solid`.
+    $color: nth($layer, 3);
+    
+    // Create border layer.
+    $borders: append($borders, 0 0 0 $width $color, comma);
+    
+  }
+  
+  // Add border layers.
+  box-shadow: $borders;
+  
+}
+
 /// Sets the `width` and `height` equally for an element 
 ///
 /// @param {number} $size - Some length
