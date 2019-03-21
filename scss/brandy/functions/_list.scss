@@ -1812,7 +1812,7 @@
 /// @requires {function} is-list
 /// @requires {function} is-arglist
 /// @requires {function} is-number
-/// @param {list} | arglist $list - Some list to be flattened
+/// @param {list | arglist} $list - Some list to be flattened
 /// @param {number} $limit - Limits the number of list levels that should be flattened or `0` when no limit is imposed
 /// @param {number} $level - The nesting level of the current list, used for recursion
 /// @returns {list}
