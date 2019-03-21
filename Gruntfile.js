@@ -1,10 +1,55 @@
 module.exports = function(grunt) {
   
   const {exec} = require('child_process');
-  const extend = require('extend');
   const path = require('path');
   const Deferred = require('deferred-js');
   const chalk = require('chalk');
+  const _ = require('lodash');
+  
+  const dartSass = {
+    dev: {
+      files: [{
+        expand: true,
+        cwd: 'src/scss/',
+        src: ['*.scss'],
+        dest: 'site/css/',
+        ext: '.css'
+      }]
+    },
+    prod: {
+      options: {
+        outputStyle: 'compressed'
+      },
+      files: [{
+        expand: true,
+        cwd: 'src/scss/',
+        src: ['*.scss'],
+        dest: 'site/css/',
+        ext: '.css'
+      }]
+    },
+    test: {
+      files: [{
+        expand: true,
+        cwd: 'test/',
+        src: ['*.scss'],
+        dest: '.',
+        ext: '.css'
+      }]
+    }
+  };
+  
+  grunt.file.expand('test/*.scss').forEach((scss) => {
+    
+    const name = path.basename(scss, '.scss');
+    const css = scss.replace('.scss', '.css');
+    const files = {};
+    
+    files[css] = scss;
+    
+    dartSass[name] = {files};
+    
+  });
 
   grunt.initConfig({
     
@@ -158,141 +203,26 @@ module.exports = function(grunt) {
       src: ['**']
     },
     
-    'dart-sass': {
-      dev: {
-        files: [{
-          expand: true,
-          cwd: 'src/scss/',
-          src: ['*.scss'],
-          dest: 'site/css/',
-          ext: '.css'
-        }]
-      },
-      prod: {
-        options: {
-          outputStyle: 'compressed'
-        },
-        files: [{
-          expand: true,
-          cwd: 'src/scss/',
-          src: ['*.scss'],
-          dest: 'site/css/',
-          ext: '.css'
-        }]
-      },
-      test: {
-        files: [{
-          expand: true,
-          cwd: 'test/',
-          src: ['*.scss'],
-          dest: '.',
-          ext: '.css'
-        }]
-      }
-    }
+    'dart-sass': dartSass
     
   });
 
   require('load-grunt-tasks')(grunt);
-  
-  const sass = function( options, targets = [] ) { 
+
+  grunt.registerTask('test', 'Run tests', ( ...args ) => {
     
-    const deferred = new Deferred();
+    // Get the test name.
+    const name = args.join(':') == '' ? false : args.join(':');
     
-    const settings = extend({
-      sourcemap: true,
-      style: 'expanded',
-      update: false
-    }, options);
+    // Get tests.
+    const tests = Object.keys(dartSass).filter((task) => !['dev', 'prod', 'test'].includes(task));
 
-    let params = ' ';
-
-    params += `--${settings.sourcemap ? '' : 'no-'}source-map `;
-    params += `--style=${settings.style} `;
-    params += settings.update ? '--update ' : '';
-
-    let files = [];
-
-    targets.forEach((target) => {
-
-      const config = {};
-
-      if( target.cwd ) config.cwd = target.cwd;
-      if( target.flatten ) config.flatten = target.flatten;
-      if( target.ext ) config.ext = target.ext;
-      if( target.extDot ) config.extDot = target.extDot;
-      if( target.rename ) config.rename = target.rename;
-
-      const globs = grunt.file.expandMapping(target.src, target.dest, config);
-
-      files = files.concat(globs);
-
-    });
+    // Verify that test exists.
+    if( name && tests.includes(name) ) grunt.task.run(`dart-sass:${name}`);
+    else if( !name ) grunt.task.run(`dart-sass:test`);
+    else grunt.fail.warn(`Test \`${name}\` could not be found.`);
     
-    const subtasks = [];
-    
-    const logs = [];
-
-    files.forEach((file) => {
-      
-      const subdeferred = new Deferred();
-
-      exec(`sass ${file.src} ${file.dest} ${params}`, (error, stdout, stderr) => {
-
-        if( error ) subdeferred.reject(error);
-
-        let stderrType = 'log';
-        
-        if( stderr.indexOf('ERROR') === 0 ) stderrType = 'error';
-        if( stderr.indexOf('WARN') === 0 ) stderrType = 'warn';
-        if( stderr.indexOf('DEBUG') === 0 ) stderrType = 'debug';
-
-        if( stdout ) logs.push({type: 'log', message: stdout});
-        if( stderr ) logs.push({type: stderrType, message: stderr});
-        
-        subdeferred.resolve();
-
-      });
-      
-      subtasks.push(subdeferred.promise());
-
-    });
-    
-    Deferred.when(...subtasks)
-      .done(() => { 
-      
-        const styles = {
-          log: [],
-          error: ['red'],
-          warn: ['yellow'],
-          debug: ['blue']
-        };
-      
-        logs.forEach((log) => {
-          
-          if( styles[log.type].length > 0 ) {
-          
-            console[log.type](chalk`{${styles[log.type].join('.')} ${log.message}}`);
-          
-          }
-          
-          else {
-            
-            console[log.type](log.message);
-            
-          }
-            
-        });
-      
-        deferred.resolve(logs);
-      
-      })
-      .fail((error) => deferred.reject(error));
-    
-    return deferred.promise();
-    
-  };
-
+  });
   grunt.registerTask('site:dev', [
     'clean',
     'assemble',
@@ -324,9 +254,6 @@ module.exports = function(grunt) {
   grunt.registerTask('dev', [
     'build:dev',
     'watch'
-  ]);
-  grunt.registerTask('test', [
-    'sass:test'
   ]);
   grunt.registerTask('prod', [
     'build:prod',
