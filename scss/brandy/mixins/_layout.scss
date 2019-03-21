@@ -275,6 +275,7 @@
 ///
 /// @author Thoughtbot, Inc.
 /// @requires {mixin} size
+/// @requires {mixin} padding-y
 /// @param {boolean} $hide [true] - Whether hide or show the content
 /// @throws 'Mixin `visually-hidden` expect `true` or `false` for argument `$hide` but `#{$hide}` was given.'
 @mixin visually-hidden( $hide: true ) {
@@ -292,7 +293,7 @@
     @include size(1px);
     margin: -1px;
     overflow: hidden;
-    padding: 0;
+    @include paddin-y( 0 );
     position: absolute;
     
   }
