@@ -15,6 +15,7 @@
   $passed: 0;
   $index: 1;
   $break: '\a ';
+  $tab: '  ';
   
   $results: '#{$break}#{$break}Started: Testing function `#{$function}`#{$break}----------------------------------#{$break}';
   
@@ -32,8 +33,8 @@
     @else {
   
       $results: $results + 'Test #{$index} of #{$length}... ✘#{$break}' + 
-                           '  Expected: `#{cast-string($expected)}`#{$break}' +
-                           '  Result: `#{cast-string($result)}`#{$break}'; 
+                           '#{$tab}Expected: `#{cast-string($expected)}`#{$break}' +
+                           '#{$tab}Result: `#{cast-string($result)}`#{$break}'; 
       $failed: $failed + 1;
       
     }
@@ -62,6 +63,7 @@
   $passed: 0;
   $index: 1;
   $break: '\a ';
+  $tab: '  ';
   
   $comparisons: (
     'eq': 'equality',
@@ -81,14 +83,15 @@
 
     @if ( $result == true ) { 
         
-      $results: $results + 'Test #{$index} of #{$length}... ✔#{$break}';
+      $results: $results + 'Test #{$index} of #{$length}... ✔ [#{$variable}]#{$break}';
       $passed: $passed + 1;
       
     }
     
     @else {
   
-      $results: $results + 'Test #{$index} of #{$length}... ✘#{$break}'; 
+      $results: $results + 'Test #{$index} of #{$length}... ✘ [#{$variable}]#{$break}' +
+                           '#{$tab}Expected: #{$comparison}#{$break}';
       $failed: $failed + 1;
       
     }
