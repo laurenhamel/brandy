@@ -26,6 +26,34 @@
   
 }
 
+/// Creates a cross-browser linear gradient over top of an image
+///
+/// @requires {function} last
+/// @requires {function} head
+/// @param {arglist} $args - Some arguments defining the gradient
+/// @param {string} $image - An image that the gradient should be overlayed on
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin linear-gradient-over-image( $args... /* $image, $important */ ) {
+  
+  $important: '';
+  
+  @if( last($args) == '!important' ) { 
+    
+    $important: last($args);
+    $args: join((), head($args), comma);
+  
+  }
+  
+  $image: last($args);
+  $args: join((), head($args), comma);
+
+  background-image: -webkit-linear-gradient($args), $image #{$important};
+  background-image: -moz-linear-gradient($args), $image #{$important};
+  background-image: -o-linear-gradient($args), $image #{$important};
+  background-image: linear-gradient($args), $image #{$important};
+  
+}
+
 /// Creates a cross-browser layered linear gradient from one or more gradient arguments
 ///
 /// @requires {function} last
@@ -63,6 +91,47 @@
   
 }
 
+/// Creates a cross-browser layered linear gradient from one or more gradient arguments over top of an image.
+///
+/// @requires {function} last
+/// @requires {function} head
+/// @param {arglist} $gradients - One or more argument lists for a gradient
+/// @param {string} $image - An image that the gradient should be overlayed on
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin layered-linear-gradient-over-image( $gradients... /* $image, $important */ ) {
+  
+  $webkit: ();
+  $moz: ();
+  $o: ();
+  $args: ();
+  $important: '';
+  
+  @if( last($gradients) == '!important' ) { 
+    
+    $important: last($gradients);
+    $gradients: join((), head($gradients), comma);
+  
+  }
+  
+  $image: last($gradients);
+  $gradients: join((), head($gradients), comma);
+  
+  @each $gradient in $gradients {
+    
+    $args: append($args, unquote('linear-gradient(#{$gradient})'), comma), $image;
+    $webkit: append($webkit, unquote('-webkit-linear-gradient(#{$gradient})'), comma), $image;
+    $moz: append($moz, unquote('-moz-linear-gradient(#{$gradient})'), comma), $image;
+    $o: append($o, unquote('-o-linear-gradient(#{$gradient})'), comma), $image;
+    
+  }
+
+  background-image: $webkit  #{$important};
+  background-image: $moz  #{$important};
+  background-image: $o  #{$important};
+  background-image: $args  #{$important};
+  
+}
+
 /// Creates a cross-browser radial gradient
 ///
 /// @requires {function} last
@@ -84,6 +153,34 @@
   background-image: -moz-radial-gradient($args)  #{$important};
   background-image: -o-radial-gradient($args)  #{$important};
   background-image: radial-gradient($args)  #{$important};
+  
+}
+
+/// Creates a cross-browser radial gradient over top of an image
+///
+/// @requires {function} last
+/// @requires {function} head
+/// @param {arglist} $args - Some arguments defining the gradient
+/// @param {string} $image - An image that the gradient should be overlayed on
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin radial-gradient-over-image( $args... /* $image, $important */ ) {
+  
+  $important: '';
+  
+  @if( last($args) == '!important' ) { 
+    
+    $important: last($args);
+    $args: join((), head($args), comma);
+  
+  }
+  
+  $image: last($args);
+  $args: join((), head($args), comma);
+
+  background-image: -webkit-radial-gradient($args), $image #{$important};
+  background-image: -moz-radial-gradient($args), $image #{$important};
+  background-image: -o-radial-gradient($args), $image #{$important};
+  background-image: radial-gradient($args), $image #{$important};
   
 }
 
@@ -115,6 +212,47 @@
     $webkit: append($webkit, unquote('-webkit-radial-gradient(#{$gradient})'), comma);
     $moz: append($moz, unquote('-moz-radial-gradient(#{$gradient})'), comma);
     $o: append($o, unquote('-o-radial-gradient(#{$gradient})'), comma);
+    
+  }
+
+  background-image: $webkit  #{$important};
+  background-image: $moz  #{$important};
+  background-image: $o  #{$important};
+  background-image: $args  #{$important};
+  
+}
+
+/// Creates a cross-browser layered radial gradient from one or more gradient arguments over top of an image.
+///
+/// @requires {function} last
+/// @requires {function} head
+/// @param {arglist} $gradients - One or more argument lists for a gradient
+/// @param {string} $image - An image that the gradient should be overlayed on
+/// @param {string} $important - Sets the `!important` flag if passed in as the last argument
+@mixin layered-radial-gradient-over-image( $gradients... /* $image, $important */ ) {
+  
+  $webkit: ();
+  $moz: ();
+  $o: ();
+  $args: ();
+  $important: '';
+  
+  @if( last($gradients) == '!important' ) { 
+    
+    $important: last($gradients);
+    $gradients: join((), head($gradients), comma);
+  
+  }
+  
+  $image: last($gradients);
+  $gradients: join((), head($gradients), comma);
+  
+  @each $gradient in $gradients {
+    
+    $args: append($args, unquote('radial-gradient(#{$gradient})'), comma), $image;
+    $webkit: append($webkit, unquote('-webkit-radial-gradient(#{$gradient})'), comma), $image;
+    $moz: append($moz, unquote('-moz-radial-gradient(#{$gradient})'), comma), $image;
+    $o: append($o, unquote('-o-radial-gradient(#{$gradient})'), comma), $image;
     
   }
 
